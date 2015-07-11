@@ -5,12 +5,8 @@ import java.util.Calendar;
 import cn.hjf.gollumaccount.FragmentIdConsts;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
-import cn.hjf.gollumaccount.fragment.AboutFragment;
-import cn.hjf.gollumaccount.fragment.AddItemFragment;
 import cn.hjf.gollumaccount.fragment.ConsumeFragment;
-import cn.hjf.gollumaccount.fragment.ItemManagerFragment;
 import cn.hjf.gollumaccount.fragment.NavigationDrawerFragment;
-import cn.hjf.gollumaccount.fragment.ModifyRecordFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,8 +38,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
-		ConsumeFragment.OnConsumeFragmentCallback,
-		ModifyRecordFragment.OnModifyRecordCallback {
+		ConsumeFragment.OnConsumeFragmentCallback {
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -58,29 +53,23 @@ public class MainActivity extends ActionBarActivity implements
 	private CharSequence mTitle; //ActionBar�ı���
 
 	private int mCurrentFragment; // ��ǰ����ֵ�Fragment
-	private ItemManagerFragment mItemManagerFragment; //��Ŀ����Fragment
 	private ConsumeFragment mConsumeFragment; //��Ѽ�¼Fragment
 	private StatisticSelectActivity mAnalyseFragment; //���ͳ��Fragment
-	private AboutFragment mAboutFragment; //������ϢFragment
-	private AddItemFragment mAddItemFragment; //�����ĿFragment
+	private AboutActivity mAboutFragment; //������ϢFragment
 	private ConsumeDetailActivity mRecordDetailViewFragment; //�����ϸ��Ϣ�鿴Fragment
 	private TypeStatisticActivity mItemCompareFragment; //�����Ͳ鿴ͼ��
 	private MonthStatisticActivity mMonthCompareFragment; //���·ݲ鿴ͼ��
-	private ModifyRecordFragment mModifyRecordFragment; //�޸ļ�¼����
 	
 	private FragmentManager mFragmentManager; //Fragment������������Fragment������Ƴ�ȹ���
 	
 	private ConsumeItemService mConsumeItemService; //ConsumeItemҵ���߼�����
 	
 	public MainActivity() {
-		mItemManagerFragment = new ItemManagerFragment();
 		mConsumeFragment = new ConsumeFragment();
 		mAnalyseFragment = new StatisticSelectActivity();
-		mAboutFragment = new AboutFragment();
-		mAddItemFragment = new AddItemFragment();
+		mAboutFragment = new AboutActivity();
 		mItemCompareFragment = new TypeStatisticActivity();
 		mMonthCompareFragment = new MonthStatisticActivity();
-		mModifyRecordFragment = new ModifyRecordFragment();
 		
 	}
 
@@ -137,22 +126,17 @@ public class MainActivity extends ActionBarActivity implements
 		case 1:
 			clearBackStack();
 			
-			Intent intent = new Intent(this, StatisticSelectActivity.class);
-			this.startActivity(intent);
+			Intent intentStatisticSelect = new Intent(this, StatisticSelectActivity.class);
+			this.startActivity(intentStatisticSelect);
 			
-//			mFragmentManager
-//			.beginTransaction()
-//			.replace(R.id.container,
-//					mAnalyseFragment).commit();
 			break;
 		case 2:
 			clearBackStack();
 			
-			mFragmentManager
-			.beginTransaction()
-			.replace(R.id.container,
-					mAboutFragment).commit();
-			break;
+            Intent intentAbout = new Intent(this, AboutActivity.class);
+            this.startActivity(intentAbout);
+            
+            break;
 
 		default:
 			break;
@@ -437,49 +421,17 @@ public class MainActivity extends ActionBarActivity implements
 	    this.startActivity(intent);
 	}
 
+    @Override
+    public void onConsumeItemModify(ConsumeRecord record) {
+        // TODO Auto-generated method stub
+        
+    }
 
 
 
 
 
-	/**
-	 * �����޸�һ����Ѽ�¼���
-	 */
 
-	@Override
-	public void onModifyCanceled() {
-		mFragmentManager
-		.beginTransaction()
-		.remove(mModifyRecordFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-	}
-
-	@Override
-	public void onModifySubmit(ConsumeRecord record) {
-		mConsumeFragment.setmNeedRefreshFlag(true);
-		mFragmentManager
-		.beginTransaction()
-		.remove(mModifyRecordFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-	}
-
-	@Override
-	public void onConsumeItemModify(ConsumeRecord record) {
-		mModifyRecordFragment.init(record);
-		mFragmentManager
-		.beginTransaction()
-		.replace(R.id.container,
-				mModifyRecordFragment).addToBackStack(null).commit();
-		
-	}
 
 
 }
