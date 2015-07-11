@@ -7,11 +7,8 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.fragment.AboutFragment;
 import cn.hjf.gollumaccount.fragment.AddItemFragment;
-import cn.hjf.gollumaccount.fragment.AnalyseFragment;
 import cn.hjf.gollumaccount.fragment.ConsumeFragment;
-import cn.hjf.gollumaccount.fragment.ItemCompareFragment;
 import cn.hjf.gollumaccount.fragment.ItemManagerFragment;
-import cn.hjf.gollumaccount.fragment.MonthCompareFragment;
 import cn.hjf.gollumaccount.fragment.NavigationDrawerFragment;
 import cn.hjf.gollumaccount.fragment.ModifyRecordFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
@@ -46,9 +43,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
 		ConsumeFragment.OnConsumeFragmentCallback,
-		AnalyseFragment.OnAnalyseCallback,
-		ItemCompareFragment.OnItemCompareCallback,
-		MonthCompareFragment.OnMonthCompareCallback,
 		ModifyRecordFragment.OnModifyRecordCallback {
 
 	/**
@@ -66,12 +60,12 @@ public class MainActivity extends ActionBarActivity implements
 	private int mCurrentFragment; // ��ǰ����ֵ�Fragment
 	private ItemManagerFragment mItemManagerFragment; //��Ŀ����Fragment
 	private ConsumeFragment mConsumeFragment; //��Ѽ�¼Fragment
-	private AnalyseFragment mAnalyseFragment; //���ͳ��Fragment
+	private StatisticSelectActivity mAnalyseFragment; //���ͳ��Fragment
 	private AboutFragment mAboutFragment; //������ϢFragment
 	private AddItemFragment mAddItemFragment; //�����ĿFragment
 	private ConsumeDetailActivity mRecordDetailViewFragment; //�����ϸ��Ϣ�鿴Fragment
-	private ItemCompareFragment mItemCompareFragment; //�����Ͳ鿴ͼ��
-	private MonthCompareFragment mMonthCompareFragment; //���·ݲ鿴ͼ��
+	private TypeStatisticActivity mItemCompareFragment; //�����Ͳ鿴ͼ��
+	private MonthStatisticActivity mMonthCompareFragment; //���·ݲ鿴ͼ��
 	private ModifyRecordFragment mModifyRecordFragment; //�޸ļ�¼����
 	
 	private FragmentManager mFragmentManager; //Fragment������������Fragment������Ƴ�ȹ���
@@ -81,11 +75,11 @@ public class MainActivity extends ActionBarActivity implements
 	public MainActivity() {
 		mItemManagerFragment = new ItemManagerFragment();
 		mConsumeFragment = new ConsumeFragment();
-		mAnalyseFragment = new AnalyseFragment();
+		mAnalyseFragment = new StatisticSelectActivity();
 		mAboutFragment = new AboutFragment();
 		mAddItemFragment = new AddItemFragment();
-		mItemCompareFragment = new ItemCompareFragment();
-		mMonthCompareFragment = new MonthCompareFragment();
+		mItemCompareFragment = new TypeStatisticActivity();
+		mMonthCompareFragment = new MonthStatisticActivity();
 		mModifyRecordFragment = new ModifyRecordFragment();
 		
 	}
@@ -143,10 +137,13 @@ public class MainActivity extends ActionBarActivity implements
 		case 1:
 			clearBackStack();
 			
-			mFragmentManager
-			.beginTransaction()
-			.replace(R.id.container,
-					mAnalyseFragment).commit();
+			Intent intent = new Intent(this, StatisticSelectActivity.class);
+			this.startActivity(intent);
+			
+//			mFragmentManager
+//			.beginTransaction()
+//			.replace(R.id.container,
+//					mAnalyseFragment).commit();
 			break;
 		case 2:
 			clearBackStack();
@@ -408,15 +405,15 @@ public class MainActivity extends ActionBarActivity implements
 //		}
 		
 		// ������ͳ�Ƶ�Fragment
-		mFragmentManager.beginTransaction().remove(mItemCompareFragment)
-				.commit();
+//		mFragmentManager.beginTransaction().remove(mItemCompareFragment)
+//				.commit();
 		int backStackCount2 = mFragmentManager.getBackStackEntryCount();
 		for (int i = 0; i < backStackCount2; i++) {
 			mFragmentManager.popBackStack();
 		}
 		// ���·�ͳ�Ƶ�Fragment
-		mFragmentManager.beginTransaction().remove(mMonthCompareFragment)
-				.commit();
+//		mFragmentManager.beginTransaction().remove(mMonthCompareFragment)
+//				.commit();
 		int backStackCount3 = mFragmentManager.getBackStackEntryCount();
 		for (int i = 0; i < backStackCount3; i++) {
 			mFragmentManager.popBackStack();
@@ -441,61 +438,9 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 
-	/**
-	 * �����������Ͳ鿴ͼ��
-	 */
-	@Override
-	public void onByItemClick() {
-		mFragmentManager
-		.beginTransaction()
-//		.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-		.replace(R.id.container,
-				mItemCompareFragment).addToBackStack(null).commit();
-		
-	}
 
-	/**
-	 * ������·ݲ鿴ͼ��
-	 */
-	@Override
-	public void onByMonthClick() {
-		mFragmentManager
-		.beginTransaction()
-//		.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-		.replace(R.id.container,
-				mMonthCompareFragment).addToBackStack(null).commit();
-	}
 
-	/**
-	 * ���·ݲ鿴���淵��
-	 */
-	@Override
-	public void onMonthCompareReturn() {
-		mFragmentManager
-		.beginTransaction()
-		.remove(mMonthCompareFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-		
-	}
 
-	/**
-	 * ������鿴���淵��
-	 */
-	@Override
-	public void onItemCompareReturn() {
-		mFragmentManager
-		.beginTransaction()
-		.remove(mItemCompareFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-	}
 
 	/**
 	 * �����޸�һ����Ѽ�¼���

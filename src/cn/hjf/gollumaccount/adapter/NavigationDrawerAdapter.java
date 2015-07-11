@@ -70,11 +70,11 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 	
 	private int findIndexByName(String drawerName) {
 		int index = 0;
-		if ("消费记录".equals(drawerName)) {
+		if ("娑堣垂璁板綍".equals(drawerName)) {
 			index = 1;
-		} else if ("消费统计".equals(drawerName)) {
+		} else if ("娑堣垂缁熻".equals(drawerName)) {
 			index = 2;
-		} else if ("关于信息".equals(drawerName)) {
+		} else if ("鍏充簬淇℃伅".equals(drawerName)) {
 			index = 3;
 		}
 		return index;
