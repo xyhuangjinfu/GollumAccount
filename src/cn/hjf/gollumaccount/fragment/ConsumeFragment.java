@@ -44,7 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Ïû·Ñ¼ÇÂ¼½çÃæ
+ * ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
  * 
  * @author huangjinfu
  * 
@@ -53,32 +53,32 @@ public class ConsumeFragment extends Fragment implements
 		LoadConsumeRecordTask.OnRecordLoadCallback,
 		ConsumeQueryDialog.OnQueryListener {
 
-	private PullToRefreshListView mRecordListView; // Ïû·Ñ¼ÇÂ¼ÏÔÊ¾µÄListView
-	private ListView mActualRecordListView; // Êµ¼ÊµÄÏû·Ñ¼ÇÂ¼ÏÔÊ¾µÄListView
-	private View mEmptyView; // ListViewÖÐÃ»ÓÐÊý¾ÝÊ±ÏÔÊ¾µÄView
+	private PullToRefreshListView mRecordListView; // ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ê¾ï¿½ï¿½ListView
+	private ListView mActualRecordListView; // Êµï¿½Êµï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ê¾ï¿½ï¿½ListView
+	private View mEmptyView; // ListViewï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ê¾ï¿½ï¿½View
 
-	private ArrayList<ConsumeRecord> mRecords; // ´æ·ÅÏÔÊ¾Ïû·Ñ¼ÇÂ¼µÄÊý¾Ý
+	private ArrayList<ConsumeRecord> mRecords; // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	private ConsumeRecordAdapter mConsumeRecordAdapter; // ListViewµÄÊÊÅäÆ÷
-	private OnConsumeFragmentCallback mListener; // ¸ÃFragmentÓÃÓÚÓëActivity½»»¥µÄ½Ó¿Ú
+	private ConsumeRecordAdapter mConsumeRecordAdapter; // ListViewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private OnConsumeFragmentCallback mListener; // ï¿½ï¿½Fragmentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Activityï¿½ï¿½ï¿½ï¿½ï¿½Ä½Ó¿ï¿½
 
-	private int mCurrentPage = 1; // µ±Ç°Êý¾ÝÏÔÊ¾µ½µÚ¼¸Ò³£¬Ä¬ÈÏÏÔÊ¾µÚÒ»Ò³
-	private LoadConsumeRecordTask mLoadConsumeRecordTask; // ¼ÓÔØÏû·Ñ¼ÇÂ¼Êý¾ÝµÄAsyncTask
+	private int mCurrentPage = 1; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ú¼ï¿½Ò³ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ò»Ò³
+	private LoadConsumeRecordTask mLoadConsumeRecordTask; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ýµï¿½AsyncTask
 
-	private boolean mNeedRefreshFlag = true; // ÊÇ·ñÐèÒªË¢ÐÂÒ³ÃæÊý¾Ý
+	private boolean mNeedRefreshFlag = true; // ï¿½Ç·ï¿½ï¿½ï¿½ÒªË¢ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	private static final int NUM_PER_PAGE = 10; // Ã¿Ò³ÏÔÊ¾µÄÊý¾ÝÌõÊý
+	private static final int NUM_PER_PAGE = 10; // Ã¿Ò³ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	private boolean mIsInRefresh = false; // ÊÇ·ñÕýÔÚÖ´ÐÐË¢ÐÂ²Ù×÷£¬Èç¹ûÕýÔÚÖ´ÐÐË¢ÐÂ²Ù×÷£¬ÔòÏÂÀ­²»»áË¢ÐÂÊý¾Ý
+	private boolean mIsInRefresh = false; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½Ë¢ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½Ë¢ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	private int mQueryYear = 0; // ²éÑ¯Äê·Ý
-	private int mQueryMonth = 0; // ²éÑ¯ÔÂ·Ý
+	private int mQueryYear = 0; // ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½
+	private int mQueryMonth = 0; // ï¿½ï¿½Ñ¯ï¿½Â·ï¿½
 	
-	private ConsumeQueryDialog mConsumeQueryDialog; //²éÑ¯¶Ô»°¿ò
-	private int mCurrentQueryItem = 9; //µ±Ç°²é¿´µÄ·ÖÀà
+	private ConsumeQueryDialog mConsumeQueryDialog; //ï¿½ï¿½Ñ¯ï¿½Ô»ï¿½ï¿½ï¿½
+	private int mCurrentQueryItem = 9; //ï¿½ï¿½Ç°ï¿½é¿´ï¿½Ä·ï¿½ï¿½ï¿½
 
 	/**
-	 * ÓëActivity½»»¥µÄ½Ó¿Ú
+	 * ï¿½ï¿½Activityï¿½ï¿½ï¿½ï¿½ï¿½Ä½Ó¿ï¿½
 	 * 
 	 * @author huangjinfu
 	 * 
@@ -105,13 +105,13 @@ public class ConsumeFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		// ¼ÓÔØ²¼¾ÖÎÄ¼þ
+		// ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		View view = inflater.inflate(R.layout.fragment_consume, null);
 		mEmptyView = inflater.inflate(R.layout.view_consume_list_no_data, null);
-		// ÊµÀý»¯¿Ø¼þ
+		// Êµï¿½ï¿½Ø¼ï¿½
 		initView(view);
 
-		// ÊµÀý»¯ÊÊÅäÆ÷£¬°ó¶¨ÊÊÅäÆ÷
+		// Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		mConsumeRecordAdapter = new ConsumeRecordAdapter(this.getActivity(),
 				mRecords);
 		mRecordListView.setAdapter(mConsumeRecordAdapter);
@@ -120,7 +120,7 @@ public class ConsumeFragment extends Fragment implements
 		mQueryMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
 
 		if (mNeedRefreshFlag) {
-			// Òì²½¼ÓÔØÊý¾Ý
+			// ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Integer[] params = new Integer[5];
 			params[0] = mQueryYear;
 			params[1] = mQueryMonth;
@@ -146,9 +146,9 @@ public class ConsumeFragment extends Fragment implements
 
 		}
 
-		// ¼àÌýµã»÷ÊÂ¼þ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 		mRecordListView.setOnItemClickListener(mItemClickListener);
-		// ¼àÌýÉÏÀ­ÏÂÀ­ÊÂ¼þ£¬Ë¢ÐÂÊý¾Ý
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½
 		mRecordListView.setOnRefreshListener(mOnRefreshListener);
 
 		this.getActivity().registerForContextMenu(mRecordListView);
@@ -160,46 +160,6 @@ public class ConsumeFragment extends Fragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_query:
-//			Calendar calendar = Calendar.getInstance();
-//			new DatePickerDialog(this, new OnDateSetListener() {
-//				@Override
-//				public void onDateSet(DatePicker view, int year, int monthOfYear,
-//						int dayOfMonth) {
-//					mConsumeFragment.refreshData(year, monthOfYear);
-//				}
-//			}, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-//			View QueryDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_query_consume, null);
-//			Spinner yearSpinner = (Spinner) QueryDialogView.findViewById(R.id.spn_query_dialog_year);
-//			Spinner monthSpinner = (Spinner) QueryDialogView.findViewById(R.id.spn_query_dialog_month);
-//			ArrayList<String> yearData = new ArrayList<String>();
-//			yearData.add("2015");
-//			yearData.add("2014");
-//			yearData.add("2013");
-//			ArrayList<String> monthData = new ArrayList<String>();
-//			monthData.add("12");
-//			monthData.add("11");
-//			monthData.add("10");
-//			yearSpinner.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_spinner, yearData));
-//			monthSpinner.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_spinner, monthData));
-//			new AlertDialog.Builder(getActivity()).setView(QueryDialogView)
-//			.setIcon(android.R.drawable.ic_dialog_info).setTitle("²éÑ¯")
-//			.setNegativeButton("È¡ Ïû", new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			})
-//			.setPositiveButton("²é Ñ¯", new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			})
-//			.create().show();
 			mConsumeQueryDialog = new ConsumeQueryDialog(getActivity());
 			mConsumeQueryDialog.setOnQueryListener(this);
 			mConsumeQueryDialog.show();
@@ -230,7 +190,7 @@ public class ConsumeFragment extends Fragment implements
 	}
 
 	/**
-	 * ³õÊ¼»¯²¼¾ÖÎÄ¼þÖÐµÄ¸÷¿Ø¼þ
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ÐµÄ¸ï¿½ï¿½Ø¼ï¿½
 	 * 
 	 * @param view
 	 */
@@ -242,7 +202,7 @@ public class ConsumeFragment extends Fragment implements
 	}
 
 	/**
-	 * ListView Item µ¥»÷ÊÂ¼þ
+	 * ListView Item ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	 */
 	OnItemClickListener mItemClickListener = new OnItemClickListener() {
 		@Override
@@ -253,7 +213,7 @@ public class ConsumeFragment extends Fragment implements
 	};
 
 	/**
-	 * ListViewÉÏÀ­ÏÂÀ­ÊÂ¼þ
+	 * ListViewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	 */
 	OnRefreshListener2<ListView> mOnRefreshListener = new OnRefreshListener2<ListView>() {
 		@Override
@@ -288,7 +248,7 @@ public class ConsumeFragment extends Fragment implements
 	};
 
 	/**
-	 * ÉèÖÃÊÇ·ñÐèÒªË¢ÐÂÊý¾Ý£¬ÐèÒªË¢ÐÂÊý¾Ý£¬Ôò´ÓµÚÒ»Ò³¿ªÊ¼²éÑ¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Óµï¿½Ò»Ò³ï¿½ï¿½Ê¼ï¿½ï¿½Ñ¯
 	 * 
 	 * @param flag
 	 */
@@ -300,7 +260,7 @@ public class ConsumeFragment extends Fragment implements
 	}
 
 	/**
-	 * Ë¢ÐÂÊý¾Ý
+	 * Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param year
 	 * @param month
@@ -335,22 +295,22 @@ public class ConsumeFragment extends Fragment implements
 	public void onRecordLoadCompleted(ArrayList<ConsumeRecord> result) {
 		LoadDialog.close();
 		
-		//Ã»ÓÐÊý¾Ý
+		//Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (result.size() == 0) {
-			Toast.makeText(getActivity(), "Ã»ÓÐ¸ü¶àÊý¾Ý", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Ã»ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 		} else {
-			// ¸üÐÂÏÂ´Î¼ÓÔØÒ³Âë
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Â´Î¼ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 			mCurrentPage++;
 		}
 		
-		// Ìí¼Ó²éÑ¯½á¹ûµ½Êý¾Ý¼¯ÖÐ£¬Í¨ÖªListView¸üÐÂÊý¾Ý
+		// ï¿½ï¿½Ó²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½ï¿½Ð£ï¿½Í¨ÖªListViewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		mRecords.addAll(result);
 		mConsumeRecordAdapter.notifyDataSetChanged();
-		// PullToRefreshListViewË¢ÐÂ½áÊø
+		// PullToRefreshListViewË¢ï¿½Â½ï¿½ï¿½ï¿½
 		mRecordListView.onRefreshComplete();
-		// ÊÇ·ñÕýÔÚË¢ÐÂÊý¾Ý±êÖ¾
+		// ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½Ý±ï¿½Ö¾
 		mIsInRefresh = false;
-		// ÊÇ·ñÐèÒªË¢ÐÂÊý¾Ý±êÖ¾
+		// ï¿½Ç·ï¿½ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ý±ï¿½Ö¾
 		if (mNeedRefreshFlag) {
 			mNeedRefreshFlag = false;
 		}
@@ -358,11 +318,11 @@ public class ConsumeFragment extends Fragment implements
 	}
 
 	/**
-	 * Ïû·Ñ²éÑ¯¶Ô»°¿òÖÐ£¬µã»÷²éÑ¯°´Å¥Ê±µ÷ÓÃ
+	 * ï¿½ï¿½Ñ²ï¿½Ñ¯ï¿½Ô»ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Å¥Ê±ï¿½ï¿½ï¿½ï¿½
 	 */
 	@Override
 	public void onQuery(int year, int month, int item) {
-//		Toast.makeText(getActivity(), "Äê·Ý£º" + year + "  ÔÂ·Ý:" + month + "  ·ÖÀà£º" + item, 1).show();
+//		Toast.makeText(getActivity(), "ï¿½ï¿½Ý£ï¿½" + year + "  ï¿½Â·ï¿½:" + month + "  ï¿½ï¿½ï¿½à£º" + item, 1).show();
 		refreshData(year, month, item);
 		
 	}

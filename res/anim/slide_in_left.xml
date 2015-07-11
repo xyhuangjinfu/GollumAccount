@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <translate
-        android:duration="20000"
-        android:fromXDelta="-100%p"
-        android:toXDelta="0" />
-
-    <alpha
-        android:duration="20000"
-        android:fromAlpha="0.0"
-        android:toAlpha="1.0" />
-
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:zAdjustment="bottom">
+    <translate android:fromXDelta="-20%p" android:toXDelta="0"
+            android:duration="@integer/animate_duration"/>
 </set>

@@ -1,44 +1,48 @@
 package cn.hjf.gollumaccount.activity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 
 import cn.hjf.gollumaccount.FragmentIdConsts;
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
+import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
+import cn.hjf.gollumaccount.dialog.ConsumeQueryDialog;
+import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.ConsumeFragment;
 import cn.hjf.gollumaccount.fragment.NavigationDrawerFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class MainActivity extends ActionBarActivity implements
+public class MainActivity extends BaseActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
-		ConsumeFragment.OnConsumeFragmentCallback {
+		ConsumeFragment.OnConsumeFragmentCallback,
+		LoadConsumeRecordTask.OnRecordLoadCallback,
+        ConsumeQueryDialog.OnQueryListener{
 
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
@@ -54,23 +58,30 @@ public class MainActivity extends ActionBarActivity implements
 
 	private int mCurrentFragment; // ��ǰ����ֵ�Fragment
 	private ConsumeFragment mConsumeFragment; //��Ѽ�¼Fragment
-	private StatisticSelectActivity mAnalyseFragment; //���ͳ��Fragment
-	private AboutActivity mAboutFragment; //������ϢFragment
-	private ConsumeDetailActivity mRecordDetailViewFragment; //�����ϸ��Ϣ�鿴Fragment
-	private TypeStatisticActivity mItemCompareFragment; //�����Ͳ鿴ͼ��
-	private MonthStatisticActivity mMonthCompareFragment; //���·ݲ鿴ͼ��
 	
 	private FragmentManager mFragmentManager; //Fragment������������Fragment������Ƴ�ȹ���
 	
 	private ConsumeItemService mConsumeItemService; //ConsumeItemҵ���߼�����
 	
+	
+	   private PullToRefreshListView mRecordListView; // ��Ѽ�¼��ʾ��ListView
+	    private ListView mActualRecordListView; // ʵ�ʵ���Ѽ�¼��ʾ��ListView
+	    private View mEmptyView; // ListView��û�����ʱ��ʾ��View
+	    private boolean mIsInRefresh = false; // �Ƿ�����ִ��ˢ�²������������ִ��ˢ�²���������������ˢ�����
+	    private int mQueryYear = 0; // ��ѯ���
+	    private int mQueryMonth = 0; // ��ѯ�·�
+	    
+	    private ConsumeQueryDialog mConsumeQueryDialog; //��ѯ�Ի���
+	    private int mCurrentQueryItem = 9; //��ǰ�鿴�ķ���
+	    private ArrayList<ConsumeRecord> mRecords; // �����ʾ��Ѽ�¼�����
+	    private boolean mNeedRefreshFlag = true; // �Ƿ���Ҫˢ��ҳ�����
+	    private ConsumeRecordAdapter mConsumeRecordAdapter; // ListView��������
+	    private int mCurrentPage = 1; // ��ǰ�����ʾ���ڼ�ҳ��Ĭ����ʾ��һҳ
+	    private LoadConsumeRecordTask mLoadConsumeRecordTask; // ������Ѽ�¼��ݵ�AsyncTask
+	    private static final int NUM_PER_PAGE = 10; // ÿҳ��ʾ���������
+	
 	public MainActivity() {
 		mConsumeFragment = new ConsumeFragment();
-		mAnalyseFragment = new StatisticSelectActivity();
-		mAboutFragment = new AboutActivity();
-		mItemCompareFragment = new TypeStatisticActivity();
-		mMonthCompareFragment = new MonthStatisticActivity();
-		
 	}
 
 	@Override
@@ -98,6 +109,10 @@ public class MainActivity extends ActionBarActivity implements
 		//��ʼ��ConsumeItem��ֵ
 		mConsumeItemService.initConsumeItem();
 		
+		initView();
+		initValue();
+		initEvent();
+		
 			
 	}
 	
@@ -116,22 +131,14 @@ public class MainActivity extends ActionBarActivity implements
 		mFragmentManager = getSupportFragmentManager();
 		switch (position) {
 		case 0:
-			clearBackStack();
-			
-			mFragmentManager
-			.beginTransaction()
-			.replace(R.id.container,
-					mConsumeFragment).commit();
 			break;
 		case 1:
-			clearBackStack();
 			
 			Intent intentStatisticSelect = new Intent(this, StatisticSelectActivity.class);
 			this.startActivity(intentStatisticSelect);
 			
 			break;
 		case 2:
-			clearBackStack();
 			
             Intent intentAbout = new Intent(this, AboutActivity.class);
             this.startActivity(intentAbout);
@@ -143,34 +150,6 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		
 	}
-
-//	/**
-//	 * Fragment��Attach��Activity��ʱ�򱻵���
-//	 * @param number ��Attach��Fragment ID
-//	 */
-//	public void onSectionAttached(int number) {
-//		mCurrentSection = number;
-//		switch (number) {
-//		case 1:
-//			mTitle = getString(R.string.title_consume);
-//			break;
-//		case 2:
-//			mTitle = getString(R.string.title_item_manager);
-//			break;
-//		case 3:
-//			mTitle = getString(R.string.title_analyse);
-//			break;
-//		case 4:
-//			mTitle = getString(R.string.title_about);
-//			break;
-//		case 5:
-//			mTitle = getString(R.string.title_add_record);
-//			break;
-//		case 6:
-//			mTitle = getString(R.string.title_view_record);
-//			break;
-//		}
-//	}
 	
 	/**
 	 * ����Ϊָ����Fragmentˢ�� Menu
@@ -214,11 +193,11 @@ public class MainActivity extends ActionBarActivity implements
 	 * ���� ActionBar״̬
 	 */
 	public void restoreActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_button_press));
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mTitle);
+//		ActionBar actionBar = getSupportActionBar();
+//		actionBar.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_button_press));
+//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		actionBar.setTitle(mTitle);
 	}
 
 	@Override
@@ -362,48 +341,6 @@ public class MainActivity extends ActionBarActivity implements
 		
 	}
 	
-	/**
-	 * ��ջ���ջ�е�Fragment�����л����뵼������ʱ����ã������´δ򿪳���
-	 */
-	private void clearBackStack() {
-//		// �����Ѽ�¼��Fragment
-//		if (mAddRecordFragment != null) {
-//			mFragmentManager.beginTransaction().remove(mAddRecordFragment)
-//					.commit();
-//
-//			int backStackCount = mFragmentManager.getBackStackEntryCount();
-//			for (int i = 0; i < backStackCount; i++) {
-//				mFragmentManager.popBackStack();
-//			}
-//			mAddRecordFragment = null;
-//		}
-		// �鿴��Ѽ�¼��Fragment
-//		if (mRecordDetailViewFragment != null) {
-//			mFragmentManager.beginTransaction()
-//					.remove(mRecordDetailViewFragment).commit();
-//			int backStackCount1 = mFragmentManager.getBackStackEntryCount();
-//			for (int i = 0; i < backStackCount1; i++) {
-//				mFragmentManager.popBackStack();
-//			}
-//			mRecordDetailViewFragment = null;
-//		}
-		
-		// ������ͳ�Ƶ�Fragment
-//		mFragmentManager.beginTransaction().remove(mItemCompareFragment)
-//				.commit();
-		int backStackCount2 = mFragmentManager.getBackStackEntryCount();
-		for (int i = 0; i < backStackCount2; i++) {
-			mFragmentManager.popBackStack();
-		}
-		// ���·�ͳ�Ƶ�Fragment
-//		mFragmentManager.beginTransaction().remove(mMonthCompareFragment)
-//				.commit();
-		int backStackCount3 = mFragmentManager.getBackStackEntryCount();
-		for (int i = 0; i < backStackCount3; i++) {
-			mFragmentManager.popBackStack();
-		}
-
-	}
 	
 	/**
 	 * --------------------------------------------��Fragment���¼��ص�����-----------------------------------------------------
@@ -427,10 +364,179 @@ public class MainActivity extends ActionBarActivity implements
         
     }
 
+    @Override
+    protected void initView() {
+        mRecordListView = (PullToRefreshListView) findViewById(R.id.ptflv_consume_list);
+        mActualRecordListView = mRecordListView.getRefreshableView();
+        mActualRecordListView.setEmptyView(mEmptyView);
+    }
+
+    @Override
+    protected void initValue() {
+        mRecords = new ArrayList<ConsumeRecord>();
+        mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
+                mRecords);
+        mRecordListView.setAdapter(mConsumeRecordAdapter);
+
+        mQueryYear = Calendar.getInstance().get(Calendar.YEAR);
+        mQueryMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+        if (mNeedRefreshFlag) {
+            // �첽�������
+            Integer[] params = new Integer[5];
+            params[0] = mQueryYear;
+            params[1] = mQueryMonth;
+            params[2] = mCurrentPage;
+            params[3] = NUM_PER_PAGE;
+            params[4] = mCurrentQueryItem;
+            Log.i("hjf", "ConsumeFragment - onCreateView - params[0]:"
+                    + params[0]);
+            Log.i("hjf", "ConsumeFragment - onCreateView - params[1]:"
+                    + params[1]);
+            Log.i("hjf", "ConsumeFragment - onCreateView - params[2]:"
+                    + params[2]);
+            Log.i("hjf", "ConsumeFragment - onCreateView - params[3]:"
+                    + params[3]);
+            Log.i("hjf", "ConsumeFragment - onCreateView - params[4]:"
+                    + params[4]);
+            if (!mIsInRefresh) {
+                mIsInRefresh = true;
+                LoadDialog.show(this);
+                new LoadConsumeRecordTask(this, this)
+                        .execute(params);
+            }
+
+        }
+
+        // �������¼�
+        mRecordListView.setOnItemClickListener(mItemClickListener);
+        // �������������¼���ˢ�����
+        mRecordListView.setOnRefreshListener(mOnRefreshListener);
+
+        this.registerForContextMenu(mRecordListView);
+    }
+
+    @Override
+    protected void initEvent() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onQuery(int year, int month, int item) {
+        refreshData(year, month, item);
+    }
+
+    @Override
+    public void onRecordLoadCompleted(ArrayList<ConsumeRecord> result) {
+LoadDialog.close();
+        
+        //û�����
+        if (result.size() == 0) {
+            Toast.makeText(this, "û�и�����", Toast.LENGTH_SHORT).show();
+        } else {
+            // �����´μ���ҳ��
+            mCurrentPage++;
+        }
+        
+        // ��Ӳ�ѯ�����ݼ��У�֪ͨListView�������
+        mRecords.addAll(result);
+        mConsumeRecordAdapter.notifyDataSetChanged();
+        // PullToRefreshListViewˢ�½���
+        mRecordListView.onRefreshComplete();
+        // �Ƿ�����ˢ����ݱ�־
+        mIsInRefresh = false;
+        // �Ƿ���Ҫˢ����ݱ�־
+        if (mNeedRefreshFlag) {
+            mNeedRefreshFlag = false;
+        }
+
+    }
+    
+    
+    /**
+     * ˢ�����
+     * 
+     * @param year
+     * @param month
+     */
+    public void refreshData(int year, int month, int item) {
+        mCurrentQueryItem = item;
+        mCurrentPage = 1;
+        mQueryYear = year;
+        mQueryMonth = month + 1;
+        mRecords.clear();
+        mConsumeRecordAdapter.notifyDataSetChanged();
+        Integer[] params = new Integer[5];
+        params[0] = mQueryYear;
+        params[1] = mQueryMonth;
+        params[2] = mCurrentPage;
+        params[3] = NUM_PER_PAGE;
+        params[4] = mCurrentQueryItem;
+        Log.i("hjf", "ConsumeFragment - refreshData - params[0]:" + params[0]);
+        Log.i("hjf", "ConsumeFragment - refreshData - params[1]:" + params[1]);
+        Log.i("hjf", "ConsumeFragment - refreshData - params[2]:" + params[2]);
+        Log.i("hjf", "ConsumeFragment - refreshData - params[3]:" + params[3]);
+        Log.i("hjf", "ConsumeFragment - refreshData - params[4]:" + params[4]);
+        if (!mIsInRefresh) {
+            mIsInRefresh = true;
+            LoadDialog.show(this);
+            new LoadConsumeRecordTask(MainActivity.this,
+                    MainActivity.this).execute(params);
+        }
+    }
 
 
 
 
+    /**
+     * ListView Item �����¼�
+     */
+    OnItemClickListener mItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
+            Intent intent = new Intent(MainActivity.this, ConsumeDetailActivity.class);
+            intent.putExtra(ConsumeDetailActivity.RECORD, mRecords.get(position - 1));
+            MainActivity.this.startActivity(intent);
+            
+        }
+    };
+
+    /**
+     * ListView���������¼�
+     */
+    OnRefreshListener2<ListView> mOnRefreshListener = new OnRefreshListener2<ListView>() {
+        @Override
+        public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+        }
+
+        @Override
+        public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+            Integer[] params = new Integer[5];
+            params[0] = mQueryYear;
+            params[1] = mQueryMonth;
+            params[2] = mCurrentPage;
+            params[3] = NUM_PER_PAGE;
+            params[4] = mCurrentQueryItem;
+            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[0]:"
+                    + params[0]);
+            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[1]:"
+                    + params[1]);
+            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[2]:"
+                    + params[2]);
+            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[3]:"
+                    + params[3]);
+            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[4]:"
+                    + params[4]);
+            if (!mIsInRefresh) {
+                mIsInRefresh = true;
+                new LoadConsumeRecordTask(MainActivity.this,
+                        MainActivity.this).execute(params);
+            }
+
+        }
+    };
 
 
 
