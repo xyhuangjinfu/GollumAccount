@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 滚动的信息输入区 -->
+
+    <ScrollView
+        android:id="@+id/sv_record_info_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llyt_control"
+        android:layout_marginBottom="5dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <!-- 名称 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="名 称："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_record_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:hint="消费记录名称"
+                    android:maxLength="20"
+                    android:padding="10dp"
+                    android:textSize="16sp" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <!-- 金额 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llyt_record_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="金 额："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_record_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:hint="消费金额（单位：元）"
+                    android:inputType="numberDecimal"
+                    android:maxLength="7"
+                    android:padding="10dp"
+                    android:textSize="16sp" >
+                </EditText>
+            </LinearLayout>
+
+            <!-- 类别 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llyt_record_price"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="类 别："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/spn_record_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:padding="0dp" />
+            </LinearLayout>
+
+            <!-- 日期 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llyt_record_item"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="日 期："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/et_record_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:padding="10dp"
+                    android:text="选择日期"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- 时间 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llyt_record_date"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="时 间："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/et_record_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:padding="10dp"
+                    android:text="选择时间"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- 备注 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llyt_record_time"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_record_remarks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_textview_left"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="备 注："
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_record_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_layout_right"
+                    android:hint="备注信息(50个字以内)"
+                    android:maxLength="50"
+                    android:padding="10dp"
+                    android:textSize="16sp" >
+                </EditText>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <!-- 控制 -->
+
+    <LinearLayout
+        android:id="@id/llyt_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
+
+        <Button
+            android:id="@+id/btn_record_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:padding="10dp"
+            android:text="取 消"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_record_create"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:padding="10dp"
+            android:text="创 建"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

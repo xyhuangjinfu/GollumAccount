@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 年份 -->
+
+    <LinearLayout
+        android:id="@+id/llyt_pie_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" >
+
+        <TextView
+            android:id="@+id/tv_pie_year"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_textview_left"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="年 份："
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spn_pie_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_layout_right"
+            android:padding="0dp" />
+    </LinearLayout>
+
+    <!-- 月份 -->
+
+    <LinearLayout
+        android:id="@+id/llyt_pie_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llyt_pie_year"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" >
+
+        <TextView
+            android:id="@+id/tv_pie_month"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_textview_left"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="月 份："
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spn_pie_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_layout_right"
+            android:padding="0dp" />
+    </LinearLayout>
+
+    <!-- 饼图 -->
+
+    <LinearLayout
+        android:id="@+id/llyt_pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/llyt_item_compare_return"
+        android:layout_below="@id/llyt_pie_month"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_layout" >
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_by_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- 返回 -->
+
+    <LinearLayout
+        android:id="@id/llyt_item_compare_return"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_item_compare_return"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button"
+            android:text="返 回"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

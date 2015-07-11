@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+        <!-- 标题 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_dialog_info" 
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="消费查询"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="#0099CC"
+            android:paddingLeft="5dp" />
+
+    </LinearLayout>
+
+    <!-- 年份 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/bg_textview_left"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:text="年 份：" />
+
+        <Spinner
+            android:id="@+id/spn_query_dialog_year"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_layout_right"
+             />
+    </LinearLayout>
+    
+    <!-- 月份 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" 
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/bg_textview_left"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:text="月 份：" 
+            />
+
+        <Spinner
+            android:id="@+id/spn_query_dialog_month"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_layout_right" />
+    </LinearLayout>
+    
+    <!-- 分类 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/bg_textview_left"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:text="分 类：" 
+            />
+
+        <Spinner
+            android:id="@+id/spn_query_dialog_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_layout_right" />
+    </LinearLayout>
+    
+    <!-- 控制 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" >
+
+        <Button
+            android:id="@+id/btn_query_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="取 消" />
+
+        <Button
+            android:id="@+id/btn_query_dialog_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:text="查 询" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,12 +2,28 @@
 <resources>
 
     <string name="app_name">咕噜账本</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    
+    <string name="title_consume">消费记录</string>
+    <string name="title_item_manager">账目管理</string>
+    <string name="title_analyse">消费统计</string>
+    <string name="title_about">关于信息</string>
+    <string name="title_add_record">新建消费记录</string>
+    <string name="title_view_record">消费详细信息</string>
+    <string name="title_analyse_item">按类型查看</string>
+    <string name="title_analyse_month">按月份查看</string>
+    <string name="title_modify_record">修改消费记录</string>
+    
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+    <string name="action_query">查询</string>
+    <string name="action_modify">修改</string>
+    <string name="action_item_add">添加账目</string>
+    <string name="action_consume_add">新建</string>
+    <string name="item_empty">没有账目</string>
+    <string name="consume_empty">您本月没有消费记录\n点击“新建”按钮来添加消费记录</string>
+    <string name="analyse_empty">没有统计</string>
+    <string name="info_about">关于信息</string>
 
 </resources>

@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cn.hjf.gollumaccount.MainActivity" >
+
+    <item
+        android:id="@+id/action_consume_add"
+        android:title="@string/action_consume_add"
+        app:showAsAction="withText|ifRoom"/>
+    <item
+        android:id="@+id/action_query"
+        android:orderInCategory="100"
+        android:title="@string/action_query"
+        app:showAsAction="withText|ifRoom"/>
+
+</menu>
