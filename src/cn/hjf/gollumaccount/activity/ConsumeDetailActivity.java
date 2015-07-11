@@ -33,7 +33,7 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class ConsumeDetailActivity extends FragmentActivity {
+public class ConsumeDetailActivity extends BaseActivity {
 
     public static final String RECORD = "record";
 
@@ -82,7 +82,8 @@ public class ConsumeDetailActivity extends FragmentActivity {
      * 
      * @param view
      */
-    private void initView() {
+    @Override
+    protected void initView() {
         mConsumeNameEditText = (EditText) findViewById(R.id.et_record_name_detail);
         mConsumePriceEditText = (EditText) findViewById(R.id.et_record_price_detail);
         mConsumeTypeSpinner = (Spinner) findViewById(R.id.spn_record_item_detail);
@@ -97,7 +98,8 @@ public class ConsumeDetailActivity extends FragmentActivity {
     /**
      * 初始化控件的值
      */
-    private void initValue() {
+    @Override
+    protected void initValue() {
         mItemNames = mConsumeItemService.getAllItemName();
         mConsumeNameEditText.setText(this.mConsumeRecord.getRecordName());
         mConsumePriceEditText.setText(String.valueOf(this.mConsumeRecord
@@ -126,7 +128,8 @@ public class ConsumeDetailActivity extends FragmentActivity {
     /**
      * 初始化各控件的事件
      */
-    private void initEvent() {
+    @Override
+    protected void initEvent() {
         mReturnButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -31,7 +31,7 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class AddConsumeActivity extends FragmentActivity {
+public class AddConsumeActivity extends BaseActivity {
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
@@ -66,7 +66,8 @@ public class AddConsumeActivity extends FragmentActivity {
     /**
      * 初始化各控件
      */
-    private void initView() {
+    @Override
+    protected void initView() {
         mConsumeNameEditText = (EditText) findViewById(R.id.et_record_name);
         mConsumePriceEditText = (EditText) findViewById(R.id.et_record_price);
         mConsumeTypeSpinner = (Spinner) findViewById(R.id.spn_record_item);
@@ -80,7 +81,8 @@ public class AddConsumeActivity extends FragmentActivity {
     /**
      * 初始化控件的值
      */
-    public void initValue() {
+    @Override
+    protected void initValue() {
         mTypes = mConsumeItemService.getAllItemName();
         mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner,
                 mTypes);
@@ -90,7 +92,8 @@ public class AddConsumeActivity extends FragmentActivity {
     /**
      * 初始化各控件的事件
      */
-    private void initEvent() {
+    @Override
+    protected void initEvent() {
         mCancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
