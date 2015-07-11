@@ -6,32 +6,32 @@ import android.app.Application;
 import android.os.Environment;
 
 /**
- * 自定义Application类
+ * 锟皆讹拷锟斤拷Application锟斤拷
  * 
  * @author huangjinfu
  * 
  */
 public class MyApplication extends Application {
 	
-	private String mBuglyAppID = "900002004"; //Bugly的AppID
-	private String mBuglyAppKey = "WRHDP8yQOdXUINId"; //Bugly的AppKey
+	private String mBuglyAppID = "900002004"; //Bugly锟斤拷AppID
+	private String mBuglyAppKey = "WRHDP8yQOdXUINId"; //Bugly锟斤拷AppKey
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		
-		//开始追踪Bug，放在第一步执行
-		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
+		//锟斤拷始追锟斤拷Bug锟斤拷锟斤拷锟节碉拷一锟斤拷执锟斤拷
+//		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
 		
 		
-		// 初始化项目中的所有路径
+		// 锟斤拷始锟斤拷锟斤拷目锟叫碉拷锟斤拷锟斤拷路锟斤拷
 		initPath();
 		
 
 	}
 
 	/**
-	 * 初始化项目中所有的路径
+	 * 锟斤拷始锟斤拷锟斤拷目锟斤拷锟斤拷锟叫碉拷路锟斤拷
 	 */
 	private void initPath() {
 		if (Environment.getExternalStorageState().equals(

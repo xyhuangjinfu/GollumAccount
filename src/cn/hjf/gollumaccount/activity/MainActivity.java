@@ -7,7 +7,6 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.fragment.AboutFragment;
 import cn.hjf.gollumaccount.fragment.AddItemFragment;
-import cn.hjf.gollumaccount.fragment.AddRecordFragment;
 import cn.hjf.gollumaccount.fragment.AnalyseFragment;
 import cn.hjf.gollumaccount.fragment.ConsumeFragment;
 import cn.hjf.gollumaccount.fragment.ItemCompareFragment;
@@ -23,6 +22,7 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -46,7 +46,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
-		AddRecordFragment.OnAddRecordCallback,
 		ConsumeFragment.OnConsumeFragmentCallback,
 		RecordDetailViewFragment.OnViewRecordCallback,
 		AnalyseFragment.OnAnalyseCallback,
@@ -58,29 +57,28 @@ public class MainActivity extends ActionBarActivity implements
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
 	 */
-	private NavigationDrawerFragment mNavigationDrawerFragment; //³éÌëFragment
+	private NavigationDrawerFragment mNavigationDrawerFragment; //ï¿½ï¿½ï¿½ï¿½Fragment
 
 	/**
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
 	 */
-	private CharSequence mTitle; //ActionBarµÄ±êÌâ
+	private CharSequence mTitle; //ActionBarï¿½Ä±ï¿½ï¿½ï¿½
 
-	private int mCurrentFragment; // µ±Ç°Ëù³ÊÏÖµÄFragment
-	private ItemManagerFragment mItemManagerFragment; //ÕËÄ¿¹ÜÀíFragment
-	private ConsumeFragment mConsumeFragment; //Ïû·Ñ¼ÇÂ¼Fragment
-	private AnalyseFragment mAnalyseFragment; //Ïû·ÑÍ³¼ÆFragment
-	private AboutFragment mAboutFragment; //¹ØÓÚÐÅÏ¢Fragment
-	private AddItemFragment mAddItemFragment; //Ìí¼ÓÕËÄ¿Fragment
-	private AddRecordFragment mAddRecordFragment; //Ìí¼ÓÏû·Ñ¼ÇÂ¼Fragment
-	private RecordDetailViewFragment mRecordDetailViewFragment; //Ïû·ÑÏêÏ¸ÐÅÏ¢²é¿´Fragment
-	private ItemCompareFragment mItemCompareFragment; //°´ÀàÐÍ²é¿´Í¼±í
-	private MonthCompareFragment mMonthCompareFragment; //°´ÔÂ·Ý²é¿´Í¼±í
-	private ModifyRecordFragment mModifyRecordFragment; //ÐÞ¸Ä¼ÇÂ¼½çÃæ
+	private int mCurrentFragment; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Öµï¿½Fragment
+	private ItemManagerFragment mItemManagerFragment; //ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Fragment
+	private ConsumeFragment mConsumeFragment; //ï¿½ï¿½Ñ¼ï¿½Â¼Fragment
+	private AnalyseFragment mAnalyseFragment; //ï¿½ï¿½ï¿½Í³ï¿½ï¿½Fragment
+	private AboutFragment mAboutFragment; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Fragment
+	private AddItemFragment mAddItemFragment; //ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Fragment
+	private RecordDetailViewFragment mRecordDetailViewFragment; //ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½Ï¢ï¿½é¿´Fragment
+	private ItemCompareFragment mItemCompareFragment; //ï¿½ï¿½ï¿½ï¿½ï¿½Í²é¿´Í¼ï¿½ï¿½
+	private MonthCompareFragment mMonthCompareFragment; //ï¿½ï¿½ï¿½Â·Ý²é¿´Í¼ï¿½ï¿½
+	private ModifyRecordFragment mModifyRecordFragment; //ï¿½Þ¸Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
 	
-	private FragmentManager mFragmentManager; //Fragment¹ÜÀíÆ÷£¬¸ºÔðFragmentµÄÌí¼ÓÒÆ³ýµÈ¹¤×÷
+	private FragmentManager mFragmentManager; //Fragmentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Fragmentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½È¹ï¿½ï¿½ï¿½
 	
-	private ConsumeItemService mConsumeItemService; //ConsumeItemÒµÎñÂß¼­¶ÔÏó
+	private ConsumeItemService mConsumeItemService; //ConsumeItemÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	public MainActivity() {
 		mItemManagerFragment = new ItemManagerFragment();
@@ -100,23 +98,23 @@ public class MainActivity extends ActionBarActivity implements
 //		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
 		
-		//ÊµÀý»¯NavigationDrawer¶ÔÏó
+		//Êµï¿½ï¿½NavigationDrawerï¿½ï¿½ï¿½ï¿½
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
-		//»ñµÃActionBarµÄ±êÌâ
+		//ï¿½ï¿½ï¿½ActionBarï¿½Ä±ï¿½ï¿½ï¿½
 		mTitle = getTitle();
 
 		// Set up the drawer.
-		//ÉèÖÃ³éÌë
+		//ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 		
-		//±ê¼Çµ±Ç°ÏÔÊ¾µÄÊÇÄÄ¸öFragment£¬³õÊ¼ÎªÏû·Ñ¼ÇÂ¼ÏÔÊ¾ÁÐ±íFragment
+		//ï¿½ï¿½Çµï¿½Ç°ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Fragmentï¿½ï¿½ï¿½ï¿½Ê¼Îªï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ê¾ï¿½Ð±ï¿½Fragment
 		mCurrentFragment = FragmentIdConsts.FRAGMENT_CONSUME;
 		
-		//ÊµÀý»¯ConsumeItemÒµÎñÂß¼­¶ÔÏó
+		//Êµï¿½ï¿½ConsumeItemÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
 		mConsumeItemService = new ConsumeItemService(this);
-		//³õÊ¼»¯ConsumeItemµÄÖµ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ConsumeItemï¿½ï¿½Öµ
 		mConsumeItemService.initConsumeItem();
 		
 			
@@ -127,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements
 			ContextMenuInfo menuInfo) {
 		// TODO Auto-generated method stub
 		super.onCreateContextMenu(menu, v, menuInfo);
-//		menu.setHeaderTitle("²Ù×÷");
+//		menu.setHeaderTitle("ï¿½ï¿½ï¿½ï¿½");
 //		this.getMenuInflater().inflate(R.menu.context_menu_consume_list, menu);
 	}
 
@@ -168,8 +166,8 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 //	/**
-//	 * Fragment±»Attachµ½ActivityµÄÊ±ºò±»µ÷ÓÃ
-//	 * @param number ±»AttachµÄFragment ID
+//	 * Fragmentï¿½ï¿½Attachï¿½ï¿½Activityï¿½ï¿½Ê±ï¿½ò±»µï¿½ï¿½ï¿½
+//	 * @param number ï¿½ï¿½Attachï¿½ï¿½Fragment ID
 //	 */
 //	public void onSectionAttached(int number) {
 //		mCurrentSection = number;
@@ -196,7 +194,7 @@ public class MainActivity extends ActionBarActivity implements
 //	}
 	
 	/**
-	 * ÇëÇóÎªÖ¸¶¨µÄFragmentË¢ÐÂ Menu
+	 * ï¿½ï¿½ï¿½ï¿½ÎªÖ¸ï¿½ï¿½ï¿½ï¿½FragmentË¢ï¿½ï¿½ Menu
 	 * @param fragmentId
 	 */
 	public void refreshMenuForFragment(int fragmentId) {
@@ -234,7 +232,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * ¸üÐÂ ActionBar×´Ì¬
+	 * ï¿½ï¿½ï¿½ï¿½ ActionBar×´Ì¬
 	 */
 	public void restoreActionBar() {
 		ActionBar actionBar = getSupportActionBar();
@@ -336,14 +334,10 @@ public class MainActivity extends ActionBarActivity implements
 //			.replace(R.id.container,
 //					mAddItemFragment).commit();
 			View view = this.getLayoutInflater().inflate(R.layout.dialog_create_item, null);
-			new AlertDialog.Builder(this).setView(view).setNegativeButton("È¡Ïû", null).setPositiveButton("´´½¨", null).create().show();
+			new AlertDialog.Builder(this).setView(view).setNegativeButton("È¡ï¿½ï¿½", null).setPositiveButton("ï¿½ï¿½ï¿½ï¿½", null).create().show();
 			break;
 		case R.id.action_consume_add:
-			mAddRecordFragment = new AddRecordFragment();
-			mFragmentManager
-			.beginTransaction()
-			.replace(R.id.container,
-					mAddRecordFragment).addToBackStack(null).commit();
+			this.startActivity(new Intent(this, AddConsumeActivity.class));
 			break;
 //		case R.id.action_query:
 //			Calendar calendar = Calendar.getInstance();
@@ -369,12 +363,12 @@ public class MainActivity extends ActionBarActivity implements
 		super.onKeyDown(keyCode, event);
 		if ((mCurrentFragment == 1) || (mCurrentFragment == 2) || (mCurrentFragment == 3) || (mCurrentFragment == 4)) {
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
-				new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle("ÍË³ö")
-				.setMessage("È·¶¨ÍË³ö¹¾ààÕË±¾£¿").setNegativeButton("È¡Ïû", new OnClickListener() {
+				new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle("ï¿½Ë³ï¿½")
+				.setMessage("È·ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë±ï¿½ï¿½ï¿½").setNegativeButton("È¡ï¿½ï¿½", new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					}
-				}).setPositiveButton("È·¶¨", new OnClickListener() {
+				}).setPositiveButton("È·ï¿½ï¿½", new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						MainActivity.this.finish();
@@ -390,21 +384,21 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	/**
-	 * Çå¿Õ»ØÍËÕ»ÖÐµÄFragment£¬ÔÚÇÐ»»³éÌëµ¼º½À¸µÄÊ±ºòµ÷ÓÃ£¬ÒÔÃâÏÂ´Î´ò¿ª³ö´í
+	 * ï¿½ï¿½Õ»ï¿½ï¿½ï¿½Õ»ï¿½Ðµï¿½Fragmentï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ëµ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´Î´ò¿ª³ï¿½ï¿½ï¿½
 	 */
 	private void clearBackStack() {
-		// Ìí¼ÓÏû·Ñ¼ÇÂ¼µÄFragment
-		if (mAddRecordFragment != null) {
-			mFragmentManager.beginTransaction().remove(mAddRecordFragment)
-					.commit();
-
-			int backStackCount = mFragmentManager.getBackStackEntryCount();
-			for (int i = 0; i < backStackCount; i++) {
-				mFragmentManager.popBackStack();
-			}
-			mAddRecordFragment = null;
-		}
-		// ²é¿´Ïû·Ñ¼ÇÂ¼µÄFragment
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Fragment
+//		if (mAddRecordFragment != null) {
+//			mFragmentManager.beginTransaction().remove(mAddRecordFragment)
+//					.commit();
+//
+//			int backStackCount = mFragmentManager.getBackStackEntryCount();
+//			for (int i = 0; i < backStackCount; i++) {
+//				mFragmentManager.popBackStack();
+//			}
+//			mAddRecordFragment = null;
+//		}
+		// ï¿½é¿´ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Fragment
 		if (mRecordDetailViewFragment != null) {
 			mFragmentManager.beginTransaction()
 					.remove(mRecordDetailViewFragment).commit();
@@ -415,14 +409,14 @@ public class MainActivity extends ActionBarActivity implements
 			mRecordDetailViewFragment = null;
 		}
 		
-		// °´ÀàÐÍÍ³¼ÆµÄFragment
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½Æµï¿½Fragment
 		mFragmentManager.beginTransaction().remove(mItemCompareFragment)
 				.commit();
 		int backStackCount2 = mFragmentManager.getBackStackEntryCount();
 		for (int i = 0; i < backStackCount2; i++) {
 			mFragmentManager.popBackStack();
 		}
-		// °´ÔÂ·ÝÍ³¼ÆµÄFragment
+		// ï¿½ï¿½ï¿½Â·ï¿½Í³ï¿½Æµï¿½Fragment
 		mFragmentManager.beginTransaction().remove(mMonthCompareFragment)
 				.commit();
 		int backStackCount3 = mFragmentManager.getBackStackEntryCount();
@@ -433,46 +427,13 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	/**
-	 * --------------------------------------------¸÷FragmentµÄÊÂ¼þ»Øµ÷·½·¨-----------------------------------------------------
+	 * --------------------------------------------ï¿½ï¿½Fragmentï¿½ï¿½ï¿½Â¼ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½-----------------------------------------------------
 	 */
 
-	/**
-	 * ÐÂ½¨Ïû·Ñ¼ÇÂ¼È¡ÏûÊ±±»µ÷ÓÃ
-	 */
-	@Override
-	public void onRecordCanceled() {
-		mFragmentManager
-		.beginTransaction()
-		.remove(mAddRecordFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-		
-		mAddRecordFragment = null;
-	}
+
 
 	/**
-	 * ÐÂµÄÏû·Ñ¼ÇÂ¼±»´´½¨µÄÊ±ºò±»µ÷ÓÃ
-	 */
-	@Override
-	public void onRecordCreated(ConsumeRecord record) {
-		mConsumeFragment.setmNeedRefreshFlag(true);
-		mFragmentManager
-		.beginTransaction()
-		.remove(mAddRecordFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-		mAddRecordFragment = null;
-		
-	}
-
-	/**
-	 * Ïû·Ñ¼ÇÂ¼±»µã»÷µÄÊ±ºò±»µ÷ÓÃ
+	 * ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ò±»µï¿½ï¿½ï¿½
 	 */
 	@Override
 	public void onConsumeItemClick(ConsumeRecord record) {
@@ -485,7 +446,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Ïû·ÑÏêÏ¸ÐÅÏ¢½çÃæ·µ»ØÊ±±»µ÷ÓÃ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½æ·µï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	@Override
 	public void onViewRecordReturn() {
@@ -503,7 +464,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * µã»÷°´Ïû·ÑÀàÐÍ²é¿´Í¼±í
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í²é¿´Í¼ï¿½ï¿½
 	 */
 	@Override
 	public void onByItemClick() {
@@ -516,7 +477,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * µã»÷°´ÔÂ·Ý²é¿´Í¼±í
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·Ý²é¿´Í¼ï¿½ï¿½
 	 */
 	@Override
 	public void onByMonthClick() {
@@ -528,7 +489,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * °´ÔÂ·Ý²é¿´½çÃæ·µ»Ø
+	 * ï¿½ï¿½ï¿½Â·Ý²é¿´ï¿½ï¿½ï¿½æ·µï¿½ï¿½
 	 */
 	@Override
 	public void onMonthCompareReturn() {
@@ -544,7 +505,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * °´·ÖÀà²é¿´½çÃæ·µ»Ø
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½æ·µï¿½ï¿½
 	 */
 	@Override
 	public void onItemCompareReturn() {
@@ -559,7 +520,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * ÇëÇóÐÞ¸ÄÒ»¸öÏû·Ñ¼ÇÂ¼Êý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½
 	 */
 
 	@Override
@@ -598,7 +559,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * ÐÞ¸ÄÏû·Ñ¼ÇÂ¼£¬Ìá½»ºó±»µ÷ÓÃ
+	 * ï¿½Þ¸ï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½á½»ï¿½ó±»µï¿½ï¿½ï¿½
 	 */
 	@Override
 	public void onViewRecordModify() {
