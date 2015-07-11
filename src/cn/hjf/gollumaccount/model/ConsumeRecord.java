@@ -1,20 +1,22 @@
 package cn.hjf.gollumaccount.model;
 
+import java.io.Serializable;
+
 /**
- * Ïû·Ñ¼ÇÂ¼ÊµÌå
+ * ï¿½ï¿½Ñ¼ï¿½Â¼Êµï¿½ï¿½
  * 
  * @author huangjinfu
  * 
  */
-public class ConsumeRecord {
+public class ConsumeRecord implements Serializable {
 
-	private int id; // Ïû·Ñ¼ÇÂ¼Î¨Ò»±êÊ¶
-	private String recordName; // Ïû·Ñ¼ÇÂ¼Ãû³Æ
-	private float recordPrice; // Ïû·Ñ½ð¶î£¬µ¥Î»Ôª£¬ÈËÃñ±Ò
-	private int recordItem; // Ïû·ÑÏîÄ¿£¬·ÖÀà
-	private String recordRemarks; // Ïû·Ñ¼ÇÂ¼±¸×¢
-	private long recordTime; // Ïû·ÑÊ±¼ä
-	private long createTime; // ¼ÇÂ¼´´½¨Ê±¼ä
+	private int id; // ï¿½ï¿½Ñ¼ï¿½Â¼Î¨Ò»ï¿½ï¿½Ê¶
+	private String recordName; // ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½ï¿½
+	private float recordPrice; // ï¿½ï¿½Ñ½ï¿½î£¬ï¿½ï¿½Î»Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int recordItem; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private String recordRemarks; // ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½×¢
+	private long recordTime; // ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	private long createTime; // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 
 	public int getId() {
 		return id;

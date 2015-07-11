@@ -13,7 +13,6 @@ import cn.hjf.gollumaccount.fragment.ItemCompareFragment;
 import cn.hjf.gollumaccount.fragment.ItemManagerFragment;
 import cn.hjf.gollumaccount.fragment.MonthCompareFragment;
 import cn.hjf.gollumaccount.fragment.NavigationDrawerFragment;
-import cn.hjf.gollumaccount.fragment.RecordDetailViewFragment;
 import cn.hjf.gollumaccount.fragment.ModifyRecordFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import android.app.Activity;
@@ -47,7 +46,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks,
 		ConsumeFragment.OnConsumeFragmentCallback,
-		RecordDetailViewFragment.OnViewRecordCallback,
 		AnalyseFragment.OnAnalyseCallback,
 		ItemCompareFragment.OnItemCompareCallback,
 		MonthCompareFragment.OnMonthCompareCallback,
@@ -71,7 +69,7 @@ public class MainActivity extends ActionBarActivity implements
 	private AnalyseFragment mAnalyseFragment; //���ͳ��Fragment
 	private AboutFragment mAboutFragment; //������ϢFragment
 	private AddItemFragment mAddItemFragment; //�����ĿFragment
-	private RecordDetailViewFragment mRecordDetailViewFragment; //�����ϸ��Ϣ�鿴Fragment
+	private ConsumeDetailActivity mRecordDetailViewFragment; //�����ϸ��Ϣ�鿴Fragment
 	private ItemCompareFragment mItemCompareFragment; //�����Ͳ鿴ͼ��
 	private MonthCompareFragment mMonthCompareFragment; //���·ݲ鿴ͼ��
 	private ModifyRecordFragment mModifyRecordFragment; //�޸ļ�¼����
@@ -399,15 +397,15 @@ public class MainActivity extends ActionBarActivity implements
 //			mAddRecordFragment = null;
 //		}
 		// �鿴��Ѽ�¼��Fragment
-		if (mRecordDetailViewFragment != null) {
-			mFragmentManager.beginTransaction()
-					.remove(mRecordDetailViewFragment).commit();
-			int backStackCount1 = mFragmentManager.getBackStackEntryCount();
-			for (int i = 0; i < backStackCount1; i++) {
-				mFragmentManager.popBackStack();
-			}
-			mRecordDetailViewFragment = null;
-		}
+//		if (mRecordDetailViewFragment != null) {
+//			mFragmentManager.beginTransaction()
+//					.remove(mRecordDetailViewFragment).commit();
+//			int backStackCount1 = mFragmentManager.getBackStackEntryCount();
+//			for (int i = 0; i < backStackCount1; i++) {
+//				mFragmentManager.popBackStack();
+//			}
+//			mRecordDetailViewFragment = null;
+//		}
 		
 		// ������ͳ�Ƶ�Fragment
 		mFragmentManager.beginTransaction().remove(mItemCompareFragment)
@@ -437,31 +435,11 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	@Override
 	public void onConsumeItemClick(ConsumeRecord record) {
-		mRecordDetailViewFragment = new RecordDetailViewFragment(record);
-		mFragmentManager
-		.beginTransaction()
-		.replace(R.id.container,
-				mRecordDetailViewFragment).addToBackStack(null).commit();
-		
+	    Intent intent = new Intent(this, ConsumeDetailActivity.class);
+	    intent.putExtra(ConsumeDetailActivity.RECORD, record);
+	    this.startActivity(intent);
 	}
 
-	/**
-	 * �����ϸ��Ϣ���淵��ʱ������
-	 */
-	@Override
-	public void onViewRecordReturn() {
-		mFragmentManager
-		.beginTransaction()
-		.remove(mRecordDetailViewFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-		
-		mRecordDetailViewFragment = null;
-		
-	}
 
 	/**
 	 * �����������Ͳ鿴ͼ��
@@ -558,21 +536,5 @@ public class MainActivity extends ActionBarActivity implements
 		
 	}
 
-	/**
-	 * �޸���Ѽ�¼���ύ�󱻵���
-	 */
-	@Override
-	public void onViewRecordModify() {
-		mConsumeFragment.setmNeedRefreshFlag(true);
-		mFragmentManager
-		.beginTransaction()
-		.remove(mRecordDetailViewFragment).commit();
-		
-		int backStackCount = mFragmentManager.getBackStackEntryCount();
-		for(int i = 0; i < backStackCount; i++) {   
-			mFragmentManager.popBackStack();
-		}
-		mRecordDetailViewFragment = null;
-	}
 
 }
