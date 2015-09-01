@@ -32,7 +32,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="#f0f0f0"
                 android:layout_marginTop="5dp" >
 
@@ -67,7 +67,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_price"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/llyt_record_name"
                 android:background="#f0f0f0"
                 android:layout_marginTop="1dp" >
@@ -102,7 +102,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/llyt_record_price"
                 android:background="#f0f0f0"
                 android:layout_marginTop="1dp" >
@@ -132,7 +132,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/llyt_record_item"
                 android:background="#f0f0f0"
                 android:layout_marginTop="1dp" >
@@ -164,7 +164,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/llyt_record_date"
                 android:background="#f0f0f0"
                 android:layout_marginTop="1dp" >
@@ -196,7 +196,7 @@
             <LinearLayout
                 android:id="@+id/llyt_record_remarks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/llyt_record_time"
                 android:background="#f0f0f0"
                 android:layout_marginTop="1dp" >
