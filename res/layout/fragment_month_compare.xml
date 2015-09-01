@@ -2,6 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    
+        <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_month_statistic"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <!-- 年份 -->
 
@@ -9,6 +18,7 @@
         android:id="@+id/llyt_line_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_month_statistic"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp" >
@@ -99,27 +109,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp" />
-    </LinearLayout>
-
-    <!-- 返回 -->
-
-    <LinearLayout
-        android:id="@id/llyt_month_compare_return"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/btn_month_compare_return"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_button"
-            android:text="返 回"
-            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </RelativeLayout>

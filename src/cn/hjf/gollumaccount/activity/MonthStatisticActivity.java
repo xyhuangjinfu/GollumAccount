@@ -12,6 +12,8 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.MonthCompareTask;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.graphics.Color;
@@ -34,13 +36,13 @@ import android.widget.TextView;
  * 
  */
 public class MonthStatisticActivity extends BaseActivity implements
-        MonthCompareTask.OnMonthCompareSuccessCallback {
+        MonthCompareTask.OnMonthCompareSuccessCallback,
+        CommonHeaderFragment.ICallback {
 
     private Spinner mYearSpinner; // 选择年份
     private Spinner mItemSpinner; // 选择类型
     private LineChart mLineChart; // 线图
     private TextView mSumTextView; // 总金额
-    private Button mReturnButton; // 返回按钮
 
     private ConsumeItemService mConsumeItemService; // 分类实体的业务逻辑对象
 
@@ -51,16 +53,33 @@ public class MonthStatisticActivity extends BaseActivity implements
     private Typeface mTypeface; // 图标显示的样式
 
     private float mSumPrice = 0; // 各分类的总额
+    /**
+     * 顶部标题栏
+     */
+    private CommonHeaderFragment mTitleFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_month_compare);
         mConsumeItemService = new ConsumeItemService(this);
+        
+        initTitle();
         initView();
         initValue();
         initEvent();
 
+    }
+    
+    /**
+     * 初始化顶部导航栏
+     */
+    @Override
+    public void initTitle() {
+        mTitleFragment = (CommonHeaderFragment) mFragmentManager.findFragmentById(R.id.title_month_statistic);
+        mTitleFragment.setHeadBtnType(HEAD_TYPE.LEFT_BACK_TEXT,HEAD_TYPE.RIGHT_NULL);
+        mTitleFragment.setHeadText(R.string.title_back, R.string.title_analyse_month, null);
+        mTitleFragment.setCallback(this);
     }
 
     /**
@@ -72,7 +91,6 @@ public class MonthStatisticActivity extends BaseActivity implements
         mItemSpinner = (Spinner) findViewById(R.id.spn_line_item);
         mSumTextView = (TextView) findViewById(R.id.tv_sum);
         mLineChart = (LineChart) findViewById(R.id.lc_by_month);
-        mReturnButton = (Button) findViewById(R.id.btn_month_compare_return);
     }
 
     /**
@@ -133,13 +151,6 @@ public class MonthStatisticActivity extends BaseActivity implements
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        mReturnButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MonthStatisticActivity.this.finish();
             }
         });
     }
@@ -321,6 +332,15 @@ public class MonthStatisticActivity extends BaseActivity implements
             }
         }
         return result;
+    }
+
+    @Override
+    public void onLeftClick() {
+        finish();
+    }
+
+    @Override
+    public void onRightClick() {
     }
 
 }
