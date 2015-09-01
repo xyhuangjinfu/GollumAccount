@@ -2,28 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    
+        <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_statistic_select"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/btn_pie_by_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@id/title_statistic_select"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/bg_button"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:text="按类型查看" />
 
     <Button
         android:id="@+id/btn_line_by_month"
         android:layout_below="@id/btn_pie_by_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/bg_button"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:text="按月份查看" />
 
 </RelativeLayout>
