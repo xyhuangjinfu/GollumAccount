@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#dddddd" >
+
+    <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_view_record"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <!-- 滚动的信息展示区 -->
 
@@ -10,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llyt_control"
+        android:layout_below="@id/title_view_record"
         android:layout_marginBottom="5dp" >
 
         <RelativeLayout
@@ -22,20 +33,18 @@
                 android:id="@+id/llyt_record_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="5dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_name_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="名 称："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <EditText
@@ -43,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textSize="16sp" />
@@ -56,20 +65,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_name"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_price_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="金 额："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <EditText
@@ -77,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:inputType="numberDecimal"
                     android:maxLength="7"
                     android:padding="10dp"
@@ -91,20 +98,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_price"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_item_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="类 别："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <Spinner
@@ -112,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:padding="0dp" />
             </LinearLayout>
 
@@ -123,20 +128,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_item"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_date_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="日 期："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <TextView
@@ -144,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:padding="10dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -156,20 +159,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_date"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_time_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="时 间："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <TextView
@@ -177,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:padding="10dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -189,20 +190,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_time"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_create_time_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="创 建："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <TextView
@@ -210,7 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:padding="10dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -222,20 +221,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llyt_record_create_time"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" >
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
 
                 <TextView
                     android:id="@+id/tv_record_remarks_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_textview_left"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:text="备 注："
-                    android:textColor="@android:color/white"
+                    android:textColor="#323232"
                     android:textSize="16sp" />
 
                 <EditText
@@ -243,7 +240,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_layout_right"
+                    android:background="@null"
                     android:maxLength="50"
                     android:padding="10dp"
                     android:textSize="16sp" />
@@ -253,38 +250,18 @@
 
     <!-- 控制 -->
 
-    <LinearLayout
-        android:id="@id/llyt_control"
+    <Button
+        android:id="@+id/btn_record_operate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btn_record_return"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bg_button"
-            android:text="返 回"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/btn_record_operate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_button"
-            android:text="修 改"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
+        android:background="@drawable/bg_button"
+        android:padding="10dp"
+        android:text="修 改"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>

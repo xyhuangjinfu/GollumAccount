@@ -7,6 +7,8 @@ import java.util.Date;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.business.ConsumeRecordService;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.app.DatePickerDialog;
@@ -33,7 +35,7 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class ConsumeDetailActivity extends BaseActivity {
+public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
 
     public static final String RECORD = "record";
 
@@ -44,7 +46,6 @@ public class ConsumeDetailActivity extends BaseActivity {
     private TextView mConsumeTimeTextView; // 消费时间
     private TextView mConsumeCreateTimeTextView; // 消费记录创建时间
     private EditText mConsumeRemarksEditText; // 备注信息
-    private Button mReturnButton; // 返回按钮
     private Button mOperateButton; // 修改按钮
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     private TimePickerDialog mTimePickerDialog; // 消费时间选择对话框
@@ -55,8 +56,12 @@ public class ConsumeDetailActivity extends BaseActivity {
     private ArrayList<String> mItemNames; // 消费类型数据
     private ArrayAdapter<String> mArrayAdapter; // 消费类型控件的适配器
     private boolean mButtonFlag; // false-修改，true-提交
-    private boolean mDateModifyFlag = false; // 是否已经修改日期，true-已经修改־
-    private boolean mTimeModifyFlag = false; // 是否已经修改时间，true-已经时间־
+    private boolean mDateModifyFlag = false; // 是否已经修改日期，true-已经修改
+    private boolean mTimeModifyFlag = false; // 是否已经修改时间，true-已经时间
+    /**
+     * 顶部标题栏
+     */
+    private CommonHeaderFragment mTitleFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,10 +76,23 @@ public class ConsumeDetailActivity extends BaseActivity {
         }
         mConsumeRecordService = new ConsumeRecordService(this);
         mConsumeItemService = new ConsumeItemService(this);
+        
+        initTitle();
         initView();
         initValue();
         initEvent();
         setViewUsable(false);
+    }
+    
+    /**
+     * 初始化顶部导航栏
+     */
+    @Override
+    public void initTitle() {
+        mTitleFragment = (CommonHeaderFragment) mFragmentManager.findFragmentById(R.id.title_view_record);
+        mTitleFragment.setHeadBtnType(HEAD_TYPE.LEFT_BACK_TEXT,HEAD_TYPE.RIGHT_NULL);
+        mTitleFragment.setHeadText(R.string.title_back, R.string.title_view_record, null);
+        mTitleFragment.setCallback(this);
     }
 
     /**
@@ -91,7 +109,6 @@ public class ConsumeDetailActivity extends BaseActivity {
         mConsumeTimeTextView = (TextView) findViewById(R.id.tv_record_time_detail);
         mConsumeCreateTimeTextView = (TextView) findViewById(R.id.tv_record_create_time_detail);
         mConsumeRemarksEditText = (EditText) findViewById(R.id.et_record_remarks_detail);
-        mReturnButton = (Button) findViewById(R.id.btn_record_return);
         mOperateButton = (Button) findViewById(R.id.btn_record_operate);
     }
 
@@ -130,14 +147,6 @@ public class ConsumeDetailActivity extends BaseActivity {
      */
     @Override
     protected void initEvent() {
-        mReturnButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mReturnButton.setEnabled(false);
-                ConsumeDetailActivity.this.finish();
-            }
-        });
-
         mOperateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,6 +316,15 @@ public class ConsumeDetailActivity extends BaseActivity {
             mConsumeCreateTimeTextView.setTextColor(getResources().getColor(
                     R.color.font_gray));
         }
+    }
+
+    @Override
+    public void onLeftClick() {
+        finish();
+    }
+
+    @Override
+    public void onRightClick() {
     }
 
 }
