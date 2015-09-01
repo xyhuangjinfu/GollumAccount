@@ -136,6 +136,8 @@ public class MainActivity extends BaseActivity implements
         mRecordListView = (PullToRefreshListView) findViewById(R.id.ptflv_consume_list);
         mActualRecordListView = mRecordListView.getRefreshableView();
 //        mActualRecordListView.setEmptyView(mEmptyView);
+        mConsumeQueryDialog = new ConsumeQueryDialog(this);
+        mConsumeQueryDialog.setOnQueryListener(this);
     }
 
     @Override
@@ -187,6 +189,13 @@ public class MainActivity extends BaseActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddConsumeActivity.class);
                 startActivity(intent);
+            }
+        });
+        
+        mQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConsumeQueryDialog.show();
             }
         });
     }
