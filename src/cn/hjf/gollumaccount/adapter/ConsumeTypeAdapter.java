@@ -6,6 +6,7 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.model.ConsumeType;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,10 @@ public class ConsumeTypeAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+        }
+        Log.i("O_O", mTypes.get(position).getName());
+        if (mTypes.get(position).getName().equals("添加类型")) {
+            holder.icon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_add_type));
         }
         holder.name.setText(mTypes.get(position).getName());
         return convertView;

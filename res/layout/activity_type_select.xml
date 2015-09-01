@@ -20,7 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_type_select"
-        android:numColumns="5"
+        android:numColumns="4"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
         android:listSelector="#00000000"
         >
     </GridView>

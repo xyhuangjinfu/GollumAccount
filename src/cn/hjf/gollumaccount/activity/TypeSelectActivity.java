@@ -9,6 +9,10 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.model.ConsumeType;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 /**
@@ -63,13 +67,22 @@ public class TypeSelectActivity extends BaseActivity implements CommonHeaderFrag
         for (int i = 0; i < types.length; i++) {
             mTypeData.add(new ConsumeType(types[i]));
         }
+        mTypeData.add(new ConsumeType("添加类型"));
         mAdapter = new ConsumeTypeAdapter(this, mTypeData);
         mTypeView.setAdapter(mAdapter);
     }
 
     @Override
     protected void initEvent() {
-
+        mTypeView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                if (position + 1 == mTypeData.size()) {
+                    Toast.makeText(getApplicationContext(), "add", 0).show();
+                }
+            }
+        });
     }
 
     @Override
