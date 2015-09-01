@@ -14,6 +14,8 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.ItemCompareTask;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.os.Bundle;
@@ -34,12 +36,12 @@ import android.widget.Spinner;
  */
 public class TypeStatisticActivity extends BaseActivity implements
         ItemCompareTask.OnItemCompareSuccessCallback,
-        OnChartValueSelectedListener {
+        OnChartValueSelectedListener,
+        CommonHeaderFragment.ICallback {
 
     private Spinner mYearSpinner; // 选择年份
     private Spinner mMonthSpinner; // 选择月份
     private PieChart mPieChart; // 饼图
-    private Button mReturnButton; // 返回按钮
 
     private ArrayList<String> mYearData; // 年份数据
     private ArrayList<String> mMonthData; // 月份数据
@@ -51,6 +53,10 @@ public class TypeStatisticActivity extends BaseActivity implements
     private int mAnalyseMonth = 0; // 要分析的月份
 
     private float mSumPrice = 0; // 各分类的总额
+    /**
+     * 顶部标题栏
+     */
+    private CommonHeaderFragment mTitleFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +66,22 @@ public class TypeStatisticActivity extends BaseActivity implements
         Calendar calendar = Calendar.getInstance();
         mAnalyseYear = calendar.get(Calendar.YEAR);
         mAnalyseMonth = calendar.get(Calendar.MONTH) + 1;
+        
+        initTitle();
         initView();
         initValue();
         initEvent();
+    }
+    
+    /**
+     * 初始化顶部导航栏
+     */
+    @Override
+    public void initTitle() {
+        mTitleFragment = (CommonHeaderFragment) mFragmentManager.findFragmentById(R.id.title_statistic_type);
+        mTitleFragment.setHeadBtnType(HEAD_TYPE.LEFT_BACK_TEXT,HEAD_TYPE.RIGHT_NULL);
+        mTitleFragment.setHeadText(R.string.title_back, R.string.title_analyse_item, null);
+        mTitleFragment.setCallback(this);
     }
 
     // @Override
@@ -288,7 +307,6 @@ public class TypeStatisticActivity extends BaseActivity implements
         mYearSpinner = (Spinner) findViewById(R.id.spn_pie_year);
         mMonthSpinner = (Spinner) findViewById(R.id.spn_pie_month);
         mPieChart = (PieChart) findViewById(R.id.pc_by_month);
-        mReturnButton = (Button) findViewById(R.id.btn_item_compare_return);
     }
 
     @Override
@@ -306,12 +324,15 @@ public class TypeStatisticActivity extends BaseActivity implements
     protected void initEvent() {
         mYearSpinner.setOnItemSelectedListener(mYearSelectedListener);
         mMonthSpinner.setOnItemSelectedListener(mMonthSelectedListener);
-        mReturnButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TypeStatisticActivity.this.finish();
-            }
-        });
+    }
+
+    @Override
+    public void onLeftClick() {
+        finish();
+    }
+
+    @Override
+    public void onRightClick() {
     }
 
 }
