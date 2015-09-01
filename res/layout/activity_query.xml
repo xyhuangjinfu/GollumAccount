@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dddddd" >
+
+    <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_query_record"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <!-- 滚动的信息输入区 -->
+
+    <ScrollView
+        android:id="@+id/sv_record_info_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llyt_control"
+        android:layout_below="@id/title_query_record"
+        android:layout_marginBottom="5dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <!-- 名称 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:background="#f0f0f0" >
+
+                <TextView
+                    android:id="@+id/tv_record_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="名 称："
+                    android:textColor="#323232"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_record_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:hint="消费记录名称"
+                    android:maxLength="20"
+                    android:padding="10dp"
+                    android:textSize="16sp" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <!-- 类别 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/llyt_record_name"
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
+
+                <TextView
+                    android:id="@+id/tv_record_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="类 别："
+                    android:textColor="#323232"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/spn_record_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:padding="0dp" />
+            </LinearLayout>
+
+            <!-- 日期 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_date_start"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/llyt_record_type"
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
+
+                <TextView
+                    android:id="@+id/tv_record_date_start_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="开 始："
+                    android:textColor="#323232"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_record_date_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:text="选择日期"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- 时间 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_record_date_end"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/llyt_record_date_start"
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0" >
+
+                <TextView
+                    android:id="@+id/tv_record_time_end_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="结 束："
+                    android:textColor="#323232"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_record_time_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:text="选择时间"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <!-- 创建按钮 -->
+
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_button"
+        android:padding="10dp"
+        android:text="查 询"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>

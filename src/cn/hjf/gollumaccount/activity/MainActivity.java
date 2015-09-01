@@ -195,7 +195,9 @@ public class MainActivity extends BaseActivity implements
         mQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConsumeQueryDialog.show();
+//                mConsumeQueryDialog.show();
+                Intent intent = new Intent(MainActivity.this, QueryActivity.class);
+                startActivity(intent);
             }
         });
     }

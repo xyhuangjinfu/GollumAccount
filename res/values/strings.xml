@@ -28,5 +28,6 @@
 
     <string name="title_main">首页</string>
     <string name="title_back">返回</string>
+    <string name="title_query_record">记录查询</string>
 
 </resources>
