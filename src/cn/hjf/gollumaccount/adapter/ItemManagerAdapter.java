@@ -3,7 +3,7 @@ package cn.hjf.gollumaccount.adapter;
 import java.util.ArrayList;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.model.ConsumeItem;
+import cn.hjf.gollumaccount.model.ConsumeType;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 public class ItemManagerAdapter extends BaseAdapter {
 	
-	private ArrayList<ConsumeItem> mItemList;
+	private ArrayList<ConsumeType> mItemList;
 	private Context mContext;
 	
-	public ItemManagerAdapter(Context context, ArrayList<ConsumeItem> itemList) {
+	public ItemManagerAdapter(Context context, ArrayList<ConsumeType> itemList) {
 		this.mItemList = itemList;
 		this.mContext = context;
 	}
@@ -40,7 +40,7 @@ public class ItemManagerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
-		ConsumeItem consumeItem = mItemList.get(position);
+		ConsumeType consumeItem = mItemList.get(position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_item_manager_list, null);
 			viewHolder = new ViewHolder();
@@ -54,39 +54,39 @@ public class ItemManagerAdapter extends BaseAdapter {
 		switch (consumeItem.getId()) {
 		case 1:
 			viewHolder.mImageView.setImageResource(R.drawable.clothes);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 2:
 			viewHolder.mImageView.setImageResource(R.drawable.food);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 3:
 			viewHolder.mImageView.setImageResource(R.drawable.house);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 4:
 			viewHolder.mImageView.setImageResource(R.drawable.traffic);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 5:
 			viewHolder.mImageView.setImageResource(R.drawable.entertainment);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 6:
 			viewHolder.mImageView.setImageResource(R.drawable.work);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 7:
 			viewHolder.mImageView.setImageResource(R.drawable.contact);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		case 8:
 			viewHolder.mImageView.setImageResource(R.drawable.other);
-			viewHolder.mTextView.setText(consumeItem.getItemName());
+			viewHolder.mTextView.setText(consumeItem.getName());
 			break;
 		default:
 			viewHolder.mImageView.setImageResource(R.drawable.unknown);
-			viewHolder.mTextView.setText("×Ô¶¨Òå·ÖÀà");
+			viewHolder.mTextView.setText("ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			break;
 		}
 		return convertView;

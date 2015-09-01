@@ -253,7 +253,7 @@ public class TypeStatisticActivity extends BaseActivity implements
             ArrayList<Entry> yVals = new ArrayList<Entry>();
             for (int i = 0; i <= mConsumeItemService.findItemAll().size(); i++) {
                 if ((map.get(i) != null) && (map.get(i) != 0)) {
-                    xVals.add(mConsumeItemService.findItemById(i).getItemName());
+                    xVals.add(mConsumeItemService.findItemById(i).getName());
                     float price = (float) ((double) map.get(i));
                     yVals.add(new Entry(price, i));
                 }

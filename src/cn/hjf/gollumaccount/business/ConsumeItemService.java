@@ -10,16 +10,16 @@ import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.exception.DbException;
 
 import cn.hjf.gollumaccount.PathHelper;
-import cn.hjf.gollumaccount.model.ConsumeItem;
+import cn.hjf.gollumaccount.model.ConsumeType;
 
 /**
- * ConsumeItemÒµÎñÂß¼­¶ÔÏó
+ * ConsumeItemÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
  * @author huangjinfu
  *
  */
 public class ConsumeItemService {
 	
-	private DbUtils mDbUtils; //Êı¾İ¿â²Ù×÷¶ÔÏó
+	private DbUtils mDbUtils; //ï¿½ï¿½İ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	
 	public ConsumeItemService(Context context) {
@@ -27,14 +27,14 @@ public class ConsumeItemService {
 	}
 
 	/**
-	 * ¸ù¾İIDÕÒµ½¶ÔÓ¦µÄConsumeItem
+	 * ï¿½ï¿½ï¿½IDï¿½Òµï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ConsumeItem
 	 * @param id
 	 * @return
 	 */
-	public ConsumeItem findItemById(int id) {
-		ConsumeItem item = null;
+	public ConsumeType findItemById(int id) {
+		ConsumeType item = null;
 		try {
-			item = mDbUtils.findById(ConsumeItem.class, id);
+			item = mDbUtils.findById(ConsumeType.class, id);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
@@ -42,13 +42,13 @@ public class ConsumeItemService {
 	}
 	
 	/**
-	 * ²éÑ¯ËùÓĞµÄConsumeItem
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ğµï¿½ConsumeItem
 	 * @return
 	 */
-	public ArrayList<ConsumeItem> findItemAll() {
-		ArrayList<ConsumeItem> items = null;
+	public ArrayList<ConsumeType> findItemAll() {
+		ArrayList<ConsumeType> items = null;
 		try {
-			items = (ArrayList<ConsumeItem>) mDbUtils.findAll(ConsumeItem.class);
+			items = (ArrayList<ConsumeType>) mDbUtils.findAll(ConsumeType.class);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
@@ -56,10 +56,10 @@ public class ConsumeItemService {
 	}
 	
 	/**
-	 * ±£´æÒ»¸öConsumeItem
+	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ConsumeItem
 	 * @param consumeItem
 	 */
-	public void createItem(ConsumeItem consumeItem) {
+	public void createItem(ConsumeType consumeItem) {
 		try {
 			mDbUtils.save(consumeItem);
 		} catch (DbException e) {
@@ -68,10 +68,10 @@ public class ConsumeItemService {
 	}
 	
 	/**
-	 * ÅúÁ¿±£´æConsumeItem¶ÔÏó
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ConsumeItemï¿½ï¿½ï¿½ï¿½
 	 * @param consumeItemList
 	 */
-	public void createItemList(List<ConsumeItem> consumeItemList) {
+	public void createItemList(List<ConsumeType> consumeItemList) {
 		try {
 			mDbUtils.saveAll(consumeItemList);
 		} catch (DbException e) {
@@ -80,40 +80,40 @@ public class ConsumeItemService {
 	}
 	
 	/**
-	 * ·µ»ØËùÓĞConsumeItemµÄÕ¹Ê¾Ãû³Æ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ConsumeItemï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public ArrayList<String> getAllItemName() {
 		ArrayList<String> itemNames = new ArrayList<String>();
-		ArrayList<ConsumeItem> items = this.findItemAll();
+		ArrayList<ConsumeType> items = this.findItemAll();
 		for (int i = 0; i < items.size(); i++) {
-			itemNames.add(items.get(i).getItemName());
+			itemNames.add(items.get(i).getName());
 		}
 		return itemNames;
 	}
 	
 	/**
-	 * ³õÊ¼»¯ConsumeItem
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ConsumeItem
 	 */
 	public void initConsumeItem() {
 		if ((this.findItemAll() == null) || (this.findItemAll().size() == 0)) {
-			ArrayList<ConsumeItem> list = new ArrayList<ConsumeItem>();
-			ConsumeItem consumeItem1 = new ConsumeItem();
-			ConsumeItem consumeItem2 = new ConsumeItem();
-			ConsumeItem consumeItem3 = new ConsumeItem();
-			ConsumeItem consumeItem4 = new ConsumeItem();
-			ConsumeItem consumeItem5 = new ConsumeItem();
-			ConsumeItem consumeItem6 = new ConsumeItem();
-			ConsumeItem consumeItem7 = new ConsumeItem();
-			ConsumeItem consumeItem8 = new ConsumeItem();
-			consumeItem1.setItemName("ÒÂÎï");
-			consumeItem2.setItemName("Ê³Îï");
-			consumeItem3.setItemName("×¡·¿");
-			consumeItem4.setItemName("½»Í¨");
-			consumeItem5.setItemName("ÓéÀÖ");
-			consumeItem6.setItemName("¹¤×÷");
-			consumeItem7.setItemName("Éç½»");
-			consumeItem8.setItemName("ÆäËû");
+			ArrayList<ConsumeType> list = new ArrayList<ConsumeType>();
+			ConsumeType consumeItem1 = new ConsumeType();
+			ConsumeType consumeItem2 = new ConsumeType();
+			ConsumeType consumeItem3 = new ConsumeType();
+			ConsumeType consumeItem4 = new ConsumeType();
+			ConsumeType consumeItem5 = new ConsumeType();
+			ConsumeType consumeItem6 = new ConsumeType();
+			ConsumeType consumeItem7 = new ConsumeType();
+			ConsumeType consumeItem8 = new ConsumeType();
+			consumeItem1.setName("è¡£æœ");
+			consumeItem2.setName("é£Ÿç‰©");
+			consumeItem3.setName("ä½æˆ¿");
+			consumeItem4.setName("äº¤é€š");
+			consumeItem5.setName("ç¤¾äº¤");
+			consumeItem6.setName("å¨±ä¹");
+			consumeItem7.setName("å·¥ä½œ");
+			consumeItem8.setName("å…¶ä»–");
 			list.add(consumeItem1);
 			list.add(consumeItem2);
 			list.add(consumeItem3);
@@ -125,4 +125,5 @@ public class ConsumeItemService {
 			this.createItemList(list);
 		}
 	}
+	
 }

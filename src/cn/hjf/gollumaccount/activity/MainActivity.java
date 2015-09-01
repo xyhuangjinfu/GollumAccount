@@ -131,6 +131,8 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initView() {
+        mAdd = (Button) findViewById(R.id.btn_add);
+        mQuery = (Button) findViewById(R.id.btn_query);
         mRecordListView = (PullToRefreshListView) findViewById(R.id.ptflv_consume_list);
         mActualRecordListView = mRecordListView.getRefreshableView();
 //        mActualRecordListView.setEmptyView(mEmptyView);
@@ -180,6 +182,13 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initEvent() {
+        mAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddConsumeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

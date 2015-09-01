@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.model.ConsumeItem;
+import cn.hjf.gollumaccount.model.ConsumeType;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
@@ -71,7 +71,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	}
 	
 	/**
-	 * ¸øÃ¿¸ö¿Ø¼þ¸³Öµ
+	 * ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½Öµ
 	 * @param record
 	 * @param viewHolder
 	 */

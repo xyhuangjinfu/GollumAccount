@@ -7,6 +7,8 @@ import java.util.Date;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.business.ConsumeRecordService;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
+import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -31,13 +33,12 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class AddConsumeActivity extends BaseActivity {
+public class AddConsumeActivity extends BaseActivity implements CommonHeaderFragment.ICallback{
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
     private Spinner mConsumeTypeSpinner; // 消费类型
     private EditText mConsumeRemarksEditText; // 备注信息
-    private Button mCancelButton; // 取消按钮
     private Button mCreateButton; // 创建按钮
     private TextView mConsumeDateTextView; // 消费日期
     private TextView mConsumeTimeTextView; // 消费时间
@@ -50,6 +51,10 @@ public class AddConsumeActivity extends BaseActivity {
     private ConsumeRecordService mConsumeRecordService; // 消费记录业务逻辑类
     private ArrayList<String> mTypes; // 消费类型数据
     private ConsumeItemService mConsumeItemService; // 消费类型业务逻辑类
+    /**
+     * 顶部标题栏
+     */
+    private CommonHeaderFragment mTitleFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,12 +62,26 @@ public class AddConsumeActivity extends BaseActivity {
         setContentView(R.layout.fragment_add_record);
         mConsumeRecordService = new ConsumeRecordService(this);
         mConsumeItemService = new ConsumeItemService(this);
+        
+        initTitle();
         initView();
         initValue();
         initEvent();
 
     }
 
+    
+    /**
+     * 初始化顶部导航栏
+     */
+    @Override
+    public void initTitle() {
+        mTitleFragment = (CommonHeaderFragment) mFragmentManager.findFragmentById(R.id.title_add_record);
+        mTitleFragment.setHeadBtnType(HEAD_TYPE.LEFT_BACK_TEXT,HEAD_TYPE.RIGHT_NULL);
+        mTitleFragment.setHeadText(R.string.title_back, R.string.title_add_record, null);
+        mTitleFragment.setCallback(this);
+    }
+    
     /**
      * 初始化各控件
      */
@@ -72,7 +91,6 @@ public class AddConsumeActivity extends BaseActivity {
         mConsumePriceEditText = (EditText) findViewById(R.id.et_record_price);
         mConsumeTypeSpinner = (Spinner) findViewById(R.id.spn_record_item);
         mConsumeRemarksEditText = (EditText) findViewById(R.id.et_record_remarks);
-        mCancelButton = (Button) findViewById(R.id.btn_record_cancel);
         mCreateButton = (Button) findViewById(R.id.btn_record_create);
         mConsumeDateTextView = (TextView) findViewById(R.id.et_record_date);
         mConsumeTimeTextView = (TextView) findViewById(R.id.et_record_time);
@@ -94,14 +112,6 @@ public class AddConsumeActivity extends BaseActivity {
      */
     @Override
     protected void initEvent() {
-        mCancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCancelButton.setEnabled(false);
-                AddConsumeActivity.this.finish();
-            }
-        });
-
         mCreateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +231,17 @@ public class AddConsumeActivity extends BaseActivity {
             result = true;
         }
         return result;
+    }
+
+
+    @Override
+    public void onLeftClick() {
+        finish();
+    }
+
+
+    @Override
+    public void onRightClick() {
     }
 
 }
