@@ -26,4 +26,6 @@
     <string name="analyse_empty">没有统计</string>
     <string name="info_about">关于信息</string>
 
+    <string name="title_main">首页</string>
+
 </resources>

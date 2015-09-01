@@ -30,6 +30,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.MainActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
@@ -43,6 +44,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.AddConsumeActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -51,6 +53,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.ConsumeDetailActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -59,6 +62,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.StatisticSelectActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -67,6 +71,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.TypeStatisticActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -75,6 +80,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.MonthStatisticActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -83,6 +89,7 @@
         <activity
             android:name="cn.hjf.gollumaccount.activity.AboutActivity"
             android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>

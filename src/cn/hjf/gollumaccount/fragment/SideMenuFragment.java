@@ -31,7 +31,7 @@ import android.widget.Toast;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class SideMenuFragment extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -67,7 +67,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ArrayList<String> mDrawers = new ArrayList<String>();
     		 
 
-    public NavigationDrawerFragment() {
+    public SideMenuFragment() {
     }
 
     @Override
@@ -77,7 +77,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, true);
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -296,5 +296,13 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+    
+    public void open() {
+        mDrawerLayout.openDrawer(mFragmentContainerView);
+    }
+    
+    public void close() {
+        mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 }

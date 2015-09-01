@@ -56,6 +56,10 @@ public class CommonHeaderFragment extends BaseFragment {
         public abstract void onRightClick(); //点击返回
     }
     
+    public CommonHeaderFragment() {
+        
+    }
+    
 
     @Override
     public View onCreateView(LayoutInflater inflater,

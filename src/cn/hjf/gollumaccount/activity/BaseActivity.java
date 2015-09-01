@@ -1,8 +1,8 @@
 package cn.hjf.gollumaccount.activity;
 
-import cn.hjf.gollumaccount.R;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 /**
  * 所有Activity的基类
@@ -11,19 +11,22 @@ import android.support.v4.app.FragmentActivity;
  * 
  */
 public abstract class BaseActivity extends FragmentActivity {
-
+    
+    /**
+     * v4包的Fragment管理器
+     */
+    protected FragmentManager mFragmentManager;
+    
     @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFragmentManager = this.getSupportFragmentManager();
     }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
+    
+    /**
+     * 初始化通用标题栏
+     */
+    protected void initTitle(){};
     /**
      * 初始化各控件
      */
