@@ -196,7 +196,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
 //                mConsumeQueryDialog.show();
-                Intent intent = new Intent(MainActivity.this, QueryActivity.class);
+                Intent intent = new Intent(MainActivity.this, TypeSelectActivity.class);
                 startActivity(intent);
             }
         });

@@ -29,5 +29,17 @@
     <string name="title_main">首页</string>
     <string name="title_back">返回</string>
     <string name="title_query_record">记录查询</string>
+    <string name="title_type_select">类型选择</string>
+    
+    <string-array name="consume_types">
+        <item>衣服</item>
+        <item>食物</item>
+        <item>住宿</item>
+        <item>交通</item>
+        <item>社交</item>
+        <item>娱乐</item>
+        <item>工作</item>
+        <item>其他</item>
+    </string-array>
 
 </resources>
