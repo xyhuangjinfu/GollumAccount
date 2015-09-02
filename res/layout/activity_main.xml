@@ -66,6 +66,7 @@
             android:layout_marginTop="1dp"
             android:scrollbars="none"
             android:overScrollMode="never"
+            android:listSelector="@drawable/gridview_consume_type"
              />
         
         <!-- EmptyView -->

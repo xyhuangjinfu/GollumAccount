@@ -51,8 +51,37 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (mTypes.get(position).getName().equals("添加类型")) {
+        //控制按钮，添加类型
+        if (mTypes.get(position).getType() == ConsumeType.Type.CONTROL) {
             holder.icon.setImageResource(R.drawable.ic_add_type);
+        }
+        //自定义类型
+        if (mTypes.get(position).getType() == ConsumeType.Type.CUSTOME) {
+            holder.icon.setImageResource(R.drawable.ic_custom_type);
+        }
+        if ("衣服".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_clothes);
+        }
+        if ("食物".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_food);
+        }
+        if ("住宿".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_house);
+        }
+        if ("交通".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_traffic);
+        }
+        if ("社交".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_social);
+        }
+        if ("娱乐".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_entertainment);
+        }
+        if ("办公".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_work);
+        }
+        if ("学习".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_study);
         }
         holder.name.setText(mTypes.get(position).getName());
         return convertView;

@@ -79,7 +79,7 @@ public class TypeSelectActivity extends BaseActivity implements CommonHeaderFrag
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
-                    Toast.makeText(getApplicationContext(), "add", 0).show();
+                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0).show();
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra("consume_type", mTypeData.get(position));

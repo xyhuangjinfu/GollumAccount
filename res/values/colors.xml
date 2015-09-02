@@ -4,4 +4,10 @@
     <color name="font_black">#000000</color>
     <color name="translucent">#50000000</color>
     <color name="transparent">#00000000</color>
+    
+    <color name="theme">#ff0099cc</color>
+    <color name="theme_translucent">#880099cc</color>
+    
+    <color name="white">#fff0f0f0</color>
+    
 </resources>

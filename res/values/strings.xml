@@ -38,8 +38,8 @@
         <item>交通</item>
         <item>社交</item>
         <item>娱乐</item>
-        <item>工作</item>
-        <item>其他</item>
+        <item>办公</item>
+        <item>学习</item>
     </string-array>
 
 </resources>
