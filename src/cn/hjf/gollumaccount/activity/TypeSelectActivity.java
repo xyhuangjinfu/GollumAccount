@@ -10,6 +10,8 @@ import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.model.ConsumeType;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,16 +26,13 @@ import android.widget.GridView;
  */
 public class TypeSelectActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
     
-    /**
-     * 顶部标题栏
-     */
-    private CommonHeaderFragment mTitleFragment;
+    private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     
-    private GridView mTypeView;
-    private ConsumeTypeAdapter mAdapter;
-    private List<ConsumeType> mTypeData;
+    private GridView mTypeView; //消费类型列表
+    private ConsumeTypeAdapter mAdapter; // 消费类型显示适配器
+    private List<ConsumeType> mTypeData; // 消费类型数据
     
-    private ConsumeTypeManagerBusiness mConsumeTypeManagerBusiness;
+    private ConsumeTypeManagerBusiness mConsumeTypeManagerBusiness; //消费类型管理业务逻辑
     
     public TypeSelectActivity() {
         mConsumeTypeManagerBusiness = new ConsumeTypeManagerBusiness(this);
@@ -79,8 +78,13 @@ public class TypeSelectActivity extends BaseActivity implements CommonHeaderFrag
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                if (position + 1 == mTypeData.size()) {
+                if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
                     Toast.makeText(getApplicationContext(), "add", 0).show();
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("consume_type", mTypeData.get(position));
+                    TypeSelectActivity.this.setResult(Activity.RESULT_OK, intent);
+                    TypeSelectActivity.this.finish();
                 }
             }
         });

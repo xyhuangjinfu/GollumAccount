@@ -1,12 +1,15 @@
 package cn.hjf.gollumaccount.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 消费类型
  * 
  * @author huangjinfu
  * 
  */
-public class ConsumeType {
+public class ConsumeType implements Parcelable {
     
     public enum Type {
         INSIDE, //内置类型
@@ -70,5 +73,35 @@ public class ConsumeType {
             return false;
         }
 	}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeSerializable(type);
+    }
+    
+    private ConsumeType(Parcel source) {
+        id = source.readInt();
+        name = source.readString();
+        type = (Type) source.readSerializable();
+    }
+    
+    public static final Parcelable.Creator<ConsumeType> CREATOR = new Parcelable.Creator<ConsumeType>() {
+        @Override
+        public ConsumeType createFromParcel(Parcel source) {
+            return new ConsumeType(source);
+        }
+
+        @Override
+        public ConsumeType[] newArray(int size) {
+            return new ConsumeType[size];
+        }
+    };
 
 }

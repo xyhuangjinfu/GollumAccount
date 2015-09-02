@@ -119,10 +119,10 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryByName(name), null);
         ConsumeType type = null;
         while (cursor.moveToNext()) {
-            type = new ConsumeType(
-                    cursor.getString(cursor.getColumnIndex(Table.CLM_NAME))
-                    , ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE)))
-                    );
+            type = new ConsumeType();
+            type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
+            type.setType(ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
         }
         cursor.close();
         mDB.close();
@@ -137,13 +137,11 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
         List<ConsumeType> types = new ArrayList<ConsumeType>();
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAll(), null);
         while (cursor.moveToNext()) {
-            
-            types.add(
-                    new ConsumeType(
-                            cursor.getString(cursor.getColumnIndex(Table.CLM_NAME))
-                            , ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE)))
-                            )
-                    );
+            ConsumeType type = new ConsumeType();
+            type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
+            type.setType(ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            types.add(type);
         }
         cursor.close();
         mDB.close();
@@ -276,6 +274,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
      *
      */
     private class Table {
+        static final String CLM_ID = "id";
         static final String CLM_NAME = "name";
         static final String CLM_TYPE = "type";
     }
