@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -149,7 +150,7 @@ public class MainActivity extends BaseActivity implements
         mFooterViewLayout = new LinearLayout(this);
         mEmptyView = LayoutInflater.from(this).inflate(R.layout.view_no_data, null);
         mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
-        mFooterViewLayout.addView(mFooterView);
+        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         mAdd = (Button) findViewById(R.id.btn_add);
         mQuery = (Button) findViewById(R.id.btn_query);
         mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
