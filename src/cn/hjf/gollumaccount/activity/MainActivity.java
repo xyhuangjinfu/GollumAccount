@@ -57,8 +57,8 @@ public class MainActivity extends BaseActivity implements
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAdd; //记一笔按钮
     private Button mQuery; //查询按钮
-	private PullToRefreshListView mRecordListView; //上拉刷新ListView
-	private ListView mActualRecordListView; //上拉刷新ListView中包含的实际ListView
+	private ListView mRecordListView; //上拉刷新ListView
+//	private ListView mActualRecordListView; //上拉刷新ListView中包含的实际ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
 	
 	private boolean mIsInRefresh = false; // 是否正在刷新的标识
@@ -130,9 +130,9 @@ public class MainActivity extends BaseActivity implements
         mEmptyView = LayoutInflater.from(this).inflate(R.layout.view_no_data, null);
         mAdd = (Button) findViewById(R.id.btn_add);
         mQuery = (Button) findViewById(R.id.btn_query);
-        mRecordListView = (PullToRefreshListView) findViewById(R.id.ptflv_consume_list);
-        mActualRecordListView = mRecordListView.getRefreshableView();
-        mActualRecordListView.setEmptyView(mEmptyView);
+        mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
+//        mActualRecordListView = mRecordListView.getRefreshableView();
+        mRecordListView.setEmptyView(mEmptyView);
         mConsumeQueryDialog = new ConsumeQueryDialog(this);
         mConsumeQueryDialog.setOnQueryListener(this);
     }
@@ -142,7 +142,6 @@ public class MainActivity extends BaseActivity implements
         ConsumeType type = new ConsumeType();
         type.setId(7);
         mRecords = new ConsumeRecordManagerBusiness(this).queryAllRecordByType(type);
-//        mRecords = new ArrayList<ConsumeRecord>();
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
                 mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
@@ -176,10 +175,6 @@ public class MainActivity extends BaseActivity implements
 
         }
 
-        mRecordListView.setOnItemClickListener(mItemClickListener);
-        mRecordListView.setOnRefreshListener(mOnRefreshListener);
-
-        this.registerForContextMenu(mRecordListView);
     }
 
     @Override
@@ -195,8 +190,17 @@ public class MainActivity extends BaseActivity implements
         mQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mConsumeQueryDialog.show();
                 Intent intent = new Intent(MainActivity.this, QueryActivity.class);
+                startActivity(intent);
+            }
+        });
+        
+        mRecordListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                Intent intent = new Intent(MainActivity.this, ConsumeDetailActivity.class);
+                intent.putExtra(ConsumeDetailActivity.CONSUME_RECORD, mRecords.get(position));
                 startActivity(intent);
             }
         });
@@ -269,7 +273,7 @@ public class MainActivity extends BaseActivity implements
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             Intent intent = new Intent(MainActivity.this, ConsumeDetailActivity.class);
-            intent.putExtra(ConsumeDetailActivity.RECORD, mRecords.get(position - 1));
+            intent.putExtra(ConsumeDetailActivity.CONSUME_RECORD, mRecords.get(position - 1));
             MainActivity.this.startActivity(intent);
             
         }

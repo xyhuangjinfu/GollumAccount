@@ -1,6 +1,7 @@
 package cn.hjf.gollumaccount.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * 消费记录
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * @author huangjinfu
  * 
  */
-public class ConsumeRecord implements Serializable {
+public class ConsumeRecord implements Parcelable {
 
 	private int id; //唯一标识
 	private String recordName; //消费记录名称
@@ -19,6 +20,8 @@ public class ConsumeRecord implements Serializable {
 	private String createTime; //消费记录创建时间
 	private String consumer; //消费者
 	private String payer; //付款者
+	
+	public ConsumeRecord(){};
 	
     public int getId() {
         return id;
@@ -74,5 +77,45 @@ public class ConsumeRecord implements Serializable {
     public void setPayer(String payer) {
         this.payer = payer;
     }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(recordName);
+        dest.writeString(recordPrice);
+        dest.writeInt(recordTypeId);
+        dest.writeString(recordRemark);
+        dest.writeString(consumeTime);
+        dest.writeString(createTime);
+        dest.writeString(consumer);
+        dest.writeString(payer);
+    }
+    
+    private ConsumeRecord(Parcel source) {
+        id = source.readInt();
+        recordName = source.readString();
+        recordPrice = source.readString();
+        recordTypeId = source.readInt();
+        recordRemark = source.readString();
+        consumeTime = source.readString();
+        createTime = source.readString();
+        consumer = source.readString();
+        payer = source.readString();
+    }
+    
+    public static final Parcelable.Creator<ConsumeRecord> CREATOR = new Parcelable.Creator<ConsumeRecord>() {
+        @Override
+        public ConsumeRecord createFromParcel(Parcel source) {
+            return new ConsumeRecord(source);
+        }
+
+        @Override
+        public ConsumeRecord[] newArray(int size) {
+            return new ConsumeRecord[size];
+        }
+    };
 
 }

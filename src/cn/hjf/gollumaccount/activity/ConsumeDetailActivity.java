@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,18 +38,21 @@ import android.widget.Toast;
  */
 public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
 
-    public static final String RECORD = "record";
+    public static final String CONSUME_RECORD = "consume_record";
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
-    private Spinner mConsumeTypeSpinner; // 消费类型
+    private TextView mConsumeTypeTextView; // 消费类型
+    private RelativeLayout mTypeLayout; // 消费类型点击布局
     private TextView mConsumeDateTextView; // 消费日期
     private TextView mConsumeTimeTextView; // 消费时间
     private TextView mConsumeCreateTimeTextView; // 消费记录创建时间
     private EditText mConsumeRemarksEditText; // 备注信息
     private Button mOperateButton; // 修改按钮
+    
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     private TimePickerDialog mTimePickerDialog; // 消费时间选择对话框
+    
     private ConsumeRecord mConsumeRecord = null; // 消费记录对象
     private int[] mRecordTime = new int[5];
     private ConsumeItemService mConsumeItemService; // 消费类型业务逻辑类
@@ -67,15 +71,14 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_view_record);
+        
         Intent intent = this.getIntent();
-        if (intent.getSerializableExtra(RECORD) == null) {
+        if (intent.getParcelableExtra(CONSUME_RECORD) == null) {
             finish();
             return;
         } else {
-            mConsumeRecord = (ConsumeRecord) intent.getSerializableExtra(RECORD);
+            mConsumeRecord = (ConsumeRecord) intent.getParcelableExtra(CONSUME_RECORD);
         }
-//        mConsumeRecordService = new ConsumeRecordService(this);
-//        mConsumeItemService = new ConsumeItemService(this);
         
         initTitle();
         initView();
@@ -104,8 +107,9 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     protected void initView() {
         mConsumeNameEditText = (EditText) findViewById(R.id.et_record_name_detail);
         mConsumePriceEditText = (EditText) findViewById(R.id.et_record_price_detail);
-        mConsumeTypeSpinner = (Spinner) findViewById(R.id.spn_record_item_detail);
         mConsumeDateTextView = (TextView) findViewById(R.id.tv_record_date_detail);
+        mConsumeTypeTextView = (TextView) findViewById(R.id.tv_record_type);
+        mTypeLayout = (RelativeLayout) findViewById(R.id.rl_record_type);
         mConsumeTimeTextView = (TextView) findViewById(R.id.tv_record_time_detail);
         mConsumeCreateTimeTextView = (TextView) findViewById(R.id.tv_record_create_time_detail);
         mConsumeRemarksEditText = (EditText) findViewById(R.id.et_record_remarks_detail);
@@ -117,15 +121,13 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
      */
     @Override
     protected void initValue() {
-//        mItemNames = mConsumeItemService.getAllItemName();
         mConsumeNameEditText.setText(this.mConsumeRecord.getRecordName());
         mConsumePriceEditText.setText(String.valueOf(this.mConsumeRecord
                 .getRecordPrice()));
         mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner,
                 mItemNames);
-        mConsumeTypeSpinner.setAdapter(mArrayAdapter);
-        mConsumeTypeSpinner
-                .setSelection(this.mConsumeRecord.getRecordTypeId() - 1);
+        
+        mConsumeTypeTextView.setText(String.valueOf(mConsumeRecord.getRecordTypeId()));
         mConsumeDateTextView.setText(this.mConsumeRecord
                 .getConsumeTime());
         mConsumeTimeTextView.setText(this.mConsumeRecord.getConsumeTime());
@@ -219,8 +221,8 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                 .toString());
         this.mConsumeRecord.setRecordPrice(mConsumePriceEditText
                 .getText().toString());
-        this.mConsumeRecord.setRecordTypeId(mConsumeTypeSpinner
-                .getSelectedItemPosition() + 1);
+//        this.mConsumeRecord.setRecordTypeId(mConsumeTypeSpinner
+//                .getSelectedItemPosition() + 1);
         this.mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText()
                 .toString());
         this.mConsumeRecord.setConsumeTime(String.valueOf(this.getRecordTime().getTime()));
@@ -295,7 +297,7 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     private void setViewUsable(boolean usable) {
         mConsumeNameEditText.setEnabled(usable);
         mConsumePriceEditText.setEnabled(usable);
-        mConsumeTypeSpinner.setEnabled(usable);
+//        mConsumeTypeSpinner.setEnabled(usable);
         mConsumeDateTextView.setClickable(usable);
         mConsumeTimeTextView.setClickable(usable);
         mConsumeCreateTimeTextView.setClickable(usable);
