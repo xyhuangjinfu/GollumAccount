@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity implements
 	
 	private boolean mIsNoMoreData = false; //当前查询条件是否还有更多数据，true-没有更多数据
 	private boolean mIsInRefresh = false; //是否在刷新状态，true-还在刷新
+	private boolean mIsQueryChanged = false; //查询条件是否改变，true-查询条件被改变了
 	
 	private QueryInfo mQueryInfo; //查询信息
 	
@@ -240,6 +241,10 @@ public class MainActivity extends BaseActivity implements
             mIsNoMoreData = true;
             mFooterView.setVisibility(View.GONE);
         }
+        if (mIsQueryChanged) {
+            mRecords.clear();
+            mIsQueryChanged = false;
+        }
         mRecords.addAll(result);
         mConsumeRecordAdapter.notifyDataSetChanged();
     }
@@ -248,6 +253,7 @@ public class MainActivity extends BaseActivity implements
      * 刷新查询状态
      */
     private void refreshQueryStatus() {
+        mIsQueryChanged = true;
         mIsNoMoreData = false;
         mQueryInfo.setPageNumber(1);
     }
