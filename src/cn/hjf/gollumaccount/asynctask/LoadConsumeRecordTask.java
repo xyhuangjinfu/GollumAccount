@@ -2,7 +2,9 @@ package cn.hjf.gollumaccount.asynctask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
 import cn.hjf.gollumaccount.business.ConsumeRecordService;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.util.TimeUtil;
@@ -10,57 +12,56 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 /**
- * ��ҳ������Ѽ�¼��ݵ�AsyncTask
+ * 消费记录查询的AsyncTask
  * 
  * @author huangjinfu
  * 
  */
 public class LoadConsumeRecordTask extends
-		AsyncTask<Integer, Void, ArrayList<ConsumeRecord>> {
+		AsyncTask<Integer, Void, List<ConsumeRecord>> {
 
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordҵ���߼�����
-	private OnRecordLoadCallback mListener; // ��ݼ�����ɼ������
-	private Context mContext; // �����Ķ���
+	private ConsumeRecordManagerBusiness ConsumeRecordManagerBusiness; //消费记录管理业务逻辑
+	private OnRecordLoadCallback mListener; // 查询结果回调对象
+	private Context mContext; // 上下文对象
 
 	/**
-	 * ��ݼ�����ɵ��õļ�����
+	 * 查询结果回调接口
 	 * 
 	 * @author huangjinfu
 	 * 
 	 */
 	public interface OnRecordLoadCallback {
 		public abstract void onRecordLoadCompleted(
-				ArrayList<ConsumeRecord> records);
+				List<ConsumeRecord> records);
 	}
 
 	public LoadConsumeRecordTask(Context context, OnRecordLoadCallback listener) {
 		this.mContext = context;
 		this.mListener = listener;
-//		mConsumeRecordService = new ConsumeRecordService(mContext);
+		ConsumeRecordManagerBusiness = new ConsumeRecordManagerBusiness(mContext);
 	}
 
 	@Override
-	protected ArrayList<ConsumeRecord> doInBackground(Integer... params) {
-		ArrayList<ConsumeRecord> result = new ArrayList<ConsumeRecord>();
+	protected List<ConsumeRecord> doInBackground(Integer... params) {
+		List<ConsumeRecord> result = new ArrayList<ConsumeRecord>();
 		long[] times = getAnalyseTime(params[0], params[1]);
 		if (params[4] == 9) {
-//			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3]);
+			result = ConsumeRecordManagerBusiness.queryRecordByPage(times[0], times[1], params[2], params[3]);
 		} else {
-//			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3], params[4]);
+			result = ConsumeRecordManagerBusiness.queryRecordByPage(times[0], times[1], params[2], params[3], params[4]);
 		}
 		return result;
-//		return mConsumeRecordService.findRecordByPage(params[0], params[1]);
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<ConsumeRecord> result) {
+	protected void onPostExecute(List<ConsumeRecord> result) {
 		super.onPostExecute(result);
 		mListener.onRecordLoadCompleted(result);
 
 	}
 	
 	/**
-	 * �����ݺ��·ݼ����ѯʱ��
+	 * 得到查询时间
 	 * 
 	 * @param year
 	 * @param month

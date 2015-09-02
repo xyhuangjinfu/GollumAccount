@@ -2,6 +2,7 @@ package cn.hjf.gollumaccount.activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -12,6 +13,7 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
+import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
 import cn.hjf.gollumaccount.dialog.ConsumeQueryDialog;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
@@ -64,7 +66,7 @@ public class MainActivity extends BaseActivity implements
 	    
 	private ConsumeQueryDialog mConsumeQueryDialog; // 查询条件输入对话框
 	private int mCurrentQueryItem = 9; // 当前查询的分类
-	private ArrayList<ConsumeRecord> mRecords; // 查询出来的数据记录
+	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private boolean mNeedRefreshFlag = true; // 是否需要刷新
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
 	private int mCurrentPage = 1; // 当前查询页码
@@ -136,7 +138,8 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initValue() {
-        mRecords = new ArrayList<ConsumeRecord>();
+        mRecords = new ConsumeRecordManagerBusiness(this).queryAllRecord();
+//        mRecords = new ArrayList<ConsumeRecord>();
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
                 mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
@@ -202,20 +205,20 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onRecordLoadCompleted(ArrayList<ConsumeRecord> result) {
-        LoadDialog.close();
-        if (result.size() == 0) {
-        } else {
-            mCurrentPage++;
-        }
-        
-        mRecords.addAll(result);
-        mConsumeRecordAdapter.notifyDataSetChanged();
-        mRecordListView.onRefreshComplete();
-        mIsInRefresh = false;
-        if (mNeedRefreshFlag) {
-            mNeedRefreshFlag = false;
-        }
+    public void onRecordLoadCompleted(List<ConsumeRecord> result) {
+//        LoadDialog.close();
+//        if (result.size() == 0) {
+//        } else {
+//            mCurrentPage++;
+//        }
+//        
+//        mRecords.addAll(result);
+//        mConsumeRecordAdapter.notifyDataSetChanged();
+//        mRecordListView.onRefreshComplete();
+//        mIsInRefresh = false;
+//        if (mNeedRefreshFlag) {
+//            mNeedRefreshFlag = false;
+//        }
 
     }
     

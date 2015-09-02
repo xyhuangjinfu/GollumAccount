@@ -195,12 +195,12 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
      */
     private void buildConsumeRecord() {
         mConsumeRecord.setRecordName(mConsumeNameEditText.getText().toString());
-        mConsumeRecord.setRecordPrice(Float.valueOf(mConsumePriceEditText.getText()
-                .toString()));
+        mConsumeRecord.setRecordPrice(mConsumePriceEditText.getText()
+                .toString());
         mConsumeRecord.setRecordTypeId(mConsumeType.getId());
         mConsumeRecord.setRecordRemark(mConsumeRemarkEditText.getText().toString());
-        mConsumeRecord.setConsumeTime(this.getConsumeTime().getTime());
-        mConsumeRecord.setCreateTime(System.currentTimeMillis());
+        mConsumeRecord.setConsumeTime(String.valueOf(this.getConsumeTime().getTime()));
+        mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));
         mConsumeRecord.setConsumer(mConsumerEditText.getText().toString());
         mConsumeRecord.setPayer(mPayerEditText.getText().toString());
     }

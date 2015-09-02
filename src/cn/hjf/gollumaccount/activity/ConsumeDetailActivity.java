@@ -126,12 +126,10 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         mConsumeTypeSpinner.setAdapter(mArrayAdapter);
         mConsumeTypeSpinner
                 .setSelection(this.mConsumeRecord.getRecordTypeId() - 1);
-        mConsumeDateTextView.setText(TimeUtil.getDateString(this.mConsumeRecord
-                .getConsumeTime()));
-        mConsumeTimeTextView.setText(TimeUtil
-                .getShowTimeString(this.mConsumeRecord.getConsumeTime()));
-        mConsumeCreateTimeTextView.setText(TimeUtil
-                .getTimeString(this.mConsumeRecord.getCreateTime()));
+        mConsumeDateTextView.setText(this.mConsumeRecord
+                .getConsumeTime());
+        mConsumeTimeTextView.setText(this.mConsumeRecord.getConsumeTime());
+        mConsumeCreateTimeTextView.setText(this.mConsumeRecord.getCreateTime());
         if (("".equals(this.mConsumeRecord.getRecordRemark()))
                 || (this.mConsumeRecord.getRecordRemark() == null)) {
             mConsumeRemarksEditText.setHint("备注信息");
@@ -219,14 +217,14 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     private ConsumeRecord constructRecord() {
         this.mConsumeRecord.setRecordName(mConsumeNameEditText.getText()
                 .toString());
-        this.mConsumeRecord.setRecordPrice(Float.valueOf(mConsumePriceEditText
-                .getText().toString()));
+        this.mConsumeRecord.setRecordPrice(mConsumePriceEditText
+                .getText().toString());
         this.mConsumeRecord.setRecordTypeId(mConsumeTypeSpinner
                 .getSelectedItemPosition() + 1);
         this.mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText()
                 .toString());
-        this.mConsumeRecord.setConsumeTime(this.getRecordTime().getTime());
-        this.mConsumeRecord.setCreateTime(System.currentTimeMillis());
+        this.mConsumeRecord.setConsumeTime(String.valueOf(this.getRecordTime().getTime()));
+        this.mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));
         return this.mConsumeRecord;
     }
 

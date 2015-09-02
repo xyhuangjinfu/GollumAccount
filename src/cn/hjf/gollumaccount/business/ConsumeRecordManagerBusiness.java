@@ -1,5 +1,8 @@
 package cn.hjf.gollumaccount.business;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import cn.hjf.gollumaccount.db.ConsumeRecordDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.IConsumeRecordDao;
@@ -36,5 +39,26 @@ public class ConsumeRecordManagerBusiness {
      */
     public void addRecord(ConsumeRecord record) {
         mConsumeRecordDao.insert(record);
+    }
+    
+    /**
+     * 查询所有消费记录
+     */
+    public List<ConsumeRecord> queryAllRecord() {
+        return mConsumeRecordDao.queryAll();
+    }
+    
+    /**
+     * 分页查询
+     */
+    public List<ConsumeRecord> queryRecordByPage(long startTime, long endTime, int page, int num, int type) {
+        return null;
+    }
+    
+    /**
+     * 分页查询
+     */
+    public List<ConsumeRecord> queryRecordByPage(long startTime, long endTime, int page, int num) {
+        return null;
     }
 }

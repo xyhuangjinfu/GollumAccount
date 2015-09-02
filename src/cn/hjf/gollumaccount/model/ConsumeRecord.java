@@ -12,11 +12,11 @@ public class ConsumeRecord implements Serializable {
 
 	private int id; //唯一标识
 	private String recordName; //消费记录名称
-	private float recordPrice; //消费金额
+	private String recordPrice; //消费金额
 	private int recordTypeId; //消费类型id
 	private String recordRemark; //备注信息
-	private long consumeTime; //消费时间
-	private long createTime; //消费记录创建时间
+	private String consumeTime; //消费时间
+	private String createTime; //消费记录创建时间
 	private String consumer; //消费者
 	private String payer; //付款者
 	
@@ -32,10 +32,10 @@ public class ConsumeRecord implements Serializable {
     public void setRecordName(String recordName) {
         this.recordName = recordName;
     }
-    public float getRecordPrice() {
+    public String getRecordPrice() {
         return recordPrice;
     }
-    public void setRecordPrice(float recordPrice) {
+    public void setRecordPrice(String recordPrice) {
         this.recordPrice = recordPrice;
     }
     public int getRecordTypeId() {
@@ -50,16 +50,16 @@ public class ConsumeRecord implements Serializable {
     public void setRecordRemark(String recordRemark) {
         this.recordRemark = recordRemark;
     }
-    public long getConsumeTime() {
+    public String getConsumeTime() {
         return consumeTime;
     }
-    public void setConsumeTime(long consumeTime) {
+    public void setConsumeTime(String consumeTime) {
         this.consumeTime = consumeTime;
     }
-    public long getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
     public String getConsumer() {

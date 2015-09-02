@@ -1,6 +1,7 @@
 package cn.hjf.gollumaccount.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.hjf.gollumaccount.R;
@@ -17,10 +18,10 @@ import android.widget.TextView;
 
 public class ConsumeRecordAdapter extends BaseAdapter {
 	
-	private ArrayList<ConsumeRecord> mItemList;
+	private List<ConsumeRecord> mItemList;
 	private Context mContext;
 	
-	public ConsumeRecordAdapter(Context context, ArrayList<ConsumeRecord> itemList) {
+	public ConsumeRecordAdapter(Context context, List<ConsumeRecord> itemList) {
 		this.mItemList = itemList;
 		this.mContext = context;
 	}
@@ -92,7 +93,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		displayPrice = String.valueOf(record.getRecordPrice());
 		viewHolder.mRecordPrice.setText(displayPrice);
 		viewHolder.mRecordName.setText(displayName);
-		viewHolder.mRecordTime.setText(TimeUtil.getDateString(record.getConsumeTime()));
+		viewHolder.mRecordTime.setText(TimeUtil.getDateString(Long.valueOf(record.getConsumeTime())));
 		viewHolder.mRecordInfo.setText(record.getRecordRemark());
 		switch (record.getRecordTypeId()) {
 		case 1:

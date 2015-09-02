@@ -1,5 +1,6 @@
 package cn.hjf.gollumaccount.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.hjf.gollumaccount.model.ConsumeRecord;
@@ -77,7 +78,24 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
 
     @Override
     public List<ConsumeRecord> queryAll() {
-        return null;
+        List<ConsumeRecord> records = new ArrayList<ConsumeRecord>();
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAll(), null);
+        while (cursor.moveToNext()) {
+            ConsumeRecord record = new ConsumeRecord();
+            record.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            record.setRecordName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
+            record.setRecordPrice(cursor.getString(cursor.getColumnIndex(Table.CLM_PRICE)));
+            record.setRecordRemark(cursor.getString(cursor.getColumnIndex(Table.CLM_REMARK)));
+            record.setRecordTypeId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            record.setConsumer(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUMER)));
+            record.setPayer(cursor.getString(cursor.getColumnIndex(Table.CLM_PAYER)));
+            record.setConsumeTime(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUME_TIME)));
+            record.setCreateTime(cursor.getString(cursor.getColumnIndex(Table.CLM_CREATE_TIME)));
+            records.add(record);
+        }
+        cursor.close();
+        mDB.close();
+        return records;
     }
     
     /**
@@ -200,6 +218,19 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             }
             return sql.toString();
         }
+        
+        /**
+         * 查询所有消费记录
+         */
+        public String queryAll() {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT * FROM ");
+            sql.append(TABLE_NAME);
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
     }
     
     /**
@@ -208,6 +239,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
      *
      */
     private class Table {
+        static final String CLM_ID = "id";
         static final String CLM_NAME = "recordName"; //消费记录名称
         static final String CLM_PRICE = "recordPrice"; //消费金额
         static final String CLM_TYPE = "recordTypeId"; //消费类型id
