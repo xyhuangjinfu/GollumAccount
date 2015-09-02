@@ -10,6 +10,7 @@ import cn.hjf.gollumaccount.db.ConsumeRecordDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.IConsumeRecordDao;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.model.QueryInfo;
 
 /**
  * 消费记录管理的业务逻辑，负责添加和修改消费记录
@@ -92,7 +93,7 @@ public class ConsumeRecordManagerBusiness {
      * @param name 消费名称-模糊匹配
      * @return
      */
-    public List<ConsumeRecord> queryRecords(String startTime, String endTime, int type, String name) {
-        return null;
+    public List<ConsumeRecord> queryRecords(QueryInfo queryInfo) {
+        return mConsumeRecordDao.queryRecords(queryInfo);
     }
 }

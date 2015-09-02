@@ -63,6 +63,8 @@
             android:layout_above="@+id/ll_operate"
             android:layout_below="@id/ll_current_month"
             android:layout_marginTop="1dp"
+            android:scrollbars="none"
+            android:overScrollMode="never"
              />
 
         <!-- 操作 -->

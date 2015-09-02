@@ -6,6 +6,7 @@ import java.util.Map;
 
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.model.QueryInfo;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -108,10 +109,9 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     }
     
     @Override
-    public List<ConsumeRecord> queryRecords(String startTime, String endTime,
-            int type, String name) {
+    public List<ConsumeRecord> queryRecords(QueryInfo queryInfo) {
         List<ConsumeRecord> records = null;
-        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryRecords(startTime, endTime, type, name), null);
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryRecords(queryInfo), null);
         records = getRecordsFromCursor(cursor);
         cursor.close();
         mDB.close();
@@ -387,34 +387,63 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         /**
          * 按特定条件查询所有消费记录
          */
-        public String queryRecords(String startTime, String endTime, int type, String name) {
+        public String queryRecords(QueryInfo queryInfo) {
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT * FROM ");
             sql.append(TABLE_NAME);
             sql.append(" WHERE ");
-            sql.append(Table.CLM_CONSUME_TIME);
-            sql.append(" >= ");
-                sql.append("'");
-                sql.append(startTime);
-                sql.append("'");
-            sql.append(" AND ");
-            sql.append(Table.CLM_CONSUME_TIME);
-            sql.append(" <= ");
-                sql.append("'");
-                sql.append(endTime);
-                sql.append("'");
-            sql.append(" AND ");
-            sql.append(Table.CLM_TYPE);
-            sql.append(" == ");
-                sql.append("'");
-                sql.append(type);
-                sql.append("'");
-            sql.append(" AND ");
-            sql.append(Table.CLM_NAME);
+            
+            if (queryInfo.getStartTime() != null && !"".equals(queryInfo.getStartTime())) {
+                sql.append(Table.CLM_CONSUME_TIME);
+                sql.append(" >= ");
+                    sql.append("'");
+                    sql.append(queryInfo.getStartTime());
+                    sql.append("'");
+                sql.append(" AND ");
+            }
+
+            
+            if (queryInfo.getEndTime() != null && !"".equals(queryInfo.getEndTime())) {
+                sql.append(Table.CLM_CONSUME_TIME);
+                sql.append(" <= ");
+                    sql.append("'");
+                    sql.append(queryInfo.getEndTime());
+                    sql.append("'");
+                sql.append(" AND ");
+            }
+            
+            if (queryInfo.getName() != null && !"".equals(queryInfo.getName())) {
+                sql.append(Table.CLM_NAME);
                 sql.append(" LIKE ");
                     sql.append("'%");
-                    sql.append(name);
+                    sql.append(queryInfo.getName());
                     sql.append("%'");
+                sql.append(" AND ");
+            }
+
+            if (queryInfo.getType() != 0) {
+                sql.append(Table.CLM_TYPE);
+                sql.append(" = ");
+                    sql.append("'");
+                    sql.append(queryInfo.getType());
+                    sql.append("'");
+                sql.append(" AND ");
+            }
+
+            
+            sql.append("1");
+            sql.append(" = ");
+            sql.append("1");
+
+                    
+            sql.append(" LIMIT ");
+                sql.append("'");
+                sql.append(queryInfo.getPageSize());
+                sql.append("'");
+            sql.append(" OFFSET ");
+                sql.append("'");
+                sql.append((queryInfo.getPageNumber() - 1) * queryInfo.getPageSize());
+                sql.append("'");
             
             if (DEBUG) {
                 Log.d(TAG, sql.toString());

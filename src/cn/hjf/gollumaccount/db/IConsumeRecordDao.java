@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.hjf.gollumaccount.model.ConsumeRecord;
+import cn.hjf.gollumaccount.model.QueryInfo;
 
 /**
  * 抽象的消费记录数据访问类
@@ -44,11 +45,8 @@ public interface IConsumeRecordDao {
     public abstract List<ConsumeRecord> queryAllByParameter(Map<String, String> paras);
     /**
      * 查询消费记录
-     * @param startTime 开始时间-消费时间
-     * @param endTime 结束时间-消费时间
-     * @param type 消费类型
-     * @param name 消费名称-模糊匹配
+     * @param queryInfo 查询条件信息
      * @return
      */
-    public abstract List<ConsumeRecord> queryRecords(String startTime, String endTime, int type, String name);
+    public abstract List<ConsumeRecord> queryRecords(QueryInfo queryInfo);
 }

@@ -21,6 +21,8 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.model.QueryInfo;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -37,8 +39,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +55,9 @@ public class MainActivity extends BaseActivity implements
 		CommonHeaderFragment.ICallback,
 		LoadConsumeRecordTask.OnRecordLoadCallback,
         ConsumeQueryDialog.OnQueryListener{
+    
+    private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
+    private static final int NUM_PER_PAGE = 7; // 每页查询的数量
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
@@ -57,23 +65,25 @@ public class MainActivity extends BaseActivity implements
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAdd; //记一笔按钮
     private Button mQuery; //查询按钮
-	private ListView mRecordListView; //上拉刷新ListView
-//	private ListView mActualRecordListView; //上拉刷新ListView中包含的实际ListView
+	private ListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
+	private View mFooterView; //底部加载视图
+	private LinearLayout mFooterViewLayout;
 	
-	private boolean mIsInRefresh = false; // 是否正在刷新的标识
-	private int mQueryYear = 0; // 查询的年份
-	private int mQueryMonth = 0; // 查询的月份
-	    
 	private ConsumeQueryDialog mConsumeQueryDialog; // 查询条件输入对话框
-	private int mCurrentQueryItem = 9; // 当前查询的分类
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
-	private boolean mNeedRefreshFlag = true; // 是否需要刷新
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
-	private int mCurrentPage = 1; // 当前查询页码
-	private LoadConsumeRecordTask mLoadConsumeRecordTask; // 消费记录查询的AsyncTask
-	private static final int NUM_PER_PAGE = 10; // 每页查询的数量
 	
+	private boolean mIsNoMoreData = false; //当前查询条件是否还有更多数据，true-没有更多数据
+	private boolean mIsInRefresh = false; //是否在刷新状态，true-还在刷新
+	
+	private QueryInfo mQueryInfo; //查询信息
+	
+	
+	public MainActivity() {
+	    mQueryInfo = new QueryInfo();
+	    mRecords = new ArrayList<ConsumeRecord>();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,7 @@ public class MainActivity extends BaseActivity implements
 		initValue();
 		initEvent();
 			
+		loadData();
 	}
 	
     /**
@@ -104,6 +115,14 @@ public class MainActivity extends BaseActivity implements
 	private void initSideMenu() {
         mSideMenuFragment = (SideMenuFragment) mFragmentManager.findFragmentById(R.id.navigation_drawer);
         mSideMenuFragment.setUp(R.id.navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout));
+	}
+	
+	/**
+	 * 加载数据
+	 */
+	private void loadData() {
+	    mIsInRefresh = true;
+	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
 	}
 
 	@Override
@@ -127,53 +146,26 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initView() {
+        mFooterViewLayout = new LinearLayout(this);
         mEmptyView = LayoutInflater.from(this).inflate(R.layout.view_no_data, null);
+        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
+        mFooterViewLayout.addView(mFooterView);
         mAdd = (Button) findViewById(R.id.btn_add);
         mQuery = (Button) findViewById(R.id.btn_query);
         mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
-//        mActualRecordListView = mRecordListView.getRefreshableView();
         mRecordListView.setEmptyView(mEmptyView);
+        mRecordListView.addFooterView(mFooterViewLayout);
         mConsumeQueryDialog = new ConsumeQueryDialog(this);
         mConsumeQueryDialog.setOnQueryListener(this);
     }
 
     @Override
     protected void initValue() {
-        ConsumeType type = new ConsumeType();
-        type.setId(7);
-        mRecords = new ConsumeRecordManagerBusiness(this).queryAllRecordByType(type);
+        mQueryInfo.setPageNumber(1);
+        mQueryInfo.setPageSize(NUM_PER_PAGE);
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
                 mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
-
-        mQueryYear = Calendar.getInstance().get(Calendar.YEAR);
-        mQueryMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-
-        if (mNeedRefreshFlag) {
-            Integer[] params = new Integer[5];
-            params[0] = mQueryYear;
-            params[1] = mQueryMonth;
-            params[2] = mCurrentPage;
-            params[3] = NUM_PER_PAGE;
-            params[4] = mCurrentQueryItem;
-            Log.i("hjf", "ConsumeFragment - onCreateView - params[0]:"
-                    + params[0]);
-            Log.i("hjf", "ConsumeFragment - onCreateView - params[1]:"
-                    + params[1]);
-            Log.i("hjf", "ConsumeFragment - onCreateView - params[2]:"
-                    + params[2]);
-            Log.i("hjf", "ConsumeFragment - onCreateView - params[3]:"
-                    + params[3]);
-            Log.i("hjf", "ConsumeFragment - onCreateView - params[4]:"
-                    + params[4]);
-            if (!mIsInRefresh) {
-                mIsInRefresh = true;
-//                LoadDialog.show(this);
-                new LoadConsumeRecordTask(this, this)
-                        .execute(params);
-            }
-
-        }
 
     }
 
@@ -191,7 +183,8 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QueryActivity.class);
-                startActivity(intent);
+                intent.putExtra("query_info", mQueryInfo);
+                startActivityForResult(intent, REQ_CODE_QUERY_INFO);
             }
         });
         
@@ -204,116 +197,73 @@ public class MainActivity extends BaseActivity implements
                 startActivity(intent);
             }
         });
+        
+        mRecordListView.setOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+             // 当不滚动时  
+                if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
+                    // 判断是否滚动到底部  
+                    if (view.getLastVisiblePosition() == view.getCount() - 1) {  
+                        //还在刷新中，直接返回
+                        if (mIsInRefresh) {
+                            return;
+                        }
+                        //没有更多数据，提示
+                        if (mIsNoMoreData) {
+                            Toast.makeText(MainActivity.this, "没有更多数据了", 0).show();
+                            return;
+                        }
+                        Log.i("O_O", "loading");
+                        mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
+                        loadData();
+                    }  
+                }
+            }
+            
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     @Override
     public void onQuery(int year, int month, int item) {
-        refreshData(year, month, item);
     }
 
     @Override
     public void onRecordLoadCompleted(List<ConsumeRecord> result) {
-//        LoadDialog.close();
-//        if (result.size() == 0) {
-//        } else {
-//            mCurrentPage++;
-//        }
-//        
-//        mRecords.addAll(result);
-//        mConsumeRecordAdapter.notifyDataSetChanged();
-//        mRecordListView.onRefreshComplete();
-//        mIsInRefresh = false;
-//        if (mNeedRefreshFlag) {
-//            mNeedRefreshFlag = false;
-//        }
-
-    }
-    
-    
-    /**
-     * ˢ�����
-     * 
-     * @param year
-     * @param month
-     */
-    public void refreshData(int year, int month, int item) {
-        mCurrentQueryItem = item;
-        mCurrentPage = 1;
-        mQueryYear = year;
-        mQueryMonth = month + 1;
-        mRecords.clear();
+        mIsInRefresh = false;
+        if (result.size() == 0) {
+            mIsNoMoreData = true;
+            mFooterView.setVisibility(View.GONE);
+        }
+        mRecords.addAll(result);
         mConsumeRecordAdapter.notifyDataSetChanged();
-        Integer[] params = new Integer[5];
-        params[0] = mQueryYear;
-        params[1] = mQueryMonth;
-        params[2] = mCurrentPage;
-        params[3] = NUM_PER_PAGE;
-        params[4] = mCurrentQueryItem;
-        Log.i("hjf", "ConsumeFragment - refreshData - params[0]:" + params[0]);
-        Log.i("hjf", "ConsumeFragment - refreshData - params[1]:" + params[1]);
-        Log.i("hjf", "ConsumeFragment - refreshData - params[2]:" + params[2]);
-        Log.i("hjf", "ConsumeFragment - refreshData - params[3]:" + params[3]);
-        Log.i("hjf", "ConsumeFragment - refreshData - params[4]:" + params[4]);
-        if (!mIsInRefresh) {
-            mIsInRefresh = true;
-//            LoadDialog.show(this);
-            new LoadConsumeRecordTask(MainActivity.this,
-                    MainActivity.this).execute(params);
-        }
+    }
+    
+    /**
+     * 刷新查询状态
+     */
+    private void refreshQueryStatus() {
+        mIsNoMoreData = false;
+        mQueryInfo.setPageNumber(1);
     }
 
-
-
-
-    /**
-     * ListView Item �����¼�
-     */
-    OnItemClickListener mItemClickListener = new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-            Intent intent = new Intent(MainActivity.this, ConsumeDetailActivity.class);
-            intent.putExtra(ConsumeDetailActivity.CONSUME_RECORD, mRecords.get(position - 1));
-            MainActivity.this.startActivity(intent);
-            
-        }
-    };
-
-    /**
-     * ListView���������¼�
-     */
-    OnRefreshListener2<ListView> mOnRefreshListener = new OnRefreshListener2<ListView>() {
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-            Integer[] params = new Integer[5];
-            params[0] = mQueryYear;
-            params[1] = mQueryMonth;
-            params[2] = mCurrentPage;
-            params[3] = NUM_PER_PAGE;
-            params[4] = mCurrentQueryItem;
-            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[0]:"
-                    + params[0]);
-            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[1]:"
-                    + params[1]);
-            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[2]:"
-                    + params[2]);
-            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[3]:"
-                    + params[3]);
-            Log.i("hjf", "ConsumeFragment - onPullUpToRefresh - params[4]:"
-                    + params[4]);
-            if (!mIsInRefresh) {
-                mIsInRefresh = true;
-                new LoadConsumeRecordTask(MainActivity.this,
-                        MainActivity.this).execute(params);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQ_CODE_QUERY_INFO) {
+                mQueryInfo = data.getParcelableExtra("query_info");
+                if (mQueryInfo != null) {
+                    refreshQueryStatus();
+                    loadData();
+                }
             }
-
         }
-    };
-
+    }
 
     @Override
     public void onLeftClick() {
