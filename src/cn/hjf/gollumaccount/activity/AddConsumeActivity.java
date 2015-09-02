@@ -60,8 +60,8 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_add_record);
-        mConsumeRecordService = new ConsumeRecordService(this);
-        mConsumeItemService = new ConsumeItemService(this);
+//        mConsumeRecordService = new ConsumeRecordService(this);
+//        mConsumeItemService = new ConsumeItemService(this);
         
         initTitle();
         initView();
@@ -101,7 +101,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
      */
     @Override
     protected void initValue() {
-        mTypes = mConsumeItemService.getAllItemName();
+//        mTypes = mConsumeItemService.getAllItemName();
         mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner,
                 mTypes);
         mConsumeTypeSpinner.setAdapter(mArrayAdapter);
@@ -117,7 +117,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
             public void onClick(View v) {
                 if (validateInput()) {
                     mCreateButton.setEnabled(false);
-                    mConsumeRecordService.saveRecord(getConsume());
+//                    mConsumeRecordService.saveRecord(getConsume());
                     AddConsumeActivity.this.finish();
                 }
             }

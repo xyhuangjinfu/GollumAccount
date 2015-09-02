@@ -62,7 +62,7 @@ public class MonthStatisticActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_month_compare);
-        mConsumeItemService = new ConsumeItemService(this);
+//        mConsumeItemService = new ConsumeItemService(this);
         
         initTitle();
         initView();
@@ -201,7 +201,7 @@ public class MonthStatisticActivity extends BaseActivity implements
         }
         // 初始化分类下拉列表数据
         mItemData = new ArrayList<String>();
-        mItemData = mConsumeItemService.getAllItemName();
+//        mItemData = mConsumeItemService.getAllItemName();
         mItemData.add("汇总");
     }
 

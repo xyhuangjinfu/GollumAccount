@@ -10,7 +10,8 @@ public class ConsumeType {
     
     public enum Type {
         INSIDE, //内置类型
-        CUSTOME //自定义类型
+        CUSTOME, //自定义类型
+        CONTROL //控制类型
     }
 
 	private int id; //唯一标识
@@ -20,8 +21,9 @@ public class ConsumeType {
 	public ConsumeType () {
 	}
 	
-	public ConsumeType (String name) {
+	public ConsumeType (String name, Type type) {
 	    this.name = name;
+	    this.type = type;
 	}
 
 	public int getId() {
@@ -48,6 +50,25 @@ public class ConsumeType {
         this.type = type;
     }
 	
+	@Override
+	public int hashCode() {
+	    return name == null ? 0 : name.hashCode();
+	}
 	
+	@Override
+	public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ConsumeType)) {
+            return false;
+        }
+        ConsumeType t = (ConsumeType) o;
+        if (this.name.equals(t.name)) {
+            return true;
+        } else {
+            return false;
+        }
+	}
 
 }

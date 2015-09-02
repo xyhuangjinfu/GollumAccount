@@ -26,7 +26,7 @@ public class ConsumeTypeAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mTypes.size();
+        return mTypes == null ? 0 : mTypes.size();
     }
 
     @Override
@@ -51,9 +51,8 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Log.i("O_O", mTypes.get(position).getName());
         if (mTypes.get(position).getName().equals("添加类型")) {
-            holder.icon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_add_type));
+            holder.icon.setImageResource(R.drawable.ic_add_type);
         }
         holder.name.setText(mTypes.get(position).getName());
         return convertView;

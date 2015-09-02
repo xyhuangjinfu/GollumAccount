@@ -10,7 +10,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 /**
- * ·ÖÒ³¼ÓÔØÏû·Ñ¼ÇÂ¼Êý¾ÝµÄAsyncTask
+ * ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ýµï¿½AsyncTask
  * 
  * @author huangjinfu
  * 
@@ -18,12 +18,12 @@ import android.os.AsyncTask;
 public class LoadConsumeRecordTask extends
 		AsyncTask<Integer, Void, ArrayList<ConsumeRecord>> {
 
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµÎñÂß¼­¶ÔÏó
-	private OnRecordLoadCallback mListener; // Êý¾Ý¼ÓÔØÍê³É¼àÌý¶ÔÏó
-	private Context mContext; // ÉÏÏÂÎÄ¶ÔÏó
+	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private OnRecordLoadCallback mListener; // ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private Context mContext; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 
 	/**
-	 * Êý¾Ý¼ÓÔØÍê³Éµ÷ÓÃµÄ¼àÌýÆ÷
+	 * ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ÃµÄ¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @author huangjinfu
 	 * 
@@ -36,7 +36,7 @@ public class LoadConsumeRecordTask extends
 	public LoadConsumeRecordTask(Context context, OnRecordLoadCallback listener) {
 		this.mContext = context;
 		this.mListener = listener;
-		mConsumeRecordService = new ConsumeRecordService(mContext);
+//		mConsumeRecordService = new ConsumeRecordService(mContext);
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class LoadConsumeRecordTask extends
 		ArrayList<ConsumeRecord> result = new ArrayList<ConsumeRecord>();
 		long[] times = getAnalyseTime(params[0], params[1]);
 		if (params[4] == 9) {
-			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3]);
+//			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3]);
 		} else {
-			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3], params[4]);
+//			result = mConsumeRecordService.findRecordByPage(times[0], times[1], params[2], params[3], params[4]);
 		}
 		return result;
 //		return mConsumeRecordService.findRecordByPage(params[0], params[1]);
@@ -60,7 +60,7 @@ public class LoadConsumeRecordTask extends
 	}
 	
 	/**
-	 * ¸ù¾ÝÄê·ÝºÍÔÂ·Ý¼ÆËã²éÑ¯Ê±¼ä
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ýºï¿½ï¿½Â·Ý¼ï¿½ï¿½ï¿½ï¿½Ñ¯Ê±ï¿½ï¿½
 	 * 
 	 * @param year
 	 * @param month

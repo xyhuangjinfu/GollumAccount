@@ -74,8 +74,8 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         } else {
             mConsumeRecord = (ConsumeRecord) intent.getSerializableExtra(RECORD);
         }
-        mConsumeRecordService = new ConsumeRecordService(this);
-        mConsumeItemService = new ConsumeItemService(this);
+//        mConsumeRecordService = new ConsumeRecordService(this);
+//        mConsumeItemService = new ConsumeItemService(this);
         
         initTitle();
         initView();
@@ -117,7 +117,7 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
      */
     @Override
     protected void initValue() {
-        mItemNames = mConsumeItemService.getAllItemName();
+//        mItemNames = mConsumeItemService.getAllItemName();
         mConsumeNameEditText.setText(this.mConsumeRecord.getRecordName());
         mConsumePriceEditText.setText(String.valueOf(this.mConsumeRecord
                 .getRecordPrice()));
@@ -153,7 +153,7 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                 if (mButtonFlag) { // 提交
                     if (validateInput()) {
                         mOperateButton.setEnabled(false);
-                        mConsumeRecordService.updateRecord(constructRecord());
+//                        mConsumeRecordService.updateRecord(constructRecord());
                         ConsumeDetailActivity.this.finish();
                     }
                 } else { // 修改

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 /**
- * ¼ÆËã°´·ÖÀà²é¿´Ïû·ÑÇé¿öµÄÊý¾Ý²éÑ¯µÄAsyncTask
+ * ï¿½ï¿½ï¿½ã°´ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½Ñ¯ï¿½ï¿½AsyncTask
  * 
  * @author huangjinfu
  * 
@@ -16,12 +16,12 @@ import android.os.AsyncTask;
 public class ItemCompareTask extends
 		AsyncTask<Long, Void, HashMap<Integer, Double>> {
 
-	private Context mContext; // ÉÏÏÂÎÄ¶ÔÏó
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµÎñÂß¼­¶ÔÏó
-	private OnItemCompareSuccessCallback mListener; // »Øµ÷¼àÌý¶ÔÏó
+	private Context mContext; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private OnItemCompareSuccessCallback mListener; // ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	/**
-	 * Êý¾Ý¼ÓÔØÍê³Éµ÷ÓÃµÄ¼àÌýÆ÷
+	 * ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ÃµÄ¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @author huangjinfu
 	 * 
@@ -35,12 +35,13 @@ public class ItemCompareTask extends
 			OnItemCompareSuccessCallback listener) {
 		this.mContext = context;
 		this.mListener = listener;
-		mConsumeRecordService = new ConsumeRecordService(mContext);
+//		mConsumeRecordService = new ConsumeRecordService(mContext);
 	}
 
 	@Override
 	protected HashMap<Integer, Double> doInBackground(Long... params) {
-		return mConsumeRecordService.findPriceSumByItem(params[0], params[1]);
+//		return mConsumeRecordService.findPriceSumByItem(params[0], params[1]);
+	    return null;
 	}
 
 	@Override

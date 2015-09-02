@@ -62,7 +62,7 @@ public class TypeStatisticActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_item_compare);
-        mConsumeItemService = new ConsumeItemService(this);
+//        mConsumeItemService = new ConsumeItemService(this);
         Calendar calendar = Calendar.getInstance();
         mAnalyseYear = calendar.get(Calendar.YEAR);
         mAnalyseMonth = calendar.get(Calendar.MONTH) + 1;
@@ -228,15 +228,15 @@ public class TypeStatisticActivity extends BaseActivity implements
      */
     private float getSumPrice(HashMap<Integer, Double> result) {
         float sum = 0;
-        if (isHaveData(result)) {
-            for (int i = 0; i <= mConsumeItemService.findItemAll().size(); i++) {
-                if ((result.get(i) != null) && (result.get(i) != 0)) {
-                    float price = (float) ((double) result.get(i));
-                    Log.i("hjf", "price:" + price);
-                    sum = sum + price;
-                }
-            }
-        }
+//        if (isHaveData(result)) {
+//            for (int i = 0; i <= mConsumeItemService.findItemAll().size(); i++) {
+//                if ((result.get(i) != null) && (result.get(i) != 0)) {
+//                    float price = (float) ((double) result.get(i));
+//                    Log.i("hjf", "price:" + price);
+//                    sum = sum + price;
+//                }
+//            }
+//        }
         return sum;
     }
 
@@ -249,12 +249,12 @@ public class TypeStatisticActivity extends BaseActivity implements
     private boolean isHaveData(HashMap<Integer, Double> map) {
         Log.i("hjf", "isHaveData");
         boolean result = false;
-        for (int i = 0; i < mConsumeItemService.findItemAll().size(); i++) {
-            if ((map.get(i) != null) && (map.get(i) != 0)) {
-                Log.i("hjf", i + "---" + String.valueOf(map.get(i)));
-                result = true;
-            }
-        }
+//        for (int i = 0; i < mConsumeItemService.findItemAll().size(); i++) {
+//            if ((map.get(i) != null) && (map.get(i) != 0)) {
+//                Log.i("hjf", i + "---" + String.valueOf(map.get(i)));
+//                result = true;
+//            }
+//        }
         return result;
     }
 
@@ -270,13 +270,13 @@ public class TypeStatisticActivity extends BaseActivity implements
             // 初始化 x、y轴的值ֵ
             ArrayList<String> xVals = new ArrayList<String>();
             ArrayList<Entry> yVals = new ArrayList<Entry>();
-            for (int i = 0; i <= mConsumeItemService.findItemAll().size(); i++) {
-                if ((map.get(i) != null) && (map.get(i) != 0)) {
-                    xVals.add(mConsumeItemService.findItemById(i).getName());
-                    float price = (float) ((double) map.get(i));
-                    yVals.add(new Entry(price, i));
-                }
-            }
+//            for (int i = 0; i <= mConsumeItemService.findItemAll().size(); i++) {
+//                if ((map.get(i) != null) && (map.get(i) != 0)) {
+//                    xVals.add(mConsumeItemService.findItemById(i).getName());
+//                    float price = (float) ((double) map.get(i));
+//                    yVals.add(new Entry(price, i));
+//                }
+//            }
             PieDataSet dataSet = new PieDataSet(yVals, null);
             // 指定每个值得颜色
             ArrayList<Integer> colors = new ArrayList<Integer>();

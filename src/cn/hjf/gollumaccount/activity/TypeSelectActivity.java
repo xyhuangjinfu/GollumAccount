@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeTypeAdapter;
+import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.model.ConsumeType;
@@ -30,6 +31,12 @@ public class TypeSelectActivity extends BaseActivity implements CommonHeaderFrag
     private GridView mTypeView;
     private ConsumeTypeAdapter mAdapter;
     private List<ConsumeType> mTypeData;
+    
+    private ConsumeTypeManagerBusiness mConsumeTypeManagerBusiness;
+    
+    public TypeSelectActivity() {
+        mConsumeTypeManagerBusiness = new ConsumeTypeManagerBusiness(this);
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +67,7 @@ public class TypeSelectActivity extends BaseActivity implements CommonHeaderFrag
 
     @Override
     protected void initValue() {
-        String[] types = this.getResources().getStringArray(R.array.consume_types);
-        if (mTypeData == null) {
-            mTypeData = new ArrayList<ConsumeType>();
-        }
-        for (int i = 0; i < types.length; i++) {
-            mTypeData.add(new ConsumeType(types[i]));
-        }
-        mTypeData.add(new ConsumeType("添加类型"));
+        mTypeData = mConsumeTypeManagerBusiness.getAllType();
         mAdapter = new ConsumeTypeAdapter(this, mTypeData);
         mTypeView.setAdapter(mAdapter);
     }

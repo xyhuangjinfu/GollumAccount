@@ -1,6 +1,7 @@
 package cn.hjf.gollumaccount;
 
-import cn.hjf.gollumaccount.db.ConsumeTypeDao;
+import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
+import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.GASQLiteDatabase;
 
 import com.tencent.bugly.crashreport.CrashReport;
@@ -31,8 +32,8 @@ public class MyApplication extends Application {
 		// ��ʼ����Ŀ�е�����·��
 		initPath();
 		
-		ConsumeTypeDao d = new ConsumeTypeDao(new GASQLiteDatabase(this));
-		Log.i("O_O", "exist:" + d.isTableExist());
+		ConsumeTypeManagerBusiness d = new ConsumeTypeManagerBusiness(this);
+		d.initInsideType();
 		
 
 	}

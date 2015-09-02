@@ -18,33 +18,33 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 /**
- * Ïû·Ñ¼ÇÂ¼²éÑ¯¶Ô»°¿ò
+ * ï¿½ï¿½Ñ¼ï¿½Â¼ï¿½ï¿½Ñ¯ï¿½Ô»ï¿½ï¿½ï¿½
  * @author huangjinfu
  *
  */
 public class ConsumeQueryDialog {
 	
-	private static AlertDialog mQueryDialog; //Ïû·Ñ²éÑ¯¶Ô»°¿ò
-	private View mDialogView; //¶Ô»°¿ò¼ÓÔØµÄ²¼¾ÖÎÄ¼þ
-	private Spinner mYearSpinner; //Äê·ÝÑ¡Ôñ
-	private Spinner mMonthSpinner; //ÔÂ·ÝÑ¡Ôñ
-	private Spinner mItemSpinner; //·ÖÀàÑ¡Ôñ
-	private Button mCancelButton; //È¡Ïû°´Å¥
-	private Button mQueryButton; //²éÑ¯°´Å¥
+	private static AlertDialog mQueryDialog; //ï¿½ï¿½Ñ²ï¿½Ñ¯ï¿½Ô»ï¿½ï¿½ï¿½
+	private View mDialogView; //ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½ØµÄ²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+	private Spinner mYearSpinner; //ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	private Spinner mMonthSpinner; //ï¿½Â·ï¿½Ñ¡ï¿½ï¿½
+	private Spinner mItemSpinner; //ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	private Button mCancelButton; //È¡ï¿½ï¿½Å¥
+	private Button mQueryButton; //ï¿½ï¿½Ñ¯ï¿½ï¿½Å¥
 	
-	private Context mContext; //ÉÏÏÂÎÄ¶ÔÏó
-	private OnQueryListener mListener; //ÊÂ¼þ»Øµ÷½Ó¿Ú
+	private Context mContext; //ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+	private OnQueryListener mListener; //ï¿½Â¼ï¿½ï¿½Øµï¿½ï¿½Ó¿ï¿½
 	
-	private ArrayList<String> mYearData ; //Äê·ÝÊý¾Ý
-	private ArrayList<String> mMonthData ; //ÔÂ·ÝÊý¾Ý
-	private ArrayList<String> mItemData; //·ÖÀàÊý¾Ý
-	private ConsumeItemService mConsumeItemService; //·ÖÀàÊµÌåµÄÒµÎñÂß¼­¶ÔÏó
-	private int mYear; //Äê·Ý
-	private int mMonth; //ÔÂ·Ý
-	private int mItem; //·ÖÀà
+	private ArrayList<String> mYearData ; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private ArrayList<String> mMonthData ; //ï¿½Â·ï¿½ï¿½ï¿½ï¿½
+	private ArrayList<String> mItemData; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private ConsumeItemService mConsumeItemService; //ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int mYear; //ï¿½ï¿½ï¿½
+	private int mMonth; //ï¿½Â·ï¿½
+	private int mItem; //ï¿½ï¿½ï¿½ï¿½
 	
 	/**
-	 * ÊÂ¼þ»Øµ÷½Ó¿Ú
+	 * ï¿½Â¼ï¿½ï¿½Øµï¿½ï¿½Ó¿ï¿½
 	 * @author huangjinfu
 	 *
 	 */
@@ -57,11 +57,11 @@ public class ConsumeQueryDialog {
 	}
 	
 	/**
-	 * ÏÔÊ¾¶Ô»°¿ò
+	 * ï¿½ï¿½Ê¾ï¿½Ô»ï¿½ï¿½ï¿½
 	 * @param context
 	 */
 	public void show() {
-		//¼ÓÔØ²¼¾ÖÎÄ¼þ
+		//ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		mDialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_query_consume, null);
 		
 		initView(mDialogView);
@@ -71,7 +71,7 @@ public class ConsumeQueryDialog {
 		initViewValue();
 		
 		
-		//³õÊ¼»¯Dialog
+		//ï¿½ï¿½Ê¼ï¿½ï¿½Dialog
 		if (mQueryDialog == null) {
 			mQueryDialog = new AlertDialog.Builder(mContext).setView(mDialogView).create();
 		}
@@ -79,7 +79,7 @@ public class ConsumeQueryDialog {
 	}
 	
 	/**
-	 * ÊµÀý»¯¸÷¿Ø¼þ
+	 * Êµï¿½ï¿½ï¿½ï¿½Ø¼ï¿½
 	 * @param view
 	 */
 	private void initView(View view) {
@@ -91,17 +91,17 @@ public class ConsumeQueryDialog {
 	}
 	
 	/**
-	 * ³õÊ¼»¯¸÷¿Ø¼þµÄÖµ
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½Öµ
 	 */
 	private void initViewValue() {
-		//Äê·ÝÊý¾Ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		mYearData = new ArrayList<String>();
 		for (int i = TimeUtil.getNowYear(); i >= 1980 ; i--) {
 			mYearData.add(String.valueOf(i));
 		}
 		mYearSpinner.setAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, mYearData));
 		
-		//ÔÂ·ÝÊý¾Ý
+		//ï¿½Â·ï¿½ï¿½ï¿½ï¿½
 		mMonthData = new ArrayList<String>();
 		for (int j = 1; j <= 12; j++) {
 			mMonthData.add(String.valueOf(j));
@@ -109,20 +109,20 @@ public class ConsumeQueryDialog {
 		mMonthSpinner.setAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, mMonthData));
 		mMonthSpinner.setSelection(TimeUtil.getNowMonth(), true);
 		
-		//·ÖÀàÊý¾Ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		mItemData = new ArrayList<String>();
-		mConsumeItemService = new ConsumeItemService(mContext); //ÊµÀý»¯ÒµÎñÂß¼­¶ÔÏó
-		mItemData = mConsumeItemService.getAllItemName();
-		mItemData.add("»ã×Ü");
+//		mConsumeItemService = new ConsumeItemService(mContext); //Êµï¿½ï¿½Òµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+//		mItemData = mConsumeItemService.getAllItemName();
+		mItemData.add("ï¿½ï¿½ï¿½ï¿½");
 		mItemSpinner.setAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, mItemData));
 		mItemSpinner.setSelection(mItemData.size() - 1, true);
 	}
 	
 	/**
-	 * ÉèÖÃ¸÷¿Ø¼þµÄÊÂ¼þ
+	 * ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	 */
 	private void initViewEvent() {
-		//È¡Ïû°´Å¥ÊÂ¼þ
+		//È¡ï¿½ï¿½Å¥ï¿½Â¼ï¿½
 		mCancelButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -132,7 +132,7 @@ public class ConsumeQueryDialog {
 			}
 		});
 		
-		//²éÑ¯°´Å¥ÊÂ¼þ
+		//ï¿½ï¿½Ñ¯ï¿½ï¿½Å¥ï¿½Â¼ï¿½
 		mQueryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -145,7 +145,7 @@ public class ConsumeQueryDialog {
 			}
 		});
 		
-		//Äê·ÝÑ¡ÔñÊÂ¼þ
+		//ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Â¼ï¿½
 		mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -162,7 +162,7 @@ public class ConsumeQueryDialog {
 			}
 		});
 		
-		//ÔÂ·ÝÑ¡ÔñÊÂ¼þ
+		//ï¿½Â·ï¿½Ñ¡ï¿½ï¿½ï¿½Â¼ï¿½
 		mMonthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -180,7 +180,7 @@ public class ConsumeQueryDialog {
 			}
 		});
 		
-		//·ÖÀàÑ¡ÔñÊÂ¼þ
+		//ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Â¼ï¿½
 		mItemSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -199,7 +199,7 @@ public class ConsumeQueryDialog {
 	}
 	
 	/**
-	 * ¹Ø±Õ¶Ô»°¿ò
+	 * ï¿½Ø±Õ¶Ô»ï¿½ï¿½ï¿½
 	 */
 	private void close() {
 		if ((mQueryDialog != null) && mQueryDialog.isShowing()) {
@@ -208,7 +208,7 @@ public class ConsumeQueryDialog {
 	}
 	
 	/**
-	 * ÉèÖÃ»Øµ÷¼àÌý
+	 * ï¿½ï¿½ï¿½Ã»Øµï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param listener
 	 */
 	public void setOnQueryListener(OnQueryListener listener) {

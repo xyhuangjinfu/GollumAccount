@@ -13,13 +13,13 @@ import android.util.Log;
 public class MonthCompareTask extends
 		AsyncTask<Integer, Void, HashMap<Integer, Double>> {
 
-	private Context mContext; // ÉÏÏÂÎÄ¶ÔÏó
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµÎñÂß¼­¶ÔÏó
-	private ConsumeItemService mConsumeItemService; // ConsumeItemÒµÎñÂß¼­¶ÔÏó
-	private OnMonthCompareSuccessCallback mListener; // Êý¾Ý¼ÓÔØÍê³É¼àÌý¶ÔÏó
+	private Context mContext; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private ConsumeItemService mConsumeItemService; // ConsumeItemÒµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	private OnMonthCompareSuccessCallback mListener; // ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	/**
-	 * Êý¾Ý¼ÓÔØÍê³Éµ÷ÓÃµÄ¼àÌýÆ÷
+	 * ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ÃµÄ¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @author huangjinfu
 	 * 
@@ -33,8 +33,8 @@ public class MonthCompareTask extends
 			OnMonthCompareSuccessCallback listener) {
 		this.mContext = context;
 		this.mListener = listener;
-		mConsumeRecordService = new ConsumeRecordService(mContext);
-		mConsumeItemService = new ConsumeItemService(mContext);
+//		mConsumeRecordService = new ConsumeRecordService(mContext);
+//		mConsumeItemService = new ConsumeItemService(mContext);
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class MonthCompareTask extends
 		if (params[1] == 9) {
 			for (int i = 0; i < 12; i++) {
 				long[] time = getAnalyseTime(params[0], i + 1);
-				map.put(i, mConsumeRecordService.findPriceSum(time[0], time[1]));
+//				map.put(i, mConsumeRecordService.findPriceSum(time[0], time[1]));
 			}
 		} else {
 			for (int i = 0; i < 12; i++) {
 				long[] time = getAnalyseTime(params[0], i + 1);
-				map.put(i, mConsumeRecordService.findPriceSum(time[0], time[1], params[1]));
+//				map.put(i, mConsumeRecordService.findPriceSum(time[0], time[1], params[1]));
 			}
 		}
 
@@ -63,7 +63,7 @@ public class MonthCompareTask extends
 	};
 
 	/**
-	 * ¸ù¾ÝÄê·ÝºÍÔÂ·Ý¼ÆËã²éÑ¯Ê±¼ä
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ýºï¿½ï¿½Â·Ý¼ï¿½ï¿½ï¿½ï¿½Ñ¯Ê±ï¿½ï¿½
 	 * 
 	 * @param year
 	 * @param month
