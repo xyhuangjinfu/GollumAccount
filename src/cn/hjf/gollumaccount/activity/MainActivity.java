@@ -22,6 +22,7 @@ import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.model.ConsumeType;
 import cn.hjf.gollumaccount.model.QueryInfo;
+import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -98,6 +99,8 @@ public class MainActivity extends BaseActivity implements
 		initEvent();
 			
 		loadData();
+		
+		new LoadingDialog(this, R.style.translucent_dialog).show();
 	}
 	
     /**

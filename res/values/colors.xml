@@ -2,4 +2,6 @@
 <resources>
     <color name="font_gray">#82898C</color>
     <color name="font_black">#000000</color>
+    <color name="translucent">#50000000</color>
+    <color name="transparent">#00000000</color>
 </resources>
