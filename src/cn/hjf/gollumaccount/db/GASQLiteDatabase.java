@@ -18,7 +18,7 @@ public class GASQLiteDatabase {
     private static final boolean DEBUG = true;
     private static final String TAG = "GASQLiteDatabase";
     
-    private static final String DB_NAME = "accountxx.db";
+    private static final String DB_NAME = "account.db";
     private static final int DB_VERSION = 1;
     
     private SQLiteDatabase mDB;

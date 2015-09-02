@@ -56,15 +56,12 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     private ConsumeType mConsumeType; // 消费类型
     private ConsumeRecord mConsumeRecord; //消费记录
     private ConsumeRecordManagerBusiness mConsumeRecordManagerBusiness; //消费记录管理业务逻辑
-
-    private boolean mDateFlag = false; // 是否已经选择日期，true-已经选择
-    private boolean mTimeFlag = false; // 是否已经选择时间，true-已经选择
-    private int[] mConsumeTime = new int[5]; // 消费时间，0-年、1-月、2-日、3-时、4-分
-    
+    private Calendar mConsumeCalendar; //消费时间
     
     public AddConsumeActivity() {
         mConsumeRecordManagerBusiness = new ConsumeRecordManagerBusiness(this);
         mConsumeRecord = new ConsumeRecord();
+        mConsumeCalendar = Calendar.getInstance();
     }
 
     @Override
@@ -77,6 +74,14 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
         initValue();
         initEvent();
 
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mConsumeRecordManagerBusiness = null;
+        mConsumeRecord = null;
+        mConsumeCalendar = null;
     }
 
     
@@ -147,22 +152,19 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     OnClickListener OnDateClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Calendar calendar = Calendar.getInstance();
             mDatePickerDialog = new DatePickerDialog(AddConsumeActivity.this,
                     new OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                 int monthOfYear, int dayOfMonth) {
-                            mDateFlag = true;
-                            mConsumeTime[0] = year;
-                            mConsumeTime[1] = monthOfYear;
-                            mConsumeTime[2] = dayOfMonth;
-                            mConsumeDateTextView.setText(year + "-"
-                                    + (monthOfYear + 1) + "-" + dayOfMonth);
+                            mConsumeCalendar.set(Calendar.YEAR, year);
+                            mConsumeCalendar.set(Calendar.MONTH, monthOfYear);
+                            mConsumeCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                         }
-                    }, calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH));
+                    }, mConsumeCalendar.get(Calendar.YEAR),
+                    mConsumeCalendar.get(Calendar.MONTH),
+                    mConsumeCalendar.get(Calendar.DAY_OF_MONTH));
             mDatePickerDialog.show();
         }
     };
@@ -170,20 +172,17 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     OnClickListener OnTimeClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Calendar calendar = Calendar.getInstance();
             mTimePickerDialog = new TimePickerDialog(AddConsumeActivity.this,
                     new OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                 int minute) {
-                            mTimeFlag = true;
-                            mConsumeTime[3] = hourOfDay;
-                            mConsumeTime[4] = minute;
-                            mConsumeTimeTextView.setText(hourOfDay + ":"
-                                    + minute + ":" + "00");
+                            mConsumeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            mConsumeCalendar.set(Calendar.MINUTE, minute);
+                            mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
                         }
-                    }, calendar.get(Calendar.HOUR_OF_DAY),
-                    calendar.get(Calendar.MINUTE), false);
+                    }, mConsumeCalendar.get(Calendar.HOUR_OF_DAY),
+                    mConsumeCalendar.get(Calendar.MINUTE), false);
             mTimePickerDialog.show();
         }
     };
@@ -199,28 +198,10 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
                 .toString());
         mConsumeRecord.setRecordTypeId(mConsumeType.getId());
         mConsumeRecord.setRecordRemark(mConsumeRemarkEditText.getText().toString());
-        mConsumeRecord.setConsumeTime(String.valueOf(this.getConsumeTime().getTime()));
+        mConsumeRecord.setConsumeTime(String.valueOf(mConsumeCalendar.getTime().getTime()));
         mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));
         mConsumeRecord.setConsumer(mConsumerEditText.getText().toString());
         mConsumeRecord.setPayer(mPayerEditText.getText().toString());
-    }
-
-    /**
-     * 根据日期和时间选择控件的值，生成消费时间
-     * 
-     * @return
-     */
-    private Date getConsumeTime() {
-        int year = mConsumeTime[0];
-        int month = mConsumeTime[1];
-        int day = mConsumeTime[2];
-        int hour = mConsumeTime[3];
-        int minute = mConsumeTime[4];
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
-        Date date = calendar.getTime();
-        return date;
-
     }
 
     /**
@@ -230,19 +211,25 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
      */
     private boolean validateInput() {
         boolean result = false;
-        if (mConsumeNameEditText.getText().toString().equals("")
-                || mConsumeNameEditText.getText().toString() == null) {
+        if (mConsumeNameEditText.getText().toString() == null
+                || mConsumeNameEditText.getText().toString().equals("")) {
             Toast.makeText(this, "消费名称为空", Toast.LENGTH_SHORT).show();
             return result;
-        } else if (mConsumePriceEditText.getText().toString().equals("")
-                || mConsumePriceEditText.getText().toString() == null) {
+        } else if (mConsumePriceEditText.getText().toString() == null
+                || mConsumePriceEditText.getText().toString().equals("")) {
             Toast.makeText(this, "消费金额为空", Toast.LENGTH_SHORT).show();
             return result;
-        } else if (!mDateFlag) {
+        } else if (mConsumeDateTextView.getText().toString() == null
+                || mConsumeDateTextView.getText().toString().equals("")) {
             Toast.makeText(this, "请选择消费日期", Toast.LENGTH_SHORT).show();
             return result;
-        } else if (!mTimeFlag) {
+        } else if (mConsumeTimeTextView.getText().toString() == null
+                || mConsumeTimeTextView.getText().toString().equals("")) {
             Toast.makeText(this, "请选择消费时间", Toast.LENGTH_SHORT).show();
+            return result;
+        } else if (mConsumeTypeTextView.getText().toString() == null
+                || mConsumeTypeTextView.getText().toString().equals("")) {
+            Toast.makeText(this, "请选择消费类型", Toast.LENGTH_SHORT).show();
             return result;
         } else {
             result = true;
