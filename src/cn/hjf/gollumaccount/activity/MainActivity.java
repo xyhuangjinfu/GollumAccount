@@ -20,6 +20,7 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.model.ConsumeRecord;
+import cn.hjf.gollumaccount.model.ConsumeType;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -138,7 +139,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initValue() {
-        mRecords = new ConsumeRecordManagerBusiness(this).queryAllRecord();
+        ConsumeType type = new ConsumeType();
+        type.setId(7);
+        mRecords = new ConsumeRecordManagerBusiness(this).queryAllRecordByType(type);
 //        mRecords = new ArrayList<ConsumeRecord>();
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
                 mRecords);
@@ -166,7 +169,7 @@ public class MainActivity extends BaseActivity implements
                     + params[4]);
             if (!mIsInRefresh) {
                 mIsInRefresh = true;
-                LoadDialog.show(this);
+//                LoadDialog.show(this);
                 new LoadConsumeRecordTask(this, this)
                         .execute(params);
             }
@@ -193,7 +196,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
 //                mConsumeQueryDialog.show();
-                Intent intent = new Intent(MainActivity.this, TypeSelectActivity.class);
+                Intent intent = new Intent(MainActivity.this, QueryActivity.class);
                 startActivity(intent);
             }
         });
@@ -249,7 +252,7 @@ public class MainActivity extends BaseActivity implements
         Log.i("hjf", "ConsumeFragment - refreshData - params[4]:" + params[4]);
         if (!mIsInRefresh) {
             mIsInRefresh = true;
-            LoadDialog.show(this);
+//            LoadDialog.show(this);
             new LoadConsumeRecordTask(MainActivity.this,
                     MainActivity.this).execute(params);
         }

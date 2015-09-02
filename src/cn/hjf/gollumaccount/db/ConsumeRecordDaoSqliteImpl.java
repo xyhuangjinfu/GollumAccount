@@ -2,6 +2,7 @@ package cn.hjf.gollumaccount.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.model.ConsumeType;
@@ -61,7 +62,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     public boolean insert(ConsumeRecord record) {
         boolean result = true;
         try {
-            mDB.open().execSQL(mSqlBuilder.insertType(record));
+            mDB.open().execSQL(mSqlBuilder.insertRecord(record));
         } catch (SQLException e) {
             e.printStackTrace();
             result = false;
@@ -73,13 +74,57 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
 
     @Override
     public boolean update(ConsumeRecord record) {
-        return false;
+        boolean result = true;
+        try {
+            mDB.open().execSQL(mSqlBuilder.updateRecord(record));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            mDB.close();
+        }
+        return result;
     }
 
     @Override
     public List<ConsumeRecord> queryAll() {
-        List<ConsumeRecord> records = new ArrayList<ConsumeRecord>();
+        List<ConsumeRecord> records = null;
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAll(), null);
+        records = getRecordsFromCursor(cursor);
+        cursor.close();
+        mDB.close();
+        return records;
+    }
+    
+
+    @Override
+    public List<ConsumeRecord> queryAllByParameter(Map<String, String> paras) {
+        List<ConsumeRecord> records = null;
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAllByParameter(paras), null);
+        records = getRecordsFromCursor(cursor);
+        cursor.close();
+        mDB.close();
+        return records;
+    }
+    
+    @Override
+    public List<ConsumeRecord> queryRecords(String startTime, String endTime,
+            int type, String name) {
+        List<ConsumeRecord> records = null;
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryRecords(startTime, endTime, type, name), null);
+        records = getRecordsFromCursor(cursor);
+        cursor.close();
+        mDB.close();
+        return records;
+    }
+    
+    /**
+     * 从Cursor中构造消费记录列表
+     * @param cursor
+     * @return
+     */
+    private List<ConsumeRecord> getRecordsFromCursor(Cursor cursor) {
+        List<ConsumeRecord> records = new ArrayList<ConsumeRecord>();
         while (cursor.moveToNext()) {
             ConsumeRecord record = new ConsumeRecord();
             record.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
@@ -93,8 +138,6 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             record.setCreateTime(cursor.getString(cursor.getColumnIndex(Table.CLM_CREATE_TIME)));
             records.add(record);
         }
-        cursor.close();
-        mDB.close();
         return records;
     }
     
@@ -155,7 +198,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
          * 添加消费记录
          * @return
          */
-        public String insertType(ConsumeRecord record) {
+        public String insertRecord(ConsumeRecord record) {
             StringBuilder sql = new StringBuilder();
             sql.append(" INSERT INTO ");
             sql.append(TABLE_NAME);
@@ -220,12 +263,159 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         }
         
         /**
+         * 更新消费记录
+         * @return
+         */
+        public String updateRecord(ConsumeRecord record) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" UPDATE ");
+            sql.append(TABLE_NAME);
+            sql.append(" SET ");
+            
+                    sql.append(Table.CLM_NAME);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getRecordName());
+                        sql.append("'");
+                    
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_PRICE);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getRecordPrice());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_TYPE);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getRecordTypeId());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_REMARK);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getRecordRemark());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_CONSUMER);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getConsumer());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_PAYER);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getPayer());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_CONSUME_TIME);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getConsumeTime());
+                        sql.append("'");
+                        
+                        sql.append(",");
+                        
+                    sql.append(Table.CLM_CREATE_TIME);
+                        sql.append("=");
+                        sql.append("'");
+                        sql.append(record.getCreateTime());
+                        sql.append("'");
+                        
+                sql.append(" WHERE ");
+                sql.append(Table.CLM_ID);
+                sql.append(" = ");
+                sql.append("'");
+                sql.append(record.getId());
+                sql.append("'");
+                
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
          * 查询所有消费记录
          */
         public String queryAll() {
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT * FROM ");
             sql.append(TABLE_NAME);
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 查询所有消费记录
+         */
+        public String queryAllByParameter(Map<String, String> paras) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT * FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            for (Map.Entry<String, String> entry : paras.entrySet()) {
+                sql.append(entry.getKey());
+                sql.append(" = ");
+                sql.append("'");
+                sql.append(entry.getValue());
+                sql.append("'");
+                sql.append("  ");
+                sql.append("AND");
+            }
+            sql.delete(sql.length() - 3, sql.length());
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 按特定条件查询所有消费记录
+         */
+        public String queryRecords(String startTime, String endTime, int type, String name) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT * FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" >= ");
+                sql.append("'");
+                sql.append(startTime);
+                sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" <= ");
+                sql.append("'");
+                sql.append(endTime);
+                sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_TYPE);
+            sql.append(" == ");
+                sql.append("'");
+                sql.append(type);
+                sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_NAME);
+                sql.append(" LIKE ");
+                    sql.append("'%");
+                    sql.append(name);
+                    sql.append("%'");
+            
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }
