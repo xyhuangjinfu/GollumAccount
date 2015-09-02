@@ -6,7 +6,7 @@ import cn.hjf.gollumaccount.model.ConsumeType;
 
 /**
  * 抽象的消费类型数据访问类
- * @author xfujohn
+ * @author huangjinfu
  *
  */
 public interface IConsumeTypeDao {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeTypeAdapter;
+import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
 import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;

@@ -125,19 +125,19 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                 mItemNames);
         mConsumeTypeSpinner.setAdapter(mArrayAdapter);
         mConsumeTypeSpinner
-                .setSelection(this.mConsumeRecord.getRecordItem() - 1);
+                .setSelection(this.mConsumeRecord.getRecordTypeId() - 1);
         mConsumeDateTextView.setText(TimeUtil.getDateString(this.mConsumeRecord
-                .getRecordTime()));
+                .getConsumeTime()));
         mConsumeTimeTextView.setText(TimeUtil
-                .getShowTimeString(this.mConsumeRecord.getRecordTime()));
+                .getShowTimeString(this.mConsumeRecord.getConsumeTime()));
         mConsumeCreateTimeTextView.setText(TimeUtil
                 .getTimeString(this.mConsumeRecord.getCreateTime()));
-        if (("".equals(this.mConsumeRecord.getRecordRemarks()))
-                || (this.mConsumeRecord.getRecordRemarks() == null)) {
+        if (("".equals(this.mConsumeRecord.getRecordRemark()))
+                || (this.mConsumeRecord.getRecordRemark() == null)) {
             mConsumeRemarksEditText.setHint("备注信息");
         } else {
             mConsumeRemarksEditText.setText(this.mConsumeRecord
-                    .getRecordRemarks());
+                    .getRecordRemark());
         }
 
     }
@@ -221,11 +221,11 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                 .toString());
         this.mConsumeRecord.setRecordPrice(Float.valueOf(mConsumePriceEditText
                 .getText().toString()));
-        this.mConsumeRecord.setRecordItem(mConsumeTypeSpinner
+        this.mConsumeRecord.setRecordTypeId(mConsumeTypeSpinner
                 .getSelectedItemPosition() + 1);
-        this.mConsumeRecord.setRecordRemarks(mConsumeRemarksEditText.getText()
+        this.mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText()
                 .toString());
-        this.mConsumeRecord.setRecordTime(this.getRecordTime().getTime());
+        this.mConsumeRecord.setConsumeTime(this.getRecordTime().getTime());
         this.mConsumeRecord.setCreateTime(System.currentTimeMillis());
         return this.mConsumeRecord;
     }
@@ -241,7 +241,7 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         int day = 0;
         int hour = 0;
         int minute = 0;
-        Date d = new Date(this.mConsumeRecord.getRecordTime());
+        Date d = new Date(this.mConsumeRecord.getConsumeTime());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(d);
         if (mDateModifyFlag) {

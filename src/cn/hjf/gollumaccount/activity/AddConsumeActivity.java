@@ -6,6 +6,7 @@ import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeItemService;
+import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
 import cn.hjf.gollumaccount.business.ConsumeRecordService;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
@@ -51,10 +52,16 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     private ConsumeRecordService mConsumeRecordService; // 消费记录业务逻辑类
     private ArrayList<String> mTypes; // 消费类型数据
     private ConsumeItemService mConsumeItemService; // 消费类型业务逻辑类
+    
+    private ConsumeRecordManagerBusiness mConsumeRecordManagerBusiness;
     /**
      * 顶部标题栏
      */
     private CommonHeaderFragment mTitleFragment;
+    
+    public AddConsumeActivity() {
+        mConsumeRecordManagerBusiness = new ConsumeRecordManagerBusiness(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
                 if (validateInput()) {
                     mCreateButton.setEnabled(false);
 //                    mConsumeRecordService.saveRecord(getConsume());
+                    mConsumeRecordManagerBusiness.addRecord(getConsume());
                     AddConsumeActivity.this.finish();
                 }
             }
@@ -181,9 +189,9 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
         record.setRecordName(mConsumeNameEditText.getText().toString());
         record.setRecordPrice(Float.valueOf(mConsumePriceEditText.getText()
                 .toString()));
-        record.setRecordItem(mConsumeTypeSpinner.getSelectedItemPosition() + 1);
-        record.setRecordRemarks(mConsumeRemarksEditText.getText().toString());
-        record.setRecordTime(this.getConsumeTime().getTime());
+        record.setRecordTypeId(mConsumeTypeSpinner.getSelectedItemPosition() + 1);
+        record.setRecordRemark(mConsumeRemarksEditText.getText().toString());
+        record.setConsumeTime(this.getConsumeTime().getTime());
         record.setCreateTime(System.currentTimeMillis());
         return record;
     }

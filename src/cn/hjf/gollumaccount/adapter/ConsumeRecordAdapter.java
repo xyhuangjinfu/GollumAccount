@@ -92,9 +92,9 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		displayPrice = String.valueOf(record.getRecordPrice());
 		viewHolder.mRecordPrice.setText(displayPrice);
 		viewHolder.mRecordName.setText(displayName);
-		viewHolder.mRecordTime.setText(TimeUtil.getDateString(record.getRecordTime()));
-		viewHolder.mRecordInfo.setText(record.getRecordRemarks());
-		switch (record.getRecordItem()) {
+		viewHolder.mRecordTime.setText(TimeUtil.getDateString(record.getConsumeTime()));
+		viewHolder.mRecordInfo.setText(record.getRecordRemark());
+		switch (record.getRecordTypeId()) {
 		case 1:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.clothes);
 			break;
