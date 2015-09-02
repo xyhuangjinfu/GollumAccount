@@ -40,6 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -72,6 +73,8 @@ public class MainActivity extends BaseActivity implements
 	private View mFooterView; //底部加载视图
 	private LinearLayout mFooterViewLayout;
 	
+	private LoadingDialog mLoadingDialog; //加载对话框
+	
 	private ConsumeQueryDialog mConsumeQueryDialog; // 查询条件输入对话框
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
@@ -100,7 +103,6 @@ public class MainActivity extends BaseActivity implements
 			
 		loadData();
 		
-		new LoadingDialog(this, R.style.translucent_dialog).show();
 	}
 	
     /**
@@ -152,24 +154,24 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void initView() {
         mFooterViewLayout = new LinearLayout(this);
-        mEmptyView = LayoutInflater.from(this).inflate(R.layout.view_no_data, null);
+        mEmptyView = findViewById(R.id.ly_no_data);
         mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
         mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         mAdd = (Button) findViewById(R.id.btn_add);
         mQuery = (Button) findViewById(R.id.btn_query);
         mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
-        mRecordListView.setEmptyView(mEmptyView);
         mRecordListView.addFooterView(mFooterViewLayout);
+        mRecordListView.setEmptyView(mEmptyView);
         mConsumeQueryDialog = new ConsumeQueryDialog(this);
         mConsumeQueryDialog.setOnQueryListener(this);
+        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
     }
 
     @Override
     protected void initValue() {
         mQueryInfo.setPageNumber(1);
         mQueryInfo.setPageSize(NUM_PER_PAGE);
-        mConsumeRecordAdapter = new ConsumeRecordAdapter(this,
-                mRecords);
+        mConsumeRecordAdapter = new ConsumeRecordAdapter(this, mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
 
     }
