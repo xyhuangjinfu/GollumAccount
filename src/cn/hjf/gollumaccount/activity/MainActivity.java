@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,35 +48,28 @@ public class MainActivity extends BaseActivity implements
 		LoadConsumeRecordTask.OnRecordLoadCallback,
         ConsumeQueryDialog.OnQueryListener{
 
-	/**
-	 * 侧滑菜单
-	 */
-	private SideMenuFragment mSideMenuFragment; //����Fragment
+	private SideMenuFragment mSideMenuFragment; //侧滑菜单
+    private CommonHeaderFragment mTitleFragment; //顶部标题栏
 
-	   /**
-     * 顶部标题栏
-     */
-    private CommonHeaderFragment mTitleFragment;
-
-    private TextView mCurrentMonthSum;
-    private Button mAdd;
-    private Button mQuery;
-	private PullToRefreshListView mRecordListView;
-	private ListView mActualRecordListView;
-	private View mEmptyView;
+    private TextView mCurrentMonthSum; //当月累计消费金额
+    private Button mAdd; //记一笔按钮
+    private Button mQuery; //查询按钮
+	private PullToRefreshListView mRecordListView; //上拉刷新ListView
+	private ListView mActualRecordListView; //上拉刷新ListView中包含的实际ListView
+	private View mEmptyView; //ListView没有数据时显示的界面
 	
-	    private boolean mIsInRefresh = false; // �Ƿ�����ִ��ˢ�²������������ִ��ˢ�²���������������ˢ�����
-	    private int mQueryYear = 0; // ��ѯ���
-	    private int mQueryMonth = 0; // ��ѯ�·�
+	private boolean mIsInRefresh = false; // 是否正在刷新的标识
+	private int mQueryYear = 0; // 查询的年份
+	private int mQueryMonth = 0; // 查询的月份
 	    
-	    private ConsumeQueryDialog mConsumeQueryDialog; //��ѯ�Ի���
-	    private int mCurrentQueryItem = 9; //��ǰ�鿴�ķ���
-	    private ArrayList<ConsumeRecord> mRecords; // �����ʾ��Ѽ�¼�����
-	    private boolean mNeedRefreshFlag = true; // �Ƿ���Ҫˢ��ҳ�����
-	    private ConsumeRecordAdapter mConsumeRecordAdapter; // ListView��������
-	    private int mCurrentPage = 1; // ��ǰ�����ʾ���ڼ�ҳ��Ĭ����ʾ��һҳ
-	    private LoadConsumeRecordTask mLoadConsumeRecordTask; // ������Ѽ�¼��ݵ�AsyncTask
-	    private static final int NUM_PER_PAGE = 10; // ÿҳ��ʾ���������
+	private ConsumeQueryDialog mConsumeQueryDialog; // 查询条件输入对话框
+	private int mCurrentQueryItem = 9; // 当前查询的分类
+	private ArrayList<ConsumeRecord> mRecords; // 查询出来的数据记录
+	private boolean mNeedRefreshFlag = true; // 是否需要刷新
+	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
+	private int mCurrentPage = 1; // 当前查询页码
+	private LoadConsumeRecordTask mLoadConsumeRecordTask; // 消费记录查询的AsyncTask
+	private static final int NUM_PER_PAGE = 10; // 每页查询的数量
 	
 
 	@Override
@@ -87,7 +81,6 @@ public class MainActivity extends BaseActivity implements
 		initView();
 		initValue();
 		initEvent();
-		
 			
 	}
 	
@@ -131,11 +124,12 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initView() {
+        mEmptyView = LayoutInflater.from(this).inflate(R.layout.view_no_data, null);
         mAdd = (Button) findViewById(R.id.btn_add);
         mQuery = (Button) findViewById(R.id.btn_query);
         mRecordListView = (PullToRefreshListView) findViewById(R.id.ptflv_consume_list);
         mActualRecordListView = mRecordListView.getRefreshableView();
-//        mActualRecordListView.setEmptyView(mEmptyView);
+        mActualRecordListView.setEmptyView(mEmptyView);
         mConsumeQueryDialog = new ConsumeQueryDialog(this);
         mConsumeQueryDialog.setOnQueryListener(this);
     }
