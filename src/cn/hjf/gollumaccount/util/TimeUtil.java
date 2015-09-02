@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * ´¦ÀíÊ±¼äµÄ¹¤¾ßÀà
+ * æ—¶é—´è½¬æ¢å·¥å…·ç±»
  * 
  * @author huangjinfu
  * 
@@ -13,7 +13,7 @@ import java.util.Date;
 public final class TimeUtil {
 
 	/**
-	 * °ÑlongÀàĞÍµÄÊ±¼ä×ª»»³É×Ö·û´®
+	 * æ ¹æ®longæ—¶é—´å¾—åˆ°æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
 	 * 
 	 * @param time
 	 * @return
@@ -25,7 +25,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * °ÑDateÀàĞÍµÄÊ±¼ä×ª»»³É×Ö·û´®
+	 * æ ¹æ®Dateæ—¶é—´å¾—åˆ°æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
 	 * 
 	 * @param time
 	 * @return
@@ -36,7 +36,7 @@ public final class TimeUtil {
 	}
 	
 	/**
-	 * ·µ»ØÈÕÆÚÏÔÊ¾×Ö·û´®
+	 * æ ¹æ®longæ—¶é—´å¾—åˆ°æ—¥æœŸæ˜¾ç¤ºçš„å­—ç¬¦ä¸²
 	 * @param time
 	 * @return
 	 */
@@ -46,7 +46,7 @@ public final class TimeUtil {
 	}
 	
 	/**
-	 * ·µ»ØÊ±¼äÏÔÊ¾×Ö·û´®
+	 * æ ¹æ®longæ—¶é—´å¾—åˆ°æ—¶åˆ†ç§’æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
 	 * @param time
 	 * @return
 	 */
@@ -56,7 +56,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°Äê·İ
+	 * è·å¾—å½“å‰å¹´
 	 * 
 	 * @return
 	 */
@@ -65,7 +65,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°µÄÔÂ·İ
+	 * è·å¾—å½“å‰æœˆ
 	 * 
 	 * @return
 	 */
@@ -74,7 +74,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * ÅĞ¶ÏÒ»¸öÄê·İÊÇ·ñÊÇÈòÄê
+	 * æ˜¯å¦æ˜¯é—°å¹´
 	 * 
 	 * @param year
 	 * @return
@@ -84,7 +84,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * ¸ù¾İÄê·İºÍÔÂ·İ£¬·µ»ØÕâ¸öÔÂµÄµÚÒ»ÌìµÄÈÕÆÚ
+	 * è·å¾—æŸä¸ªæœˆç¬¬ä¸€å¤©
 	 * 
 	 * @param year
 	 * @param month
@@ -95,7 +95,7 @@ public final class TimeUtil {
 	}
 
 	/**
-	 * ¸ù¾İÄê·İºÍÔÂ·İ£¬·µ»ØÕâ¸öÔÂµÄ×îºóÒ»ÌìµÄÈÕÆÚ
+	 * è·å¾—æŸä¸ªæœˆæœ€åä¸€å¤©
 	 * 
 	 * @param year
 	 * @param month
