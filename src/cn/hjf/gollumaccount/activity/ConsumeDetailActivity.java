@@ -1,14 +1,16 @@
 package cn.hjf.gollumaccount.activity;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.asynctask.UpdateConsumeRecordTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
+import cn.hjf.gollumaccount.view.LoadingDialog;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -17,10 +19,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -32,9 +34,14 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
+public class ConsumeDetailActivity extends BaseActivity implements 
+CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordListener {
 
     public static final String CONSUME_RECORD = "consume_record";
+    private static final int REQ_CODE_SELECT_TYPE = 0;
+    
+    private CommonHeaderFragment mTitleFragment; //顶部标题栏
+    private LoadingDialog mLoadingDialog; //加载对话框
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
@@ -45,16 +52,18 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     private TextView mConsumeCreateTimeTextView; // 消费记录创建时间
     private EditText mConsumeRemarksEditText; // 备注信息
     private Button mOperateButton; // 修改按钮
+    private ImageView mRightImage; //修改类型的又箭头图标
     
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     private TimePickerDialog mTimePickerDialog; // 消费时间选择对话框
     
     private ConsumeRecord mConsumeRecord = null; // 消费记录对象
-    private boolean mButtonFlag; // false-修改，true-提交
-    /**
-     * 顶部标题栏
-     */
-    private CommonHeaderFragment mTitleFragment;
+    private PageStatus mPageStatus; //当前页面模式
+    
+    private enum PageStatus {
+        VIEW, //预览模式，不可编辑
+        EDIT //编辑模式，修改消费记录
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +82,6 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         initValue();
         initEvent();
         
-        setViewUsable(false);
     }
     
     /**
@@ -103,6 +111,9 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         mConsumeCreateTimeTextView = (TextView) findViewById(R.id.tv_record_create_time_detail);
         mConsumeRemarksEditText = (EditText) findViewById(R.id.et_record_remarks_detail);
         mOperateButton = (Button) findViewById(R.id.btn_record_operate);
+        mRightImage = (ImageView) findViewById(R.id.iv_ic_right);
+        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+        mLoadingDialog.setCancelable(false);
     }
 
     /**
@@ -110,23 +121,56 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
      */
     @Override
     protected void initValue() {
-        mConsumeNameEditText.setText(this.mConsumeRecord.getRecordName());
-        mConsumePriceEditText.setText(String.valueOf(this.mConsumeRecord
-                .getRecordPrice()));
-        
-        mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
-        mConsumeDateTextView.setText(TimeUtil.getDateString(this.mConsumeRecord.getConsumeTime()));
-        mConsumeTimeTextView.setText(TimeUtil.getTimeString(this.mConsumeRecord.getConsumeTime()));
-        mConsumeCreateTimeTextView.setText(TimeUtil.getDateTimeString(this.mConsumeRecord.getCreateTime()));
-        if (("".equals(this.mConsumeRecord.getRecordRemark()))
-                || (this.mConsumeRecord.getRecordRemark() == null)) {
-            mConsumeRemarksEditText.setHint("备注信息");
-        } else {
-            mConsumeRemarksEditText.setText(this.mConsumeRecord
-                    .getRecordRemark());
-        }
-
+        changeToView();
     }
+    
+    OnClickListener consumeDateClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Calendar calendar = Calendar.getInstance();
+            mDatePickerDialog = new DatePickerDialog(
+                    ConsumeDetailActivity.this, new OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                int monthOfYear, int dayOfMonth) {
+                            mConsumeRecord.getConsumeTime().set(Calendar.YEAR, year);
+                            mConsumeRecord.getConsumeTime().set(Calendar.MONTH, monthOfYear);
+                            mConsumeRecord.getConsumeTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        }
+                    }, calendar.get(Calendar.YEAR), calendar
+                            .get(Calendar.MONTH), calendar
+                            .get(Calendar.DAY_OF_MONTH));
+            mDatePickerDialog.show();
+        }
+    };
+    
+    OnClickListener ConsumeTimeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Calendar calendar = Calendar.getInstance();
+            mTimePickerDialog = new TimePickerDialog(
+                    ConsumeDetailActivity.this, new OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view,
+                                int hourOfDay, int minute) {
+                            mConsumeRecord.getConsumeTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            mConsumeRecord.getConsumeTime().set(Calendar.MINUTE, minute);
+                            mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
+                        }
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar
+                            .get(Calendar.MINUTE), false);
+            mTimePickerDialog.show();
+        }
+    };
+    
+    OnClickListener ConsumeTypeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(ConsumeDetailActivity.this, TypeSelectActivity.class);
+            ConsumeDetailActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
+        }
+    };
 
     /**
      * 初始化各控件的事件
@@ -136,59 +180,15 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         mOperateButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mButtonFlag) { // 提交
+                if (mPageStatus == PageStatus.EDIT) { // 提交
                     if (validateInput()) {
-                        mOperateButton.setEnabled(false);
-//                        mConsumeRecordService.updateRecord(constructRecord());
-                        ConsumeDetailActivity.this.finish();
+                        mLoadingDialog.show();
+                        constructRecord();
+                        new UpdateConsumeRecordTask(ConsumeDetailActivity.this, ConsumeDetailActivity.this).execute(mConsumeRecord);
                     }
-                } else { // 修改
-                    setViewUsable(true);
-                    mButtonFlag = true;
-                    mOperateButton.setText("提交");
+                } else if (mPageStatus == PageStatus.VIEW) { // 修改
+                    changeToEdit();
                 }
-            }
-        });
-
-        mConsumeDateTextView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                mDatePickerDialog = new DatePickerDialog(
-                        ConsumeDetailActivity.this, new OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                    int monthOfYear, int dayOfMonth) {
-                                mConsumeRecord.getConsumeTime().set(Calendar.YEAR, year);
-                                mConsumeRecord.getConsumeTime().set(Calendar.MONTH, monthOfYear);
-                                mConsumeRecord.getConsumeTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                            }
-                        }, calendar.get(Calendar.YEAR), calendar
-                                .get(Calendar.MONTH), calendar
-                                .get(Calendar.DAY_OF_MONTH));
-                mDatePickerDialog.show();
-            }
-        });
-
-        mConsumeTimeTextView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                mTimePickerDialog = new TimePickerDialog(
-                        ConsumeDetailActivity.this, new OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view,
-                                    int hourOfDay, int minute) {
-                                mConsumeRecord.getConsumeTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                mConsumeRecord.getConsumeTime().set(Calendar.MINUTE, minute);
-                                mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
-                            }
-                        }, calendar.get(Calendar.HOUR_OF_DAY), calendar
-                                .get(Calendar.MINUTE), false);
-                mTimePickerDialog.show();
             }
         });
     }
@@ -225,31 +225,17 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         return result;
     }
 
-    /**
-     * 设置各控件状态为可编辑状态
-     * 
-     * @param usable
-     */
-    private void setViewUsable(boolean usable) {
-        mConsumeNameEditText.setEnabled(usable);
-        mConsumePriceEditText.setEnabled(usable);
-        mConsumeDateTextView.setClickable(usable);
-        mConsumeTimeTextView.setClickable(usable);
-        mConsumeCreateTimeTextView.setClickable(usable);
-        mConsumeRemarksEditText.setEnabled(usable);
-        if (usable) {
-            mConsumeRemarksEditText.setHint("备注信息(50字以内))");
-            mConsumeDateTextView.setTextColor(getResources().getColor(
-                    R.color.font_black));
-            mConsumeTimeTextView.setTextColor(getResources().getColor(
-                    R.color.font_black));
-        } else {
-            mConsumeDateTextView.setTextColor(getResources().getColor(
-                    R.color.font_gray));
-            mConsumeTimeTextView.setTextColor(getResources().getColor(
-                    R.color.font_gray));
-            mConsumeCreateTimeTextView.setTextColor(getResources().getColor(
-                    R.color.font_gray));
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQ_CODE_SELECT_TYPE) {
+                ConsumeType consumeType = data.getParcelableExtra("consume_type");
+                if (consumeType != null) {
+                    mConsumeRecord.setRecordType(consumeType);
+                    mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
+                }
+            }
         }
     }
 
@@ -260,6 +246,66 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
 
     @Override
     public void onRightClick() {
+    }
+
+    @Override
+    public void OnConsumeRecordUpdated(boolean result) {
+        mLoadingDialog.cancel();
+        ConsumeDetailActivity.this.finish();
+    }
+    
+    /**
+     * 改变当前页面状态为编辑模式
+     */
+    private void changeToEdit() {
+        //设置内容
+        mConsumeNameEditText.setText(mConsumeRecord.getRecordName());
+        mConsumePriceEditText.setText(mConsumeRecord.getRecordPrice());
+        mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
+        mConsumeDateTextView.setText(TimeUtil.getDateString(mConsumeRecord.getConsumeTime()));
+        mConsumeTimeTextView.setText(TimeUtil.getTimeString(mConsumeRecord.getConsumeTime()));
+        mConsumeCreateTimeTextView.setText(TimeUtil.getDateTimeString(mConsumeRecord.getCreateTime()));
+        mConsumeRemarksEditText.setText(mConsumeRecord.getRecordRemark());
+        //设置编辑框可用，显示光标
+        mConsumeNameEditText.setEnabled(true);
+        mConsumePriceEditText.setEnabled(true);
+        mConsumeRemarksEditText.setEnabled(true);
+        //修改UI
+        mOperateButton.setText("提交");
+        mRightImage.setVisibility(View.VISIBLE);
+        //设置页面状态
+        mPageStatus = PageStatus.EDIT;
+        //绑定可用状态的事件
+        mConsumeDateTextView.setOnClickListener(consumeDateClickListener);
+        mConsumeTimeTextView.setOnClickListener(ConsumeTimeClickListener);
+        mConsumeTypeTextView.setOnClickListener(ConsumeTypeClickListener);
+    }
+    
+    /**
+     * 改变当前页面状态为预览模式
+     */
+    private void changeToView() {
+        //设置hint
+        mConsumeNameEditText.setHint(mConsumeRecord.getRecordName());
+        mConsumePriceEditText.setHint(mConsumeRecord.getRecordPrice());
+        mConsumeTypeTextView.setHint(mConsumeRecord.getRecordType().getName());
+        mConsumeDateTextView.setHint(TimeUtil.getDateString(mConsumeRecord.getConsumeTime()));
+        mConsumeTimeTextView.setHint(TimeUtil.getTimeString(mConsumeRecord.getConsumeTime()));
+        mConsumeCreateTimeTextView.setHint(TimeUtil.getDateTimeString(mConsumeRecord.getCreateTime()));
+        mConsumeRemarksEditText.setHint(mConsumeRecord.getRecordRemark());
+        //设置编辑框不可用，隐藏光标
+        mConsumeNameEditText.setEnabled(false);
+        mConsumePriceEditText.setEnabled(false);
+        mConsumeRemarksEditText.setEnabled(false);
+        //修改UI
+        mOperateButton.setText("修改");
+        mRightImage.setVisibility(View.GONE);
+        //设置页面状态
+        mPageStatus = PageStatus.VIEW;
+        //解绑可用状态的事件
+        mConsumeDateTextView.setOnClickListener(null);
+        mConsumeTimeTextView.setOnClickListener(null);
+        mConsumeTypeTextView.setOnClickListener(null);
     }
 
 }

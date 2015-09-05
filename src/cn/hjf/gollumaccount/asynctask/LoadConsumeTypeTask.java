@@ -7,15 +7,19 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
+/**
+ * 加载所有消费类型的任务
+ * @author huangjinfu
+ *
+ */
 public class LoadConsumeTypeTask extends AsyncTask<Void, Void, List<ConsumeType>> {
     
-    private ConsumeTypeOperateListener mListener;
+    private IConsumeTypeOperateListener mListener;
     private Context mContext;
     private ConsumeTypeManagerBusiness mConsumeTypeManagerBusiness;
     
-    public LoadConsumeTypeTask(Context context, ConsumeTypeOperateListener listener) {
+    public LoadConsumeTypeTask(Context context, IConsumeTypeOperateListener listener) {
         this.mContext = context;
         this.mListener = listener;
         mConsumeTypeManagerBusiness = new ConsumeTypeManagerBusiness(mContext);

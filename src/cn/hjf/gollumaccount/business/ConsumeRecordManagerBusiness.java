@@ -61,8 +61,8 @@ public class ConsumeRecordManagerBusiness {
      * 修改现有的消费记录
      * @param record
      */
-    public void modifyRecord(ConsumeRecord record) {
-        mConsumeRecordDao.update(mDaoModelTransfer.getConsumeRecordModel(record));
+    public boolean modifyRecord(ConsumeRecord record) {
+        return mConsumeRecordDao.update(mDaoModelTransfer.getConsumeRecordModel(record));
     }
     
     /**

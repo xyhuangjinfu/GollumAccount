@@ -6,7 +6,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeTypeAdapter;
-import cn.hjf.gollumaccount.asynctask.ConsumeTypeOperateListener;
+import cn.hjf.gollumaccount.asynctask.IConsumeTypeOperateListener;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeTypeTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
@@ -28,7 +28,7 @@ import android.widget.GridView;
  * 
  */
 public class TypeSelectActivity extends BaseActivity implements
-        CommonHeaderFragment.ICallback, ConsumeTypeOperateListener {
+        CommonHeaderFragment.ICallback, IConsumeTypeOperateListener {
 
     private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     private LoadingDialog mLoadingDialog; // 加载对话框

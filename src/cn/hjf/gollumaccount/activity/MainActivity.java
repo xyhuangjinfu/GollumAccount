@@ -10,6 +10,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
+import cn.hjf.gollumaccount.asynctask.IConsumeRecordOperateListener;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
 import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
@@ -53,7 +54,7 @@ import android.support.v4.widget.DrawerLayout;
 public class MainActivity extends BaseActivity implements
 		SideMenuFragment.NavigationDrawerCallbacks,
 		CommonHeaderFragment.ICallback,
-		LoadConsumeRecordTask.OnRecordLoadCallback {
+		IConsumeRecordOperateListener {
     
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
     private static final int NUM_PER_PAGE = 7; // 每页查询的数量
@@ -62,12 +63,12 @@ public class MainActivity extends BaseActivity implements
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
 
     private TextView mCurrentMonthSum; //当月累计消费金额
-    private Button mAdd; //记一笔按钮
-    private Button mQuery; //查询按钮
+    private Button mAddButton; //记一笔按钮
+    private Button mQueryButton; //查询按钮
 	private ListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
 	private View mFooterView; //底部加载视图
-	private LinearLayout mFooterViewLayout;
+	private LinearLayout mFooterViewLayout; //底部加载视图布局
 	
 	private LoadingDialog mLoadingDialog; //加载对话框
 	
@@ -90,15 +91,26 @@ public class MainActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		initTitle();
+		
 		initSideMenu();
+		
+		initTitle();
 		initView();
 		initValue();
 		initEvent();
-			
+		
+		mLoadingDialog.show();
 		loadData();
 		
 	}
+	
+	   /**
+     * 初始化侧滑菜单
+     */
+    private void initSideMenu() {
+        mSideMenuFragment = (SideMenuFragment) mFragmentManager.findFragmentById(R.id.navigation_drawer);
+        mSideMenuFragment.setUp(R.id.navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout));
+    }
 	
     /**
      * 初始化顶部导航栏
@@ -111,53 +123,26 @@ public class MainActivity extends BaseActivity implements
         mTitleFragment.setCallback(this);
     }
 	
-	/**
-	 * 初始化侧滑菜单
-	 */
-	private void initSideMenu() {
-        mSideMenuFragment = (SideMenuFragment) mFragmentManager.findFragmentById(R.id.navigation_drawer);
-        mSideMenuFragment.setUp(R.id.navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout));
-	}
-	
-	/**
-	 * 加载数据
-	 */
-	private void loadData() {
-	    mIsInRefresh = true;
-	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
-	}
-
-	@Override
-	public void onNavigationDrawerItemSelected(int position) {
-		switch (position) {
-		case 0:
-			break;
-		case 1:
-			Intent intentStatisticSelect = new Intent(this, StatisticSelectActivity.class);
-			this.startActivity(intentStatisticSelect);
-			break;
-		case 2:
-            Intent intentAbout = new Intent(this, AboutActivity.class);
-            this.startActivity(intentAbout);
-            break;
-		default:
-			break;
-		}
-		
-	}
-
     @Override
     protected void initView() {
-        mFooterViewLayout = new LinearLayout(this);
-        mEmptyView = findViewById(R.id.ly_no_data);
-        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
-        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        mAdd = (Button) findViewById(R.id.btn_add);
-        mQuery = (Button) findViewById(R.id.btn_query);
-        mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
-        mRecordListView.addFooterView(mFooterViewLayout);
-        mRecordListView.setEmptyView(mEmptyView);
+        mAddButton = (Button) findViewById(R.id.btn_add);
+        mQueryButton = (Button) findViewById(R.id.btn_query);
+        
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+        
+        mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
+        
+        //绑定空视图
+        mEmptyView = findViewById(R.id.ly_no_data);
+        mRecordListView.setEmptyView(mEmptyView);
+        
+        //绑定footerView，加载视图
+        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
+        mFooterViewLayout = new LinearLayout(this);
+        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        mRecordListView.addFooterView(mFooterViewLayout);
+        mFooterView.setVisibility(View.GONE);
+        
     }
 
     @Override
@@ -166,12 +151,11 @@ public class MainActivity extends BaseActivity implements
         mQueryInfo.setPageSize(NUM_PER_PAGE);
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this, mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
-
     }
-
+    
     @Override
     protected void initEvent() {
-        mAdd.setOnClickListener(new View.OnClickListener() {
+        mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddConsumeActivity.class);
@@ -179,7 +163,7 @@ public class MainActivity extends BaseActivity implements
             }
         });
         
-        mQuery.setOnClickListener(new View.OnClickListener() {
+        mQueryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QueryActivity.class);
@@ -214,7 +198,7 @@ public class MainActivity extends BaseActivity implements
                             Toast.makeText(MainActivity.this, "没有更多数据了", 0).show();
                             return;
                         }
-                        Log.i("O_O", "loading");
+                        mFooterView.setVisibility(View.VISIBLE);
                         mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
                         loadData();
                     }  
@@ -227,22 +211,36 @@ public class MainActivity extends BaseActivity implements
             }
         });
     }
+	
+	
+	/**
+	 * 加载数据
+	 */
+	private void loadData() {
+	    mIsInRefresh = true;
+//	    mFooterView.setVisibility(View.VISIBLE);
+	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
+	}
 
-    @Override
-    public void onRecordLoadCompleted(List<ConsumeRecord> result) {
-        mIsInRefresh = false;
-        if (result.size() == 0) {
-            mIsNoMoreData = true;
-            mFooterView.setVisibility(View.GONE);
-        }
-        if (mIsQueryChanged) {
-            mRecords.clear();
-            mIsQueryChanged = false;
-        }
-        mRecords.addAll(result);
-        mConsumeRecordAdapter.notifyDataSetChanged();
-    }
-    
+	@Override
+	public void onNavigationDrawerItemSelected(int position) {
+		switch (position) {
+		case 0:
+			break;
+		case 1:
+			Intent intentStatisticSelect = new Intent(this, StatisticSelectActivity.class);
+			this.startActivity(intentStatisticSelect);
+			break;
+		case 2:
+            Intent intentAbout = new Intent(this, AboutActivity.class);
+            this.startActivity(intentAbout);
+            break;
+		default:
+			break;
+		}
+		
+	}
+
     /**
      * 刷新查询状态
      */
@@ -260,6 +258,7 @@ public class MainActivity extends BaseActivity implements
                 mQueryInfo = data.getParcelableExtra("query_info");
                 if (mQueryInfo != null) {
                     refreshQueryStatus();
+                    mLoadingDialog.show();
                     loadData();
                 }
             }
@@ -277,6 +276,22 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onRightClick() {
+    }
+
+    @Override
+    public void OnRecordLoadCompleted(List<ConsumeRecord> consumeRecords) {
+        mIsInRefresh = false;
+        if (consumeRecords.size() == 0) {
+            mIsNoMoreData = true;
+            mFooterView.setVisibility(View.GONE);
+        }
+        if (mIsQueryChanged) {
+            mRecords.clear();
+            mIsQueryChanged = false;
+        }
+        mRecords.addAll(consumeRecords);
+        mConsumeRecordAdapter.notifyDataSetChanged();
+        mLoadingDialog.cancel();
     }
 
 }

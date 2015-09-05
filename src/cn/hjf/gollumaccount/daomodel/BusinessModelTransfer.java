@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
+import android.util.Log;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.businessmodel.QueryInfo;
@@ -34,6 +35,7 @@ public final class BusinessModelTransfer {
     }
 
     public ConsumeRecord getConsumeRecord(ConsumeRecordModel consumeRecordModel) {
+        Log.i("O_O", "" + consumeRecordModel.getRecordTypeId());
         ConsumeRecord consumeRecord = new ConsumeRecord();
         ConsumeType consumeType = getConsumeType(mConsumeTypeDao.queryById(consumeRecordModel.getRecordTypeId()));
         consumeRecord.setId(consumeRecordModel.getId());

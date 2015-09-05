@@ -130,7 +130,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             record.setRecordName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             record.setRecordPrice(cursor.getString(cursor.getColumnIndex(Table.CLM_PRICE)));
             record.setRecordRemark(cursor.getString(cursor.getColumnIndex(Table.CLM_REMARK)));
-            record.setRecordTypeId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            record.setRecordTypeId(cursor.getInt(cursor.getColumnIndex(Table.CLM_TYPE)));
             record.setConsumer(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUMER)));
             record.setPayer(cursor.getString(cursor.getColumnIndex(Table.CLM_PAYER)));
             record.setConsumeTime(Long.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUME_TIME))));

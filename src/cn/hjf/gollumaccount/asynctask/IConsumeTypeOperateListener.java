@@ -9,7 +9,7 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
  * @author huangjinfu
  *
  */
-public interface ConsumeTypeOperateListener {
+public interface IConsumeTypeOperateListener {
     /**
      * 加载所有费用类型完成
      */
