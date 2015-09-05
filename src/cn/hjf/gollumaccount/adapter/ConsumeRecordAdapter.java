@@ -83,7 +83,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		displayPrice = String.valueOf(record.getRecordPrice());
 		viewHolder.mRecordPrice.setText(displayPrice);
 		viewHolder.mRecordName.setText(displayName);
-		viewHolder.mRecordTime.setText(TimeUtil.getDateString(Long.valueOf(record.getConsumeTime())));
+		viewHolder.mRecordTime.setText(TimeUtil.getDateString(record.getConsumeTime()));
 		viewHolder.mRecordInfo.setText(record.getRecordRemark());
 		switch (record.getRecordType().getId()) {
 		case 1:

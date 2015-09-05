@@ -15,7 +15,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -23,7 +22,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,12 +50,7 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     private TimePickerDialog mTimePickerDialog; // 消费时间选择对话框
     
     private ConsumeRecord mConsumeRecord = null; // 消费记录对象
-    private int[] mRecordTime = new int[5];
-    private ArrayList<String> mItemNames; // 消费类型数据
-    private ArrayAdapter<String> mArrayAdapter; // 消费类型控件的适配器
     private boolean mButtonFlag; // false-修改，true-提交
-    private boolean mDateModifyFlag = false; // 是否已经修改日期，true-已经修改
-    private boolean mTimeModifyFlag = false; // 是否已经修改时间，true-已经时间
     /**
      * 顶部标题栏
      */
@@ -68,18 +61,18 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_view_record);
         
-        Intent intent = this.getIntent();
-        if (intent.getParcelableExtra(CONSUME_RECORD) == null) {
+        if (getIntent().getParcelableExtra(CONSUME_RECORD) == null) {
             finish();
             return;
         } else {
-            mConsumeRecord = (ConsumeRecord) intent.getParcelableExtra(CONSUME_RECORD);
+            mConsumeRecord = (ConsumeRecord) getIntent().getParcelableExtra(CONSUME_RECORD);
         }
         
         initTitle();
         initView();
         initValue();
         initEvent();
+        
         setViewUsable(false);
     }
     
@@ -120,14 +113,11 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         mConsumeNameEditText.setText(this.mConsumeRecord.getRecordName());
         mConsumePriceEditText.setText(String.valueOf(this.mConsumeRecord
                 .getRecordPrice()));
-        mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner,
-                mItemNames);
         
         mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
-        mConsumeDateTextView.setText(this.mConsumeRecord
-                .getConsumeTime());
-        mConsumeTimeTextView.setText(TimeUtil.getTimeString(Long.valueOf(this.mConsumeRecord.getConsumeTime())));
-        mConsumeCreateTimeTextView.setText(TimeUtil.getTimeString(Long.valueOf(this.mConsumeRecord.getCreateTime())));
+        mConsumeDateTextView.setText(TimeUtil.getDateString(this.mConsumeRecord.getConsumeTime()));
+        mConsumeTimeTextView.setText(TimeUtil.getTimeString(this.mConsumeRecord.getConsumeTime()));
+        mConsumeCreateTimeTextView.setText(TimeUtil.getDateTimeString(this.mConsumeRecord.getCreateTime()));
         if (("".equals(this.mConsumeRecord.getRecordRemark()))
                 || (this.mConsumeRecord.getRecordRemark() == null)) {
             mConsumeRemarksEditText.setHint("备注信息");
@@ -170,12 +160,10 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                     int monthOfYear, int dayOfMonth) {
-                                mDateModifyFlag = true;
-                                mRecordTime[0] = year;
-                                mRecordTime[1] = monthOfYear;
-                                mRecordTime[2] = dayOfMonth;
-                                mConsumeDateTextView.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                mConsumeRecord.getConsumeTime().set(Calendar.YEAR, year);
+                                mConsumeRecord.getConsumeTime().set(Calendar.MONTH, monthOfYear);
+                                mConsumeRecord.getConsumeTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                             }
                         }, calendar.get(Calendar.YEAR), calendar
                                 .get(Calendar.MONTH), calendar
@@ -194,11 +182,9 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
                             @Override
                             public void onTimeSet(TimePicker view,
                                     int hourOfDay, int minute) {
-                                mTimeModifyFlag = true;
-                                mRecordTime[3] = hourOfDay;
-                                mRecordTime[4] = minute;
-                                mConsumeTimeTextView.setText(hourOfDay + ":"
-                                        + minute + ":" + "00");
+                                mConsumeRecord.getConsumeTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                mConsumeRecord.getConsumeTime().set(Calendar.MINUTE, minute);
+                                mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
                             }
                         }, calendar.get(Calendar.HOUR_OF_DAY), calendar
                                 .get(Calendar.MINUTE), false);
@@ -212,56 +198,10 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
      * 
      * @return
      */
-    private ConsumeRecord constructRecord() {
-        this.mConsumeRecord.setRecordName(mConsumeNameEditText.getText()
-                .toString());
-        this.mConsumeRecord.setRecordPrice(mConsumePriceEditText
-                .getText().toString());
-//        this.mConsumeRecord.setRecordTypeId(mConsumeTypeSpinner
-//                .getSelectedItemPosition() + 1);
-        this.mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText()
-                .toString());
-        this.mConsumeRecord.setConsumeTime(String.valueOf(this.getRecordTime().getTime()));
-        this.mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));
-        return this.mConsumeRecord;
-    }
-
-    /**
-     * 根据日期和时间选择控件的值，生成消费时间
-     * 
-     * @return
-     */
-    private Date getRecordTime() {
-        int year = 0;
-        int month = 0;
-        int day = 0;
-        int hour = 0;
-        int minute = 0;
-        Date d = new Date(this.mConsumeRecord.getConsumeTime());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(d);
-        if (mDateModifyFlag) {
-            year = mRecordTime[0];
-            month = mRecordTime[1];
-            day = mRecordTime[2];
-        } else {
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-        }
-        if (mTimeModifyFlag) {
-            hour = mRecordTime[3];
-            minute = mRecordTime[4];
-        } else {
-            hour = calendar.get(Calendar.HOUR_OF_DAY);
-            minute = calendar.get(Calendar.MINUTE);
-        }
-
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.set(year, month, day, hour, minute);
-        Date date = calendar2.getTime();
-        return date;
-
+    private void constructRecord() {
+        mConsumeRecord.setRecordName(mConsumeNameEditText.getText().toString());
+        mConsumeRecord.setRecordPrice(mConsumePriceEditText.getText().toString());
+        mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText().toString());
     }
 
     /**
@@ -293,7 +233,6 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     private void setViewUsable(boolean usable) {
         mConsumeNameEditText.setEnabled(usable);
         mConsumePriceEditText.setEnabled(usable);
-//        mConsumeTypeSpinner.setEnabled(usable);
         mConsumeDateTextView.setClickable(usable);
         mConsumeTimeTextView.setClickable(usable);
         mConsumeCreateTimeTextView.setClickable(usable);

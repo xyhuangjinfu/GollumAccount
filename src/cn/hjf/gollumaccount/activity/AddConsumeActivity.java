@@ -198,8 +198,10 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
                 .toString());
         mConsumeRecord.setRecordType(mConsumeType);
         mConsumeRecord.setRecordRemark(mConsumeRemarkEditText.getText().toString());
-        mConsumeRecord.setConsumeTime(String.valueOf(mConsumeCalendar.getTime().getTime()));
-        mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));
+        mConsumeRecord.setConsumeTime(mConsumeCalendar);
+        Calendar createCalendar = Calendar.getInstance();
+        createCalendar.setTime(new Date(System.currentTimeMillis()));
+        mConsumeRecord.setCreateTime(createCalendar);
         mConsumeRecord.setConsumer(mConsumerEditText.getText().toString());
         mConsumeRecord.setPayer(mPayerEditText.getText().toString());
     }

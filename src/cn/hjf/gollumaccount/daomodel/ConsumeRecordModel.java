@@ -16,8 +16,8 @@ public class ConsumeRecordModel implements Parcelable {
 	private String recordPrice; //消费金额
 	private int recordTypeId; //消费类型Id
 	private String recordRemark; //备注信息
-	private String consumeTime; //消费时间
-	private String createTime; //消费记录创建时间
+	private long consumeTime; //消费时间
+	private long createTime; //消费记录创建时间
 	private String consumer; //消费者
 	private String payer; //付款者
 	
@@ -53,16 +53,16 @@ public class ConsumeRecordModel implements Parcelable {
     public void setRecordRemark(String recordRemark) {
         this.recordRemark = recordRemark;
     }
-    public String getConsumeTime() {
+    public long getConsumeTime() {
         return consumeTime;
     }
-    public void setConsumeTime(String consumeTime) {
+    public void setConsumeTime(long consumeTime) {
         this.consumeTime = consumeTime;
     }
-    public String getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
     public String getConsumer() {
@@ -88,8 +88,8 @@ public class ConsumeRecordModel implements Parcelable {
         dest.writeString(recordPrice);
         dest.writeInt(recordTypeId);
         dest.writeString(recordRemark);
-        dest.writeString(consumeTime);
-        dest.writeString(createTime);
+        dest.writeLong(consumeTime);
+        dest.writeLong(createTime);
         dest.writeString(consumer);
         dest.writeString(payer);
     }
@@ -100,8 +100,8 @@ public class ConsumeRecordModel implements Parcelable {
         recordPrice = source.readString();
         recordTypeId = source.readInt();
         recordRemark = source.readString();
-        consumeTime = source.readString();
-        createTime = source.readString();
+        consumeTime = source.readLong();
+        createTime = source.readLong();
         consumer = source.readString();
         payer = source.readString();
     }

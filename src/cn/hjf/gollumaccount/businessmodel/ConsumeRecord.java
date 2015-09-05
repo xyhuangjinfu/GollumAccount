@@ -1,5 +1,7 @@
 package cn.hjf.gollumaccount.businessmodel;
 
+import java.util.Calendar;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,8 +18,8 @@ public class ConsumeRecord implements Parcelable {
 	private String recordPrice; //消费金额
 	private ConsumeType recordType; //消费类型
 	private String recordRemark; //备注信息
-	private String consumeTime; //消费时间
-	private String createTime; //消费记录创建时间
+	private Calendar consumeTime; //消费时间
+	private Calendar createTime; //消费记录创建时间
 	private String consumer; //消费者
 	private String payer; //付款者
 	
@@ -53,16 +55,16 @@ public class ConsumeRecord implements Parcelable {
     public void setRecordRemark(String recordRemark) {
         this.recordRemark = recordRemark;
     }
-    public String getConsumeTime() {
+    public Calendar getConsumeTime() {
         return consumeTime;
     }
-    public void setConsumeTime(String consumeTime) {
+    public void setConsumeTime(Calendar consumeTime) {
         this.consumeTime = consumeTime;
     }
-    public String getCreateTime() {
+    public Calendar getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Calendar createTime) {
         this.createTime = createTime;
     }
     public String getConsumer() {
@@ -88,8 +90,8 @@ public class ConsumeRecord implements Parcelable {
         dest.writeString(recordPrice);
         dest.writeParcelable(recordType, flags);
         dest.writeString(recordRemark);
-        dest.writeString(consumeTime);
-        dest.writeString(createTime);
+        dest.writeSerializable(consumeTime);
+        dest.writeSerializable(createTime);
         dest.writeString(consumer);
         dest.writeString(payer);
     }
@@ -100,8 +102,8 @@ public class ConsumeRecord implements Parcelable {
         recordPrice = source.readString();
         recordType = source.readParcelable(this.getClass().getClassLoader());
         recordRemark = source.readString();
-        consumeTime = source.readString();
-        createTime = source.readString();
+        consumeTime = (Calendar) source.readSerializable();
+        createTime = (Calendar) source.readSerializable();
         consumer = source.readString();
         payer = source.readString();
     }

@@ -38,8 +38,8 @@ public final class DaoModelTransfer {
         consumeRecordModel.setRecordPrice(consumeRecord.getRecordPrice());
         consumeRecordModel.setRecordTypeId(consumeRecord.getRecordType().getId());
         consumeRecordModel.setRecordRemark(consumeRecord.getRecordRemark());
-        consumeRecordModel.setConsumeTime(consumeRecord.getConsumeTime());
-        consumeRecordModel.setCreateTime(consumeRecord.getCreateTime());
+        consumeRecordModel.setConsumeTime(consumeRecord.getConsumeTime().getTime().getTime());
+        consumeRecordModel.setCreateTime(consumeRecord.getCreateTime().getTime().getTime());
         consumeRecordModel.setConsumer(consumeRecord.getConsumer());
         consumeRecordModel.setPayer(consumeRecord.getPayer());
         return consumeRecordModel;

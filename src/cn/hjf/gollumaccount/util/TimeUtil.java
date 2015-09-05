@@ -11,6 +11,45 @@ import java.util.Date;
  * 
  */
 public final class TimeUtil {
+    
+    public static String getDateString(String time) {
+        Long longTime = Long.valueOf(time);
+        Date date = new Date(longTime);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
+    
+    public static String getTimeString(String time) {
+        Long longTime = Long.valueOf(time);
+        Date date = new Date(longTime);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date);
+    }
+    
+    public static String getDateTimeString(String time) {
+        Long longTime = Long.valueOf(time);
+        Date date = new Date(longTime);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
+    
+    public static String getDateString(Calendar time) {
+        Date date = time.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
+    
+    public static String getTimeString(Calendar time) {
+        Date date = time.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date);
+    }
+    
+    public static String getDateTimeString(Calendar time) {
+        Date date = time.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
 
 	/**
 	 * 根据long时间得到显示的字符串

@@ -1,5 +1,8 @@
 package cn.hjf.gollumaccount.daomodel;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.content.Context;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
@@ -38,8 +41,12 @@ public final class BusinessModelTransfer {
         consumeRecord.setRecordPrice(consumeRecordModel.getRecordPrice());
         consumeRecord.setRecordType(consumeType);
         consumeRecord.setRecordRemark(consumeRecordModel.getRecordRemark());
-        consumeRecord.setConsumeTime(consumeRecordModel.getConsumeTime());
-        consumeRecord.setCreateTime(consumeRecordModel.getCreateTime());
+        Calendar consumeCalendar = Calendar.getInstance();
+        consumeCalendar.setTime(new Date(consumeRecordModel.getConsumeTime()));
+        consumeRecord.setConsumeTime(consumeCalendar);
+        Calendar createCalendar = Calendar.getInstance();
+        createCalendar.setTime(new Date(consumeRecordModel.getCreateTime()));
+        consumeRecord.setCreateTime(createCalendar);
         consumeRecord.setConsumer(consumeRecordModel.getConsumer());
         consumeRecord.setPayer(consumeRecordModel.getPayer());
         return consumeRecord;
