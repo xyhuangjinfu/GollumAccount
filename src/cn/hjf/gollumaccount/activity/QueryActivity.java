@@ -7,6 +7,7 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.TimeUtil;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -39,11 +40,13 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
     private RelativeLayout mConsumeTypeLayout; //消费记录类型布局
     private TextView mStartTime; //开始时间
     private TextView mEndTime; //结束时间
-    private Button mQuery; //查询按钮
+    private Button mQueryButton; //查询按钮
     
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     
     private QueryInfo mQueryInfo; //要返回的查询信息
+    private Calendar mStartCalendar; //查询开始时间
+    private Calendar mEndCalendar; //查询结束时间
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +86,23 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
         mConsumeTypeLayout = (RelativeLayout) findViewById(R.id.rl_record_type);
         mStartTime = (TextView) findViewById(R.id.tv_record_date_start);
         mEndTime = (TextView) findViewById(R.id.tv_record_time_end);
-        mQuery = (Button) findViewById(R.id.btn_query);
+        mQueryButton = (Button) findViewById(R.id.btn_query);
     }
 
     @Override
     protected void initValue() {
-        
+        mConsumeName.setText(mQueryInfo.getName());
+        mConsumeType.setText(mQueryInfo.getType() == null ? null : mQueryInfo.getType().getName());
+        mStartTime.setText(mQueryInfo.getStartTime() == null ? null : TimeUtil.getDateString(mQueryInfo.getStartTime()));
+        mEndTime.setText(mQueryInfo.getEndTime() == null ? null : TimeUtil.getDateString(mQueryInfo.getEndTime()));
     }
 
     @Override
     protected void initEvent() {
-        mQuery.setOnClickListener(new OnClickListener() {
+        mQueryButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mQueryInfo.setName(mConsumeName.getText().toString());
+                buildQueryInfo();
                 Intent intent = new Intent();
                 intent.putExtra("query_info", mQueryInfo);
                 setResult(Activity.RESULT_OK, intent);
@@ -122,7 +128,9 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                     int monthOfYear, int dayOfMonth) {
                                 mStartTime.setText(year + "-"
                                         + (monthOfYear + 1) + "-" + dayOfMonth);
-                                mQueryInfo.setStartTime(mStartTime.getText().toString());
+                                mStartCalendar.set(Calendar.YEAR, year);
+                                mStartCalendar.set(Calendar.MONTH, monthOfYear);
+                                mStartCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                             }
                         }, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
@@ -141,7 +149,9 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                     int monthOfYear, int dayOfMonth) {
                                 mEndTime.setText(year + "-"
                                         + (monthOfYear + 1) + "-" + dayOfMonth);
-                                mQueryInfo.setEndTime(mEndTime.getText().toString());
+                                mEndCalendar.set(Calendar.YEAR, year);
+                                mEndCalendar.set(Calendar.MONTH, monthOfYear);
+                                mEndCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                             }
                         }, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
@@ -149,6 +159,15 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                 mDatePickerDialog.show();
             }
         });
+    }
+    
+    /**
+     * 构建查询信息
+     */
+    private void buildQueryInfo() {
+        mQueryInfo.setStartTime(mStartCalendar);
+        mQueryInfo.setEndTime(mEndCalendar);
+        mQueryInfo.setName(mConsumeName.getText().toString());
     }
     
     @Override

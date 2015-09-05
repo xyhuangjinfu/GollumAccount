@@ -11,8 +11,8 @@ import android.os.Parcelable;
  */
 public class QueryInfoModel implements Parcelable {
 
-    private String startTime; //开始时间
-    private String endTime; //结束时间
+    private long startTime; //开始时间
+    private long endTime; //结束时间
     private String name; //消费记录名称
     private int type; //消费类型
     private int pageNumber; //查询页码
@@ -20,16 +20,16 @@ public class QueryInfoModel implements Parcelable {
     
     public QueryInfoModel(){};
     
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
     public String getName() {
@@ -67,8 +67,8 @@ public class QueryInfoModel implements Parcelable {
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(startTime);
-        dest.writeString(endTime);
+        dest.writeLong(startTime);
+        dest.writeLong(endTime);
         dest.writeString(name);
         dest.writeInt(type);
         dest.writeInt(pageNumber);
@@ -76,8 +76,8 @@ public class QueryInfoModel implements Parcelable {
     }
 
     private QueryInfoModel(Parcel source) {
-        startTime = source.readString();
-        endTime = source.readString();
+        startTime = source.readLong();
+        endTime = source.readLong();
         name = source.readString();
         type = source.readInt();
         pageNumber = source.readInt();

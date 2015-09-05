@@ -1,5 +1,7 @@
 package cn.hjf.gollumaccount.businessmodel;
 
+import java.util.Calendar;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,8 +13,8 @@ import android.os.Parcelable;
  */
 public class QueryInfo implements Parcelable {
 
-    private String startTime; //开始时间
-    private String endTime; //结束时间
+    private Calendar startTime; //开始时间
+    private Calendar endTime; //结束时间
     private String name; //消费记录名称
     private ConsumeType type; //消费类型
     private int pageNumber; //查询页码
@@ -20,16 +22,16 @@ public class QueryInfo implements Parcelable {
     
     public QueryInfo(){};
     
-    public String getStartTime() {
+    public Calendar getStartTime() {
         return startTime;
     }
-    public void setStartTime(String startTime) {
+    public void setStartTime(Calendar startTime) {
         this.startTime = startTime;
     }
-    public String getEndTime() {
+    public Calendar getEndTime() {
         return endTime;
     }
-    public void setEndTime(String endTime) {
+    public void setEndTime(Calendar endTime) {
         this.endTime = endTime;
     }
     public String getName() {
@@ -67,8 +69,8 @@ public class QueryInfo implements Parcelable {
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(startTime);
-        dest.writeString(endTime);
+        dest.writeSerializable(startTime);
+        dest.writeSerializable(endTime);
         dest.writeString(name);
         dest.writeParcelable(type, flags);
         dest.writeInt(pageNumber);
@@ -76,8 +78,8 @@ public class QueryInfo implements Parcelable {
     }
 
     private QueryInfo(Parcel source) {
-        startTime = source.readString();
-        endTime = source.readString();
+        startTime = (Calendar) source.readSerializable();
+        endTime = (Calendar) source.readSerializable();
         name = source.readString();
         type = source.readParcelable(this.getClass().getClassLoader());
         pageNumber = source.readInt();

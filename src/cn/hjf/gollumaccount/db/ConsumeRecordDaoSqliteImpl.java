@@ -392,7 +392,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append(TABLE_NAME);
             sql.append(" WHERE ");
             
-            if (queryInfo.getStartTime() != null && !"".equals(queryInfo.getStartTime())) {
+            if (queryInfo.getStartTime() != 0 && !"".equals(queryInfo.getStartTime())) {
                 sql.append(Table.CLM_CONSUME_TIME);
                 sql.append(" >= ");
                     sql.append("'");
@@ -402,7 +402,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             }
 
             
-            if (queryInfo.getEndTime() != null && !"".equals(queryInfo.getEndTime())) {
+            if (queryInfo.getEndTime() != 0 && !"".equals(queryInfo.getEndTime())) {
                 sql.append(Table.CLM_CONSUME_TIME);
                 sql.append(" <= ");
                     sql.append("'");
