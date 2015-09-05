@@ -28,17 +28,17 @@ public abstract class BaseActivity extends FragmentActivity {
      */
     protected void initTitle(){};
     /**
-     * 初始化各控件
+     * 初始化各控件，负责findView、new View() ，View对象属性设置的功能
      */
     protected abstract void initView();
 
     /**
-     * 初始化各控件的值
+     * 初始化各控件的值，负责根据不同条件，初始化各控件显示的值
      */
     protected abstract void initValue();
 
     /**
-     * 初始化各控件的事件
+     * 初始化各控件的事件，负责根据不同条件，初始化各控件绑定的事件
      */
     protected abstract void initEvent();
 }

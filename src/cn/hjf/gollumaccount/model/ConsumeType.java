@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * @author huangjinfu
  * 
  */
-public class ConsumeType implements Parcelable {
+public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
     
     public enum Type {
         INSIDE, //内置类型
@@ -103,5 +103,18 @@ public class ConsumeType implements Parcelable {
             return new ConsumeType[size];
         }
     };
+
+    @Override
+    public int compareTo(ConsumeType another) {
+        int compare = 0;
+        if (another.type == ConsumeType.Type.INSIDE) {
+            compare = 1;
+        } else if (another.type == ConsumeType.Type.CUSTOME) {
+            compare = 0;
+        } else if (another.type == ConsumeType.Type.CONTROL) {
+            compare = -1;
+        }
+        return compare;
+    }
 
 }
