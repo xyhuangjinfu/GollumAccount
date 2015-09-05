@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" 
-    >
+    android:background="@drawable/gridview_consume_type" >
 
     <ImageView
         android:id="@+id/iv_consume_icon"
-        android:layout_width="55dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:src="@drawable/unknown" 
-        android:background="#C8C8C8"/>
+        android:padding="5dp"
+        android:background="@drawable/bg_round_gray"/>
 
     <LinearLayout
         android:id="@+id/llyt_price_date"

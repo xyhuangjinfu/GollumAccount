@@ -1,12 +1,8 @@
 package cn.hjf.gollumaccount.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
-import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -72,7 +68,6 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	}
 	
 	/**
-	 * ��ÿ���ؼ���ֵ
 	 * @param record
 	 * @param viewHolder
 	 */
@@ -87,31 +82,31 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		viewHolder.mRecordInfo.setText(record.getRecordRemark());
 		switch (record.getRecordType().getId()) {
 		case 1:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.clothes);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_clothes);
 			break;
 		case 2:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.food);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_food);
 			break;
 		case 3:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.house);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_house);
 			break;
 		case 4:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.traffic);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_traffic);
 			break;
-		case 5:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.entertainment);
-			break;
+	    case 5:
+	        viewHolder.mRecordIcon.setImageResource(R.drawable.ic_social);
+	        break;
 		case 6:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.work);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_entertainment);
 			break;
 		case 7:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.contact);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_work);
 			break;
 		case 8:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.other);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_study);
 			break;
 		default:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.unknown);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_custom_type);
 			break;
 		}
 	}

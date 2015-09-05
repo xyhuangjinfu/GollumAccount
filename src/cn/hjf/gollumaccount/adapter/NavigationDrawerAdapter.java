@@ -53,15 +53,15 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 		
 		switch (findIndexByName(drawerName)) {
 		case 1:
-			viewHolder.mImageView.setImageResource(R.drawable.edit);
+			viewHolder.mImageView.setImageResource(R.drawable.ic_record);
 			viewHolder.mTextView.setText(drawerName);
 			break;
 		case 2:
-			viewHolder.mImageView.setImageResource(R.drawable.chart);
+			viewHolder.mImageView.setImageResource(R.drawable.ic_statistic);
 			viewHolder.mTextView.setText(drawerName);
 			break;
 		case 3:
-			viewHolder.mImageView.setImageResource(R.drawable.about);
+			viewHolder.mImageView.setImageResource(R.drawable.ic_setting);
 			viewHolder.mTextView.setText(drawerName);
 		break;
 		}
