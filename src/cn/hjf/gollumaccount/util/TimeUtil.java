@@ -12,6 +12,20 @@ import java.util.Date;
  */
 public final class TimeUtil {
     
+    public static long getFirstDayOfDate(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+    
+    public static long getLastDayOfDate(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTimeInMillis();
+    }
+    
     public static String getDateString(String time) {
         Long longTime = Long.valueOf(time);
         Date date = new Date(longTime);

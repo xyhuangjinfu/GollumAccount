@@ -3,6 +3,7 @@ package cn.hjf.gollumaccount.db;
 import java.util.List;
 import java.util.Map;
 
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
 import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 
@@ -50,4 +51,11 @@ public interface IConsumeRecordDao {
      * @return
      */
     public abstract List<ConsumeRecordModel> queryRecords(QueryInfoModel queryInfo);
+    /**
+     * 按类型统计，查询
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public abstract Map<Integer, Double> statisticByType(long startDate, long endDate);
 }

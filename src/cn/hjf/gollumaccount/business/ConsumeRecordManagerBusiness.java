@@ -1,9 +1,12 @@
 package cn.hjf.gollumaccount.business;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import android.content.Context;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
@@ -12,11 +15,13 @@ import cn.hjf.gollumaccount.businessmodel.DaoModelTransfer;
 import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.daomodel.BusinessModelTransfer;
 import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
+import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 import cn.hjf.gollumaccount.db.ConsumeRecordDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.IConsumeRecordDao;
 import cn.hjf.gollumaccount.db.IConsumeTypeDao;
+import cn.hjf.gollumaccount.util.TimeUtil;
 
 /**
  * 消费记录管理的业务逻辑，负责添加和修改消费记录
@@ -66,33 +71,30 @@ public class ConsumeRecordManagerBusiness {
     }
     
     /**
-     * 查询所有消费记录
-     */
-    public List<ConsumeRecord> queryAllRecord() {
-        return getBusinessModels(mConsumeRecordDao.queryAll());
-    }
-    
-    /**
-     * 查询某类型所有的消费记录
-     * @param type
-     * @return
-     */
-    public List<ConsumeRecord> queryAllRecordByType(ConsumeType type) {
-        Map<String, String> paras = new HashMap<String, String>();
-        paras.put("recordTypeId", String.valueOf(type.getId()));
-        return getBusinessModels(mConsumeRecordDao.queryAllByParameter(paras));
-    }
-    
-    /**
      * 查询消费记录
-     * @param startTime 开始时间-消费时间
-     * @param endTime 结束时间-消费时间
-     * @param type 消费类型
-     * @param name 消费名称-模糊匹配
+     * @param queryInfo
      * @return
      */
     public List<ConsumeRecord> queryRecords(QueryInfo queryInfo) {
         return getBusinessModels(mConsumeRecordDao.queryRecords(mDaoModelTransfer.getQueryInfoModel(queryInfo)));
+    }
+    
+    /**
+     * 按类型统计，查询
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public Map<ConsumeType, Double> statisticByType(Calendar startDate, Calendar endDate) {
+        Map<ConsumeType, Double> statisticData = new HashMap<ConsumeType, Double>();
+        Map<Integer, Double> rawData = mConsumeRecordDao.statisticByType(
+                TimeUtil.getFirstDayOfDate(startDate), TimeUtil.getLastDayOfDate(endDate));
+        Set<Entry<Integer, Double>> entries = rawData.entrySet();
+        for (Entry<Integer, Double> entry : entries) {
+            ConsumeTypeModel consumeTypeModel = mConsumeTypeDao.queryById(entry.getKey());
+            statisticData.put(mBusinessModelTransfer.getConsumeType(consumeTypeModel), entry.getValue());
+        }
+        return statisticData;
     }
     
     /**

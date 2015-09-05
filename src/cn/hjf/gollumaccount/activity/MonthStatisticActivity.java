@@ -10,7 +10,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.MonthCompareTask;
-import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
@@ -119,7 +118,6 @@ public class MonthStatisticActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                     int position, long id) {
-                LoadDialog.show(MonthStatisticActivity.this);
                 mAnalyseYear = TimeUtil.getNowYear() - position;
                 Integer[] paras = new Integer[2];
                 paras[0] = mAnalyseYear;
@@ -137,7 +135,6 @@ public class MonthStatisticActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                     int position, long id) {
-                LoadDialog.show(MonthStatisticActivity.this);
                 mAnalyseItem = position + 1;
                 Integer[] paras = new Integer[2];
                 paras[0] = mAnalyseYear;
@@ -155,7 +152,6 @@ public class MonthStatisticActivity extends BaseActivity implements
     @Override
     public void onMonthCompareSuccess(HashMap<Integer, Double> result) {
         // 关闭加载对话框
-        LoadDialog.close();
         mSumPrice = getSumPrice(result);
         // 根据查询结果，生成线图的数据集
         LineData data = getData(result);

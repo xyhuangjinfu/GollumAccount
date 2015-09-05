@@ -1,9 +1,11 @@
 package cn.hjf.gollumaccount.db;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
 import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
@@ -115,6 +117,19 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         cursor.close();
         mDB.close();
         return records;
+    }
+    
+
+    @Override
+    public Map<Integer, Double> statisticByType(long startDate, long endDate) {
+        Map<Integer, Double> datas = new HashMap<Integer, Double>();
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.statisticByType(startDate, endDate), null);
+        while (cursor.moveToNext()) {
+            datas.put(cursor.getInt(cursor.getColumnIndex(Table.CLM_TYPE)),
+                    cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )") 
+                            ));
+        }
+        return datas;
     }
     
     /**
@@ -444,6 +459,39 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                 sql.append((queryInfo.getPageNumber() - 1) * queryInfo.getPageSize());
                 sql.append("'");
             
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 按类型统计，查询
+         */
+        public String statisticByType(long startDate, long endDate) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT ");
+            sql.append(Table.CLM_TYPE);
+            sql.append(" , ");
+            sql.append(" sum ( ");
+            sql.append(Table.CLM_PRICE);
+            sql.append(" ) ");
+            sql.append(" FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" >= ");
+            sql.append("'");
+            sql.append(startDate);
+            sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" <= ");
+            sql.append("'");
+            sql.append(endDate);
+            sql.append("'");
+            sql.append(" GROUP BY ");
+            sql.append(Table.CLM_TYPE);
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }
