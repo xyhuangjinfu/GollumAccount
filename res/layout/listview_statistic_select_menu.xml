@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/gridview_consume_type" >
+
+    <TextView
+        android:id="@+id/iv_drawer_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toLeftOf="@+id/iv_right"
+        android:gravity="center_vertical"
+        android:text="menu"
+        android:textColor="#323232"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@id/iv_right"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/listitem_btn_right" />
+
+</RelativeLayout>

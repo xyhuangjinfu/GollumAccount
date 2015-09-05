@@ -42,4 +42,9 @@
         <item>学习</item>
     </string-array>
 
+    <string-array name="statistic_select_menu">
+        <item>按类型统计</item>
+        <item>按月份统计</item>
+    </string-array>
+
 </resources>

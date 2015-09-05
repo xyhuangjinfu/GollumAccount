@@ -1,7 +1,11 @@
 package cn.hjf.gollumaccount.activity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.activity.MainActivity;
+import cn.hjf.gollumaccount.adapter.StatisticSelectMenuAdapter;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import android.app.Activity;
@@ -13,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 
 /**
  * 消费统计选择界面
@@ -22,18 +29,16 @@ import android.widget.Button;
  * 
  */
 public class StatisticSelectActivity extends BaseActivity implements CommonHeaderFragment.ICallback{
-
-    private Button mByItemButton;
-    private Button mByMonthButton;
-    /**
-     * 顶部标题栏
-     */
-    private CommonHeaderFragment mTitleFragment;
+    
+    private CommonHeaderFragment mTitleFragment; //顶部标题栏
+    private ListView mMenuList; //菜单列表
+    private StatisticSelectMenuAdapter mStatisticSelectMenuAdapter; //菜单显示适配器
+    private List<String> mMenuString; //菜单列表
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_analyse);
+        setContentView(R.layout.activity_statistic_select);
         
         initTitle();
         initView();
@@ -57,8 +62,7 @@ public class StatisticSelectActivity extends BaseActivity implements CommonHeade
      */
     @Override
     protected void initView() {
-        mByItemButton = (Button) findViewById(R.id.btn_pie_by_item);
-        mByMonthButton = (Button) findViewById(R.id.btn_line_by_month);
+        mMenuList = (ListView) findViewById(R.id.lv_statistic_select_menu);
     }
 
     /**
@@ -66,6 +70,9 @@ public class StatisticSelectActivity extends BaseActivity implements CommonHeade
      */
     @Override
     protected void initValue() {
+        mMenuString = Arrays.asList(getResources().getStringArray(R.array.statistic_select_menu));
+        mStatisticSelectMenuAdapter = new StatisticSelectMenuAdapter(this, mMenuString);
+        mMenuList.setAdapter(mStatisticSelectMenuAdapter);
     }
 
     /**
@@ -73,19 +80,22 @@ public class StatisticSelectActivity extends BaseActivity implements CommonHeade
      */
     @Override
     protected void initEvent() {
-        mByItemButton.setOnClickListener(new OnClickListener() {
+        mMenuList.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StatisticSelectActivity.this, TypeStatisticActivity.class);
-                StatisticSelectActivity.this.startActivity(intent);
-            }
-        });
-
-        mByMonthButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StatisticSelectActivity.this, MonthStatisticActivity.class);
-                StatisticSelectActivity.this.startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                switch (position) {
+                case 0:
+                    Intent intent0 = new Intent(StatisticSelectActivity.this, TypeStatisticActivity.class);
+                    StatisticSelectActivity.this.startActivity(intent0);
+                    break;
+                case 1:
+                    Intent intent1 = new Intent(StatisticSelectActivity.this, MonthStatisticActivity.class);
+                    StatisticSelectActivity.this.startActivity(intent1);
+                    break;
+                default:
+                    break;
+                }
             }
         });
     }
