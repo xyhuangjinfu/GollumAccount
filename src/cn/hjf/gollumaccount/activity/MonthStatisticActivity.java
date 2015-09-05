@@ -10,7 +10,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.MonthCompareTask;
-import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
@@ -43,8 +42,6 @@ public class MonthStatisticActivity extends BaseActivity implements
     private Spinner mItemSpinner; // 选择类型
     private LineChart mLineChart; // 线图
     private TextView mSumTextView; // 总金额
-
-    private ConsumeItemService mConsumeItemService; // 分类实体的业务逻辑对象
 
     private ArrayList<String> mYearData; // 年份数据
     private ArrayList<String> mItemData; // 分类数据

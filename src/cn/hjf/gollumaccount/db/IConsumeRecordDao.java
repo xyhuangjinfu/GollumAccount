@@ -3,8 +3,8 @@ package cn.hjf.gollumaccount.db;
 import java.util.List;
 import java.util.Map;
 
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.QueryInfo;
+import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
+import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 
 /**
  * 抽象的消费记录数据访问类
@@ -26,27 +26,28 @@ public interface IConsumeRecordDao {
      * 添加单个消费记录
      * @return
      */
-    public abstract boolean insert(ConsumeRecord record);
+    public abstract boolean insert(ConsumeRecordModel record);
     /**
      * 修改单个消费记录
      * @return
      */
-    public abstract boolean update(ConsumeRecord record);
+    public abstract boolean update(ConsumeRecordModel record);
     /**
      * 查找所有消费记录
      * @return
      */
-    public abstract List<ConsumeRecord> queryAll();
+    public abstract List<ConsumeRecordModel> queryAll();
     /**
      * 根据过滤参数查找消费记录
      * @param paras 参数键值对
      * @return
      */
-    public abstract List<ConsumeRecord> queryAllByParameter(Map<String, String> paras);
+    public abstract List<ConsumeRecordModel> queryAllByParameter(Map<String, String> paras);
     /**
      * 查询消费记录
      * @param queryInfo 查询条件信息
+     * @param consumeTypes 所有消费类型
      * @return
      */
-    public abstract List<ConsumeRecord> queryRecords(QueryInfo queryInfo);
+    public abstract List<ConsumeRecordModel> queryRecords(QueryInfoModel queryInfo);
 }

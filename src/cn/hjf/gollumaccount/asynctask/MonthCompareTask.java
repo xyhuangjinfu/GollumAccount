@@ -3,8 +3,6 @@ package cn.hjf.gollumaccount.asynctask;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import cn.hjf.gollumaccount.business.ConsumeItemService;
-import cn.hjf.gollumaccount.business.ConsumeRecordService;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -14,8 +12,6 @@ public class MonthCompareTask extends
 		AsyncTask<Integer, Void, HashMap<Integer, Double>> {
 
 	private Context mContext; // �����Ķ���
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordҵ���߼�����
-	private ConsumeItemService mConsumeItemService; // ConsumeItemҵ���߼�����
 	private OnMonthCompareSuccessCallback mListener; // ��ݼ�����ɼ������
 
 	/**

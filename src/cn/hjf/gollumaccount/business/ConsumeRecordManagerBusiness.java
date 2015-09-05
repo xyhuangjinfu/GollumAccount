@@ -6,11 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.DaoModelTransfer;
+import cn.hjf.gollumaccount.businessmodel.QueryInfo;
+import cn.hjf.gollumaccount.daomodel.BusinessModelTransfer;
+import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
+import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 import cn.hjf.gollumaccount.db.ConsumeRecordDaoSqliteImpl;
+import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.IConsumeRecordDao;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.ConsumeType;
-import cn.hjf.gollumaccount.model.QueryInfo;
+import cn.hjf.gollumaccount.db.IConsumeTypeDao;
 
 /**
  * 消费记录管理的业务逻辑，负责添加和修改消费记录
@@ -20,11 +26,17 @@ import cn.hjf.gollumaccount.model.QueryInfo;
 public class ConsumeRecordManagerBusiness {
 
     private IConsumeRecordDao mConsumeRecordDao;
+    private IConsumeTypeDao mConsumeTypeDao;
     private Context mContext;
+    private BusinessModelTransfer mBusinessModelTransfer;
+    private DaoModelTransfer mDaoModelTransfer;
     
     public ConsumeRecordManagerBusiness(Context context) {
         this.mContext = context;
         mConsumeRecordDao = new ConsumeRecordDaoSqliteImpl(mContext);
+        mConsumeTypeDao = new ConsumeTypeDaoSqliteImpl(mContext);
+        mBusinessModelTransfer = new BusinessModelTransfer(mContext);
+        mDaoModelTransfer=  new DaoModelTransfer();
         initInsideType();
     }
     
@@ -42,7 +54,7 @@ public class ConsumeRecordManagerBusiness {
      * @param record
      */
     public void addRecord(ConsumeRecord record) {
-        mConsumeRecordDao.insert(record);
+        mConsumeRecordDao.insert(mDaoModelTransfer.getConsumeRecordModel(record));
     }
     
     /**
@@ -50,14 +62,14 @@ public class ConsumeRecordManagerBusiness {
      * @param record
      */
     public void modifyRecord(ConsumeRecord record) {
-        mConsumeRecordDao.update(record);
+        mConsumeRecordDao.update(mDaoModelTransfer.getConsumeRecordModel(record));
     }
     
     /**
      * 查询所有消费记录
      */
     public List<ConsumeRecord> queryAllRecord() {
-        return mConsumeRecordDao.queryAll();
+        return getBusinessModels(mConsumeRecordDao.queryAll());
     }
     
     /**
@@ -68,21 +80,7 @@ public class ConsumeRecordManagerBusiness {
     public List<ConsumeRecord> queryAllRecordByType(ConsumeType type) {
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("recordTypeId", String.valueOf(type.getId()));
-        return mConsumeRecordDao.queryAllByParameter(paras);
-    }
-    
-    /**
-     * 分页查询
-     */
-    public List<ConsumeRecord> queryRecordByPage(long startTime, long endTime, int page, int num, int type) {
-        return null;
-    }
-    
-    /**
-     * 分页查询
-     */
-    public List<ConsumeRecord> queryRecordByPage(long startTime, long endTime, int page, int num) {
-        return null;
+        return getBusinessModels(mConsumeRecordDao.queryAllByParameter(paras));
     }
     
     /**
@@ -94,6 +92,32 @@ public class ConsumeRecordManagerBusiness {
      * @return
      */
     public List<ConsumeRecord> queryRecords(QueryInfo queryInfo) {
-        return mConsumeRecordDao.queryRecords(queryInfo);
+        return getBusinessModels(mConsumeRecordDao.queryRecords(mDaoModelTransfer.getQueryInfoModel(queryInfo)));
+    }
+    
+    /**
+     * 把多个数据层模型转换为业务逻辑模型
+     * @param consumeRecordModel
+     * @return
+     */
+    private List<ConsumeRecord> getBusinessModels(List<ConsumeRecordModel> consumeRecordModels) {
+        List<ConsumeRecord> consumeRecords = new ArrayList<ConsumeRecord>();
+        for (ConsumeRecordModel consumeRecordModel : consumeRecordModels) {
+            consumeRecords.add(mBusinessModelTransfer.getConsumeRecord(consumeRecordModel));
+        }
+        return consumeRecords;
+    }
+    
+    /**
+     * 把多个业务逻辑模型转换为数据层模型
+     * @param consumeRecordModel
+     * @return
+     */
+    private List<ConsumeRecordModel> getDaoModels(List<ConsumeRecord> consumeRecords) {
+        List<ConsumeRecordModel> consumeRecordModels = new ArrayList<ConsumeRecordModel>();
+        for (ConsumeRecord consumeRecord : consumeRecords) {
+            consumeRecordModels.add(mDaoModelTransfer.getConsumeRecordModel(consumeRecord));
+        }
+        return consumeRecordModels;
     }
 }

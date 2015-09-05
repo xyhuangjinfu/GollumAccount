@@ -1,6 +1,5 @@
 package cn.hjf.gollumaccount.activity;
 
-import cn.hjf.gollumaccount.FragmentIdConsts;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.activity.MainActivity;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;

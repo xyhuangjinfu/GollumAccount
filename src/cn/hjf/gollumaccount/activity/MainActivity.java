@@ -8,20 +8,17 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 
-import cn.hjf.gollumaccount.FragmentIdConsts;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
-import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
-import cn.hjf.gollumaccount.dialog.ConsumeQueryDialog;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.ConsumeType;
-import cn.hjf.gollumaccount.model.QueryInfo;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,8 +53,7 @@ import android.support.v4.widget.DrawerLayout;
 public class MainActivity extends BaseActivity implements
 		SideMenuFragment.NavigationDrawerCallbacks,
 		CommonHeaderFragment.ICallback,
-		LoadConsumeRecordTask.OnRecordLoadCallback,
-        ConsumeQueryDialog.OnQueryListener{
+		LoadConsumeRecordTask.OnRecordLoadCallback {
     
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
     private static final int NUM_PER_PAGE = 7; // 每页查询的数量
@@ -75,7 +71,6 @@ public class MainActivity extends BaseActivity implements
 	
 	private LoadingDialog mLoadingDialog; //加载对话框
 	
-	private ConsumeQueryDialog mConsumeQueryDialog; // 查询条件输入对话框
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
 	
@@ -162,8 +157,6 @@ public class MainActivity extends BaseActivity implements
         mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
         mRecordListView.addFooterView(mFooterViewLayout);
         mRecordListView.setEmptyView(mEmptyView);
-        mConsumeQueryDialog = new ConsumeQueryDialog(this);
-        mConsumeQueryDialog.setOnQueryListener(this);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
     }
 
@@ -233,10 +226,6 @@ public class MainActivity extends BaseActivity implements
                     int visibleItemCount, int totalItemCount) {
             }
         });
-    }
-
-    @Override
-    public void onQuery(int year, int month, int item) {
     }
 
     @Override

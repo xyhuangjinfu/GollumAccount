@@ -2,7 +2,7 @@ package cn.hjf.gollumaccount.db;
 
 import java.util.List;
 
-import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 
 /**
  * 抽象的消费类型数据访问类
@@ -24,25 +24,30 @@ public interface IConsumeTypeDao {
      * 添加单个消费类型
      * @return
      */
-    public abstract boolean insert(ConsumeType type);
+    public abstract boolean insert(ConsumeTypeModel type);
     /**
      * 添加多个消费类型
      * @return
      */
-    public abstract boolean insertAll(List<ConsumeType> types);
+    public abstract boolean insertAll(List<ConsumeTypeModel> types);
     /**
      * 删除消费类型
      * @return
      */
-    public abstract boolean delete(ConsumeType type);
+    public abstract boolean delete(ConsumeTypeModel type);
     /**
      * 根据消费类型名称查找类型
      * @return
      */
-    public abstract ConsumeType queryByName(String name);
+    public abstract ConsumeTypeModel queryByName(String name);
+    /**
+     * 根据消费类型id查找类型
+     * @return
+     */
+    public abstract ConsumeTypeModel queryById(int id);
     /**
      * 查找所有消费类型
      * @return
      */
-    public abstract List<ConsumeType> queryAll();
+    public abstract List<ConsumeTypeModel> queryAll();
 }

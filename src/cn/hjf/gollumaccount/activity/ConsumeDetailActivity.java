@@ -5,11 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.business.ConsumeItemService;
-import cn.hjf.gollumaccount.business.ConsumeRecordService;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -55,8 +53,6 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
     
     private ConsumeRecord mConsumeRecord = null; // 消费记录对象
     private int[] mRecordTime = new int[5];
-    private ConsumeItemService mConsumeItemService; // 消费类型业务逻辑类
-    private ConsumeRecordService mConsumeRecordService; // 消费记录业务逻辑类
     private ArrayList<String> mItemNames; // 消费类型数据
     private ArrayAdapter<String> mArrayAdapter; // 消费类型控件的适配器
     private boolean mButtonFlag; // false-修改，true-提交
@@ -127,11 +123,11 @@ public class ConsumeDetailActivity extends BaseActivity implements CommonHeaderF
         mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner,
                 mItemNames);
         
-        mConsumeTypeTextView.setText(String.valueOf(mConsumeRecord.getRecordTypeId()));
+        mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
         mConsumeDateTextView.setText(this.mConsumeRecord
                 .getConsumeTime());
-        mConsumeTimeTextView.setText(this.mConsumeRecord.getConsumeTime());
-        mConsumeCreateTimeTextView.setText(this.mConsumeRecord.getCreateTime());
+        mConsumeTimeTextView.setText(TimeUtil.getTimeString(Long.valueOf(this.mConsumeRecord.getConsumeTime())));
+        mConsumeCreateTimeTextView.setText(TimeUtil.getTimeString(Long.valueOf(this.mConsumeRecord.getCreateTime())));
         if (("".equals(this.mConsumeRecord.getRecordRemark()))
                 || (this.mConsumeRecord.getRecordRemark() == null)) {
             mConsumeRemarksEditText.setHint("备注信息");

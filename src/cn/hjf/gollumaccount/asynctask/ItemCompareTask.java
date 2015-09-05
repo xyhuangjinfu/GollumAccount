@@ -2,7 +2,6 @@ package cn.hjf.gollumaccount.asynctask;
 
 import java.util.HashMap;
 
-import cn.hjf.gollumaccount.business.ConsumeRecordService;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,7 +16,6 @@ public class ItemCompareTask extends
 		AsyncTask<Long, Void, HashMap<Integer, Double>> {
 
 	private Context mContext; // �����Ķ���
-	private ConsumeRecordService mConsumeRecordService; // ConsumeRecordҵ���߼�����
 	private OnItemCompareSuccessCallback mListener; // �ص��������
 
 	/**

@@ -30,7 +30,7 @@ public class MyApplication extends Application {
 		
 		
 		// ��ʼ����Ŀ�е�����·��
-		initPath();
+//		initPath();
 		
 		ConsumeTypeManagerBusiness d = new ConsumeTypeManagerBusiness(this);
 		d.initInsideType();
@@ -38,19 +38,19 @@ public class MyApplication extends Application {
 
 	}
 
-	/**
-	 * ��ʼ����Ŀ�����е�·��
-	 */
-	private void initPath() {
-		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
-			PathHelper.setDatabasePath(Environment
-					.getExternalStorageDirectory().getAbsolutePath()
-					+ "/gollum/account/database");
-		} else {
-			PathHelper.setDatabasePath(this.getDatabasePath("account.db")
-					.getParent());
-		}
-	}
+//	/**
+//	 * ��ʼ����Ŀ�����е�·��
+//	 */
+//	private void initPath() {
+//		if (Environment.getExternalStorageState().equals(
+//				Environment.MEDIA_MOUNTED)) {
+//			PathHelper.setDatabasePath(Environment
+//					.getExternalStorageDirectory().getAbsolutePath()
+//					+ "/gollum/account/database");
+//		} else {
+//			PathHelper.setDatabasePath(this.getDatabasePath("account.db")
+//					.getParent());
+//		}
+//	}
 
 }

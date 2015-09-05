@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.ConsumeType;
-import cn.hjf.gollumaccount.model.QueryInfo;
+import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
+import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
+import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -32,7 +32,6 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         mSqlBuilder = new SqlBuilder();
     }
     
-
     @Override
     public boolean isTableExist() {
         boolean isExist = false;
@@ -60,7 +59,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     }
 
     @Override
-    public boolean insert(ConsumeRecord record) {
+    public boolean insert(ConsumeRecordModel record) {
         boolean result = true;
         try {
             mDB.open().execSQL(mSqlBuilder.insertRecord(record));
@@ -74,7 +73,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     }
 
     @Override
-    public boolean update(ConsumeRecord record) {
+    public boolean update(ConsumeRecordModel record) {
         boolean result = true;
         try {
             mDB.open().execSQL(mSqlBuilder.updateRecord(record));
@@ -88,8 +87,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     }
 
     @Override
-    public List<ConsumeRecord> queryAll() {
-        List<ConsumeRecord> records = null;
+    public List<ConsumeRecordModel> queryAll() {
+        List<ConsumeRecordModel> records = null;
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAll(), null);
         records = getRecordsFromCursor(cursor);
         cursor.close();
@@ -99,8 +98,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     
 
     @Override
-    public List<ConsumeRecord> queryAllByParameter(Map<String, String> paras) {
-        List<ConsumeRecord> records = null;
+    public List<ConsumeRecordModel> queryAllByParameter(Map<String, String> paras) {
+        List<ConsumeRecordModel> records = null;
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAllByParameter(paras), null);
         records = getRecordsFromCursor(cursor);
         cursor.close();
@@ -109,8 +108,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     }
     
     @Override
-    public List<ConsumeRecord> queryRecords(QueryInfo queryInfo) {
-        List<ConsumeRecord> records = null;
+    public List<ConsumeRecordModel> queryRecords(QueryInfoModel queryInfo) {
+        List<ConsumeRecordModel> records = null;
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryRecords(queryInfo), null);
         records = getRecordsFromCursor(cursor);
         cursor.close();
@@ -123,10 +122,10 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
      * @param cursor
      * @return
      */
-    private List<ConsumeRecord> getRecordsFromCursor(Cursor cursor) {
-        List<ConsumeRecord> records = new ArrayList<ConsumeRecord>();
+    private List<ConsumeRecordModel> getRecordsFromCursor(Cursor cursor) {
+        List<ConsumeRecordModel> records = new ArrayList<ConsumeRecordModel>();
         while (cursor.moveToNext()) {
-            ConsumeRecord record = new ConsumeRecord();
+            ConsumeRecordModel record = new ConsumeRecordModel();
             record.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             record.setRecordName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             record.setRecordPrice(cursor.getString(cursor.getColumnIndex(Table.CLM_PRICE)));
@@ -198,7 +197,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
          * 添加消费记录
          * @return
          */
-        public String insertRecord(ConsumeRecord record) {
+        public String insertRecord(ConsumeRecordModel record) {
             StringBuilder sql = new StringBuilder();
             sql.append(" INSERT INTO ");
             sql.append(TABLE_NAME);
@@ -266,7 +265,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
          * 更新消费记录
          * @return
          */
-        public String updateRecord(ConsumeRecord record) {
+        public String updateRecord(ConsumeRecordModel record) {
             StringBuilder sql = new StringBuilder();
             sql.append(" UPDATE ");
             sql.append(TABLE_NAME);
@@ -387,7 +386,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         /**
          * 按特定条件查询所有消费记录
          */
-        public String queryRecords(QueryInfo queryInfo) {
+        public String queryRecords(QueryInfoModel queryInfo) {
             StringBuilder sql = new StringBuilder();
             sql.append(" SELECT * FROM ");
             sql.append(TABLE_NAME);

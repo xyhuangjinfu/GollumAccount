@@ -5,9 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
-import cn.hjf.gollumaccount.business.ConsumeRecordService;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.QueryInfo;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.os.AsyncTask;

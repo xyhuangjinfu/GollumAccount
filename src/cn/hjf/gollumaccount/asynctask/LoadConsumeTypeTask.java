@@ -3,7 +3,7 @@ package cn.hjf.gollumaccount.asynctask;
 import java.util.List;
 
 import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
-import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 
 import android.content.Context;
 import android.os.AsyncTask;

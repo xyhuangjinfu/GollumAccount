@@ -1,4 +1,4 @@
-package cn.hjf.gollumaccount.model;
+package cn.hjf.gollumaccount.businessmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,7 +14,7 @@ public class ConsumeRecord implements Parcelable {
 	private int id; //唯一标识
 	private String recordName; //消费记录名称
 	private String recordPrice; //消费金额
-	private int recordTypeId; //消费类型id
+	private ConsumeType recordType; //消费类型
 	private String recordRemark; //备注信息
 	private String consumeTime; //消费时间
 	private String createTime; //消费记录创建时间
@@ -41,11 +41,11 @@ public class ConsumeRecord implements Parcelable {
     public void setRecordPrice(String recordPrice) {
         this.recordPrice = recordPrice;
     }
-    public int getRecordTypeId() {
-        return recordTypeId;
+    public ConsumeType getRecordType() {
+        return recordType;
     }
-    public void setRecordTypeId(int recordTypeId) {
-        this.recordTypeId = recordTypeId;
+    public void setRecordType(ConsumeType recordType) {
+        this.recordType = recordType;
     }
     public String getRecordRemark() {
         return recordRemark;
@@ -86,7 +86,7 @@ public class ConsumeRecord implements Parcelable {
         dest.writeInt(id);
         dest.writeString(recordName);
         dest.writeString(recordPrice);
-        dest.writeInt(recordTypeId);
+        dest.writeParcelable(recordType, flags);
         dest.writeString(recordRemark);
         dest.writeString(consumeTime);
         dest.writeString(createTime);
@@ -98,7 +98,7 @@ public class ConsumeRecord implements Parcelable {
         id = source.readInt();
         recordName = source.readString();
         recordPrice = source.readString();
-        recordTypeId = source.readInt();
+        recordType = source.readParcelable(this.getClass().getClassLoader());
         recordRemark = source.readString();
         consumeTime = source.readString();
         createTime = source.readString();

@@ -12,7 +12,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.ItemCompareTask;
-import cn.hjf.gollumaccount.business.ConsumeItemService;
 import cn.hjf.gollumaccount.dialog.LoadDialog;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
@@ -45,9 +44,6 @@ public class TypeStatisticActivity extends BaseActivity implements
 
     private ArrayList<String> mYearData; // 年份数据
     private ArrayList<String> mMonthData; // 月份数据
-
-    // private ConsumeRecordService mConsumeRecordService;
-    private ConsumeItemService mConsumeItemService; // ConsumeItem业务逻辑对象
 
     private int mAnalyseYear = 0; // 要分析的年份
     private int mAnalyseMonth = 0; // 要分析的月份

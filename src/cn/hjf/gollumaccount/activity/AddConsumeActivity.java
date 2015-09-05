@@ -5,10 +5,10 @@ import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
-import cn.hjf.gollumaccount.model.ConsumeType;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -196,7 +196,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
         mConsumeRecord.setRecordName(mConsumeNameEditText.getText().toString());
         mConsumeRecord.setRecordPrice(mConsumePriceEditText.getText()
                 .toString());
-        mConsumeRecord.setRecordTypeId(mConsumeType.getId());
+        mConsumeRecord.setRecordType(mConsumeType);
         mConsumeRecord.setRecordRemark(mConsumeRemarkEditText.getText().toString());
         mConsumeRecord.setConsumeTime(String.valueOf(mConsumeCalendar.getTime().getTime()));
         mConsumeRecord.setCreateTime(String.valueOf(System.currentTimeMillis()));

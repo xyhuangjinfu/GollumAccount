@@ -1,4 +1,4 @@
-package cn.hjf.gollumaccount.model;
+package cn.hjf.gollumaccount.daomodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * @author huangjinfu
  * 
  */
-public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
+public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel> {
     
     public enum Type {
         INSIDE, //内置类型
@@ -21,10 +21,10 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
 	private String name; //类型名称
 	private Type type; //类型，区分自定义类型和内置类型
 	
-	public ConsumeType () {
+	public ConsumeTypeModel () {
 	}
 	
-	public ConsumeType (String name, Type type) {
+	public ConsumeTypeModel (String name, Type type) {
 	    this.name = name;
 	    this.type = type;
 	}
@@ -63,10 +63,10 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ConsumeType)) {
+        if (!(o instanceof ConsumeTypeModel)) {
             return false;
         }
-        ConsumeType t = (ConsumeType) o;
+        ConsumeTypeModel t = (ConsumeTypeModel) o;
         if (this.name.equals(t.name)) {
             return true;
         } else {
@@ -86,32 +86,32 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
         dest.writeSerializable(type);
     }
     
-    private ConsumeType(Parcel source) {
+    private ConsumeTypeModel(Parcel source) {
         id = source.readInt();
         name = source.readString();
         type = (Type) source.readSerializable();
     }
     
-    public static final Parcelable.Creator<ConsumeType> CREATOR = new Parcelable.Creator<ConsumeType>() {
+    public static final Parcelable.Creator<ConsumeTypeModel> CREATOR = new Parcelable.Creator<ConsumeTypeModel>() {
         @Override
-        public ConsumeType createFromParcel(Parcel source) {
-            return new ConsumeType(source);
+        public ConsumeTypeModel createFromParcel(Parcel source) {
+            return new ConsumeTypeModel(source);
         }
 
         @Override
-        public ConsumeType[] newArray(int size) {
-            return new ConsumeType[size];
+        public ConsumeTypeModel[] newArray(int size) {
+            return new ConsumeTypeModel[size];
         }
     };
 
     @Override
-    public int compareTo(ConsumeType another) {
+    public int compareTo(ConsumeTypeModel another) {
         int compare = 0;
-        if (another.type == ConsumeType.Type.INSIDE) {
+        if (another.type == ConsumeTypeModel.Type.INSIDE) {
             compare = 1;
-        } else if (another.type == ConsumeType.Type.CUSTOME) {
+        } else if (another.type == ConsumeTypeModel.Type.CUSTOME) {
             compare = 0;
-        } else if (another.type == ConsumeType.Type.CONTROL) {
+        } else if (another.type == ConsumeTypeModel.Type.CONTROL) {
             compare = -1;
         }
         return compare;

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.model.ConsumeType;
-import cn.hjf.gollumaccount.model.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -79,23 +79,13 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	private void initViewValue(ConsumeRecord record, ViewHolder viewHolder) {
 		String displayName = null;
 		String displayPrice = null;
-//		if (record.getRecordName().length() > 6) {
-//			displayName = record.getRecordName().substring(0, 6) + "...";
-//		} else {
-//			displayName = record.getRecordName();
-//		}
-//		if (String.valueOf(record.getRecordPrice()).length() > 5) {
-//			displayPrice = String.valueOf(record.getRecordPrice()).substring(0, 5) + "...";
-//		} else {
-//			displayPrice = String.valueOf(record.getRecordPrice());
-//		}
 		displayName = record.getRecordName();
 		displayPrice = String.valueOf(record.getRecordPrice());
 		viewHolder.mRecordPrice.setText(displayPrice);
 		viewHolder.mRecordName.setText(displayName);
 		viewHolder.mRecordTime.setText(TimeUtil.getDateString(Long.valueOf(record.getConsumeTime())));
 		viewHolder.mRecordInfo.setText(record.getRecordRemark());
-		switch (record.getRecordTypeId()) {
+		switch (record.getRecordType().getId()) {
 		case 1:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.clothes);
 			break;

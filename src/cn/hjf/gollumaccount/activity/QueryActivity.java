@@ -3,10 +3,10 @@ package cn.hjf.gollumaccount.activity;
 import java.util.Calendar;
 
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
-import cn.hjf.gollumaccount.model.ConsumeType;
-import cn.hjf.gollumaccount.model.QueryInfo;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -159,7 +159,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                 ConsumeType type = data.getParcelableExtra("consume_type");
                 if (type != null) {
                     mConsumeType.setText(type.getName());
-                    mQueryInfo.setType(type.getId());
+                    mQueryInfo.setType(type);
                 }
             }
         }

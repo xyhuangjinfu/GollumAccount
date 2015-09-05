@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 
 /**
  * 消费类型数据访问类，依赖于具体的数据库
@@ -57,7 +57,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
     }
     
     @Override
-    public boolean insert(ConsumeType type) {
+    public boolean insert(ConsumeTypeModel type) {
         boolean result = true;
         try {
             mDB.open().execSQL(mSqlBuilder.insertType(type));
@@ -72,13 +72,13 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
     
 
     @Override
-    public boolean insertAll(List<ConsumeType> types) {
+    public boolean insertAll(List<ConsumeTypeModel> types) {
         boolean result = true;
         SQLiteDatabase db = null;
         try {
             db = mDB.open();
             db.beginTransaction();
-            for (ConsumeType consumeType : types) {
+            for (ConsumeTypeModel consumeType : types) {
                 db.execSQL(mSqlBuilder.insertType(consumeType));
             }
             db.setTransactionSuccessful();
@@ -98,7 +98,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
      * 删除消费类型
      */
     @Override
-    public boolean delete(ConsumeType type) {
+    public boolean delete(ConsumeTypeModel type) {
         boolean result = true;
         try {
             mDB.open().execSQL(mSqlBuilder.delete(type));
@@ -115,14 +115,30 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
      * 
      */
     @Override
-    public ConsumeType queryByName(String name) {
+    public ConsumeTypeModel queryByName(String name) {
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryByName(name), null);
-        ConsumeType type = null;
+        ConsumeTypeModel type = null;
         while (cursor.moveToNext()) {
-            type = new ConsumeType();
+            type = new ConsumeTypeModel();
             type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
-            type.setType(ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+        }
+        cursor.close();
+        mDB.close();
+        return type;
+    }
+    
+
+    @Override
+    public ConsumeTypeModel queryById(int id) {
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryById(id), null);
+        ConsumeTypeModel type = null;
+        while (cursor.moveToNext()) {
+            type = new ConsumeTypeModel();
+            type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
+            type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
+            type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
         }
         cursor.close();
         mDB.close();
@@ -133,14 +149,14 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
      * 查询所有消费类型
      */
     @Override
-    public List<ConsumeType> queryAll() {
-        List<ConsumeType> types = new ArrayList<ConsumeType>();
+    public List<ConsumeTypeModel> queryAll() {
+        List<ConsumeTypeModel> types = new ArrayList<ConsumeTypeModel>();
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryAll(), null);
         while (cursor.moveToNext()) {
-            ConsumeType type = new ConsumeType();
+            ConsumeTypeModel type = new ConsumeTypeModel();
             type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
-            type.setType(ConsumeType.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
             types.add(type);
         }
         cursor.close();
@@ -193,7 +209,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
          * 添加消费类型
          * @return
          */
-        public String insertType(ConsumeType type) {
+        public String insertType(ConsumeTypeModel type) {
             StringBuilder sql = new StringBuilder();
             sql.append(" INSERT INTO ");
             sql.append(TABLE_NAME);
@@ -234,6 +250,26 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
         }
         
         /**
+         * 按消费类型Id查询
+         * @return
+         */
+        public String queryById(int id) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT * FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" where ");
+            sql.append(Table.CLM_ID);
+            sql.append("=");
+            sql.append("'");
+            sql.append(id);
+            sql.append("'");
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
          * 查询所有消费类型
          * @return
          */
@@ -251,7 +287,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
          * 删除消费类型
          * @return
          */
-        public String delete(ConsumeType type) {
+        public String delete(ConsumeTypeModel type) {
             StringBuilder sql = new StringBuilder();
             sql.append(" DELETE FROM ");
             sql.append(TABLE_NAME);
@@ -278,6 +314,5 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
         static final String CLM_NAME = "name";
         static final String CLM_TYPE = "type";
     }
-
     
 }

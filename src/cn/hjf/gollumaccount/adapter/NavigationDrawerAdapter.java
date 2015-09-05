@@ -3,7 +3,7 @@ package cn.hjf.gollumaccount.adapter;
 import java.util.ArrayList;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

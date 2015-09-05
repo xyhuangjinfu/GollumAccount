@@ -2,7 +2,7 @@ package cn.hjf.gollumaccount.asynctask;
 
 import java.util.List;
 
-import cn.hjf.gollumaccount.model.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 
 /**
  * 消费类型操作监听器
