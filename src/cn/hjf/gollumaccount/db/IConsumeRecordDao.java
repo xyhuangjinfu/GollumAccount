@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
+import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
 
 /**
@@ -65,4 +66,11 @@ public interface IConsumeRecordDao {
      * @return
      */
     public abstract Double statisticSum(long startDate, long endDate);
+    /**
+     * 按类型统计时间段内消费金额总计
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public abstract Double queryMonthSumByType (long startDate, long endDate, ConsumeTypeModel type);
 }

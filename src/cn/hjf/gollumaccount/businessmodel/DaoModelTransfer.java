@@ -27,7 +27,7 @@ public final class DaoModelTransfer {
         ConsumeTypeModel consumeTypeModel = new ConsumeTypeModel();
         consumeTypeModel.setId(consumeType.getId());
         consumeTypeModel.setName(consumeType.getName());
-        consumeTypeModel.setType(ConsumeTypeModel.Type.valueOf(String.valueOf(consumeType.getType())));
+        consumeTypeModel.setType(consumeType.getType() == null ? null : ConsumeTypeModel.Type.valueOf(String.valueOf(consumeType.getType())));
         return consumeTypeModel;
     }
     

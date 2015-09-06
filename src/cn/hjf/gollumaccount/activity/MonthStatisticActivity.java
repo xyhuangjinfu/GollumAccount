@@ -3,13 +3,15 @@ package cn.hjf.gollumaccount.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.asynctask.MonthCompareTask;
+import cn.hjf.gollumaccount.asynctask.StatisticMonthByTypeTask;
+import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
@@ -34,7 +36,7 @@ import android.widget.TextView;
  * 
  */
 public class MonthStatisticActivity extends BaseActivity implements
-        MonthCompareTask.OnMonthCompareSuccessCallback,
+        StatisticMonthByTypeTask.OnStatisticMonthByTypeListener,
         CommonHeaderFragment.ICallback {
 
     private Spinner mYearSpinner; // 选择年份
@@ -53,6 +55,14 @@ public class MonthStatisticActivity extends BaseActivity implements
      * 顶部标题栏
      */
     private CommonHeaderFragment mTitleFragment;
+    
+    private Calendar mStatisticYear;
+    private ConsumeType mConsumeType;
+    
+    public MonthStatisticActivity() {
+        mStatisticYear = Calendar.getInstance();
+        mConsumeType = new ConsumeType();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +74,9 @@ public class MonthStatisticActivity extends BaseActivity implements
         initView();
         initValue();
         initEvent();
+        
+        
+        new StatisticMonthByTypeTask(this, this).execute(mStatisticYear, mConsumeType);
 
     }
     
@@ -118,12 +131,6 @@ public class MonthStatisticActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                     int position, long id) {
-                mAnalyseYear = TimeUtil.getNowYear() - position;
-                Integer[] paras = new Integer[2];
-                paras[0] = mAnalyseYear;
-                paras[1] = mAnalyseItem;
-                new MonthCompareTask(MonthStatisticActivity.this, MonthStatisticActivity.this)
-                        .execute(paras);
             }
 
             @Override
@@ -135,29 +142,12 @@ public class MonthStatisticActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                     int position, long id) {
-                mAnalyseItem = position + 1;
-                Integer[] paras = new Integer[2];
-                paras[0] = mAnalyseYear;
-                paras[1] = mAnalyseItem;
-                new MonthCompareTask(MonthStatisticActivity.this, MonthStatisticActivity.this)
-                        .execute(paras);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    @Override
-    public void onMonthCompareSuccess(HashMap<Integer, Double> result) {
-        // 关闭加载对话框
-        mSumPrice = getSumPrice(result);
-        // 根据查询结果，生成线图的数据集
-        LineData data = getData(result);
-        // 传入要显示的图表控件和数据，显示图表
-        showLineChart(mLineChart, data);
-
     }
 
     /**
@@ -282,9 +272,9 @@ public class MonthStatisticActivity extends BaseActivity implements
      * @param map
      * @return
      */
-    private LineData getData(HashMap<Integer, Double> map) {
+    private LineData getData(Map<Integer, Double> map) {
         LineData data = null;
-        if (isHaveData(map)) {
+//        if (isHaveData(map)) {
             // 初始化 x、y轴的值ֵ
             ArrayList<String> xVals = new ArrayList<String>();
             ArrayList<Entry> yVals = new ArrayList<Entry>();
@@ -307,7 +297,7 @@ public class MonthStatisticActivity extends BaseActivity implements
             ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
             dataSets.add(dataSet);
             data = new LineData(xVals, dataSets);
-        }
+//        }
         return data;
     }
 
@@ -334,6 +324,12 @@ public class MonthStatisticActivity extends BaseActivity implements
 
     @Override
     public void onRightClick() {
+    }
+
+    @Override
+    public void onStatisticMonthByTypeCompleted(Map<Integer, Double> result) {
+        LineData lineData = getData(result);
+        showLineChart(mLineChart, lineData);
     }
 
 }

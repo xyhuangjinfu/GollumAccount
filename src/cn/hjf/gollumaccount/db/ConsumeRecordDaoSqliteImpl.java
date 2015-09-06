@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.daomodel.ConsumeRecordModel;
 import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.daomodel.QueryInfoModel;
+import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -137,6 +139,18 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     public Double statisticSum(long startDate, long endDate) {
         Double sum = 0d;
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.statisticSum(startDate, endDate), null);
+        while (cursor.moveToNext()) {
+            sum = cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )"));
+        }
+        return sum;
+    }
+    
+
+    @Override
+    public Double queryMonthSumByType(long startDate, long endDate,
+            ConsumeTypeModel type) {
+        Double sum = 0d;
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.queryMonthSumByType(startDate, endDate, type), null);
         while (cursor.moveToNext()) {
             sum = cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )"));
         }
@@ -539,6 +553,47 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append("'");
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 统计时间段内消费金额总计
+         */
+        public String queryMonthSumByType(long startDate, long endDate, ConsumeTypeModel type) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT ");
+            sql.append(" sum ( ");
+            sql.append(Table.CLM_PRICE);
+            sql.append(" ) ");
+            sql.append(" FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" >= ");
+            sql.append("'");
+            sql.append(startDate);
+            sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" <= ");
+            sql.append("'");
+            sql.append(endDate);
+            sql.append("'");
+            
+            if (type.getId() != 0) {
+                sql.append(" AND ");
+                sql.append(Table.CLM_TYPE);
+                sql.append(" = ");
+                sql.append("'");
+                sql.append(type.getId());
+                sql.append("'");
+            }
+            
+            sql.append(" AND 1 = 1 ");
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+                Log.d(TAG, TimeUtil.getTimeString(startDate) + " -- " + TimeUtil.getTimeString(endDate));
             }
             return sql.toString();
         }

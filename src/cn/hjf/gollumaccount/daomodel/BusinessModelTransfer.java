@@ -30,7 +30,7 @@ public final class BusinessModelTransfer {
         ConsumeType consumeType = new ConsumeType();
         consumeType.setId(consumeTypeModel.getId());
         consumeType.setName(consumeTypeModel.getName());
-        consumeType.setType(ConsumeType.Type.valueOf(String.valueOf(consumeTypeModel.getType())));
+        consumeType.setType(consumeTypeModel.getType() == null ? null : ConsumeType.Type.valueOf(String.valueOf(consumeTypeModel.getType())));
         return consumeType;
     }
 
