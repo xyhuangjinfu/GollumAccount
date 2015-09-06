@@ -75,6 +75,8 @@ public class MonthStatisticActivity extends BaseActivity implements
     private MonthStatisticAdapter mMonthStatisticAdapter; //统计分析数据显示列表的适配器
     private List<MonthStatisticData> mStatisticDatas; ////按类型统计分析的数据
     
+    private View mEmptyView; //ListView没有数据时显示的界面
+    
     public MonthStatisticActivity() {
         mStatisticYear = Calendar.getInstance();
         mConsumeType = new ConsumeType();
@@ -122,6 +124,11 @@ public class MonthStatisticActivity extends BaseActivity implements
         mLineChart = (LineChart) findViewById(R.id.lc_by_month);
         mYearSelectDialog = new SpinnerDialog(this, R.style.transparent_dialog1);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+        mLoadingDialog.setCancelable(false);
+        
+        //绑定空视图
+        mEmptyView = findViewById(R.id.ly_no_data);
+        mShowDataListView.setEmptyView(mEmptyView);
     }
 
     /**
@@ -363,12 +370,14 @@ public class MonthStatisticActivity extends BaseActivity implements
     private List<MonthStatisticData> getShowData(Map<Integer, Double> result) {
         List<MonthStatisticData> datas = new ArrayList<MonthStatisticData>();
         double allSum = getAllSum(result);
-        for (Map.Entry<Integer, Double> entry : result.entrySet()) {
-            MonthStatisticData data = new MonthStatisticData();
-            data.setConsumeMonth(entry.getKey());
-            data.setTypeSum(entry.getValue());
-            data.setAllSum(allSum);
-            datas.add(data);
+        if (allSum != 0) {
+            for (Map.Entry<Integer, Double> entry : result.entrySet()) {
+                MonthStatisticData data = new MonthStatisticData();
+                data.setConsumeMonth(entry.getKey());
+                data.setTypeSum(entry.getValue());
+                data.setAllSum(allSum);
+                datas.add(data);
+            }
         }
         return datas;
     }

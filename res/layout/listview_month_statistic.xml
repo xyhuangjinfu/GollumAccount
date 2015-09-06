@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="#f0f0f0" >
+    android:background="@color/white" >
 
     <TextView
         android:id="@+id/tv_month"
@@ -15,6 +15,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:text="01"
+        android:textSize="12sp"
+        android:textColor="@color/black"
          />
 
     <TextView
@@ -25,7 +27,9 @@
         android:layout_toRightOf="@+id/tv_month"
         android:gravity="center_vertical"
         android:visibility="gone"
-        android:text="一般" />
+        android:text="一般"
+        android:textSize="14sp"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/tv_ratio"
@@ -35,7 +39,9 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/tv_type"
         android:gravity="center_vertical"
-        android:text="80%" />
+        android:text="80%"
+        android:textSize="14sp"
+        android:textColor="@color/black" />
 
     <ProgressBar
         android:id="@+id/pb_ratio"
@@ -57,6 +63,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center"
+        android:textSize="16sp"
+        android:padding="15dp"
+        android:textColor="@color/theme"
         android:text="258.95" />
 
 </RelativeLayout>
