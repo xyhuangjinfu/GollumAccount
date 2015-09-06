@@ -46,12 +46,12 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     
     private QueryInfo mQueryInfo; //要返回的查询信息
-    private Calendar mStartCalendar; //查询开始时间
-    private Calendar mEndCalendar; //查询结束时间
+//    private Calendar mStartCalendar; //查询开始时间
+//    private Calendar mEndCalendar; //查询结束时间
     
     public QueryActivity() {
-        mStartCalendar = Calendar.getInstance();
-        mEndCalendar = Calendar.getInstance();
+//        mStartCalendar = Calendar.getInstance();
+//        mEndCalendar = Calendar.getInstance();
     }
     
     @Override
@@ -119,7 +119,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(QueryActivity.this, TypeSelectActivity.class);
-                intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.MANAGER);
+                intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.STATISTIC);
                 QueryActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
             }
         });
@@ -127,7 +127,9 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
         mStartTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
+                if (mQueryInfo.getStartTime() == null) {
+                    mQueryInfo.setStartTime(Calendar.getInstance());
+                }
                 mDatePickerDialog = new DatePickerDialog(QueryActivity.this,
                         new OnDateSetListener() {
                             @Override
@@ -135,20 +137,22 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                     int monthOfYear, int dayOfMonth) {
                                 mStartTime.setText(year + "-"
                                         + (monthOfYear + 1) + "-" + dayOfMonth);
-                                mStartCalendar.set(Calendar.YEAR, year);
-                                mStartCalendar.set(Calendar.MONTH, monthOfYear);
-                                mStartCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                mQueryInfo.getStartTime().set(Calendar.YEAR, year);
+                                mQueryInfo.getStartTime().set(Calendar.MONTH, monthOfYear);
+                                mQueryInfo.getStartTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
                             }
-                        }, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH));
+                        }, mQueryInfo.getStartTime().get(Calendar.YEAR),
+                        mQueryInfo.getStartTime().get(Calendar.MONTH),
+                        mQueryInfo.getStartTime().get(Calendar.DAY_OF_MONTH));
                 mDatePickerDialog.show();
             }
         });
         mEndTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
+                if (mQueryInfo.getEndTime() == null) {
+                    mQueryInfo.setEndTime(Calendar.getInstance());
+                }
                 mDatePickerDialog = new DatePickerDialog(QueryActivity.this,
                         new OnDateSetListener() {
                             @Override
@@ -156,13 +160,13 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                     int monthOfYear, int dayOfMonth) {
                                 mEndTime.setText(year + "-"
                                         + (monthOfYear + 1) + "-" + dayOfMonth);
-                                mEndCalendar.set(Calendar.YEAR, year);
-                                mEndCalendar.set(Calendar.MONTH, monthOfYear);
-                                mEndCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                mQueryInfo.getEndTime().set(Calendar.YEAR, year);
+                                mQueryInfo.getEndTime().set(Calendar.MONTH, monthOfYear);
+                                mQueryInfo.getEndTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
                             }
-                        }, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH));
+                        }, mQueryInfo.getEndTime().get(Calendar.YEAR),
+                        mQueryInfo.getEndTime().get(Calendar.MONTH),
+                        mQueryInfo.getEndTime().get(Calendar.DAY_OF_MONTH));
                 mDatePickerDialog.show();
             }
         });
@@ -172,8 +176,6 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
      * 构建查询信息
      */
     private void buildQueryInfo() {
-        mQueryInfo.setStartTime(mStartCalendar);
-        mQueryInfo.setEndTime(mEndCalendar);
         mQueryInfo.setName(mConsumeName.getText().toString());
     }
     
