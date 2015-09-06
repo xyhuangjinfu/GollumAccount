@@ -3,6 +3,7 @@ package cn.hjf.gollumaccount.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -10,8 +11,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.adapter.MonthStatisticAdapter;
+import cn.hjf.gollumaccount.adapter.TypeStatisticAdapter;
 import cn.hjf.gollumaccount.asynctask.StatisticMonthByTypeTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.MonthStatisticData;
+import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
@@ -31,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -65,12 +71,17 @@ public class MonthStatisticActivity extends BaseActivity implements
     private Calendar mStatisticYear;
     private ConsumeType mConsumeType;
     
+    private ListView mShowDataListView; //统计分析数据显示的列表
+    private MonthStatisticAdapter mMonthStatisticAdapter; //统计分析数据显示列表的适配器
+    private List<MonthStatisticData> mStatisticDatas; ////按类型统计分析的数据
+    
     public MonthStatisticActivity() {
         mStatisticYear = Calendar.getInstance();
         mConsumeType = new ConsumeType();
         mConsumeType.setId(0);
         mConsumeType.setName("汇总");
         mConsumeType.setType(ConsumeType.Type.CUSTOME);
+        mStatisticDatas = new ArrayList<MonthStatisticData>();
     }
 
     @Override
@@ -104,6 +115,7 @@ public class MonthStatisticActivity extends BaseActivity implements
      */
     @Override
     protected void initView() {
+        mShowDataListView = (ListView) findViewById(R.id.lv_month_statistic);
         mYearTextView = (TextView) findViewById(R.id.tv_line_year);
         mTypeTextView = (TextView) findViewById(R.id.tv_line_type);
         mSumTextView = (TextView) findViewById(R.id.tv_sum);
@@ -127,6 +139,9 @@ public class MonthStatisticActivity extends BaseActivity implements
         mYearTextView.setText(mYearData.get(0));
         
         mTypeTextView.setText(mConsumeType.getName());
+        
+        mMonthStatisticAdapter = new MonthStatisticAdapter(this, mStatisticDatas);
+        mShowDataListView.setAdapter(mMonthStatisticAdapter);
     }
 
     /**
@@ -339,6 +354,37 @@ public class MonthStatisticActivity extends BaseActivity implements
         }
         return result;
     }
+    
+    /**
+     * 得到列表显示的数据
+     * @param result
+     * @return
+     */
+    private List<MonthStatisticData> getShowData(Map<Integer, Double> result) {
+        List<MonthStatisticData> datas = new ArrayList<MonthStatisticData>();
+        double allSum = getAllSum(result);
+        for (Map.Entry<Integer, Double> entry : result.entrySet()) {
+            MonthStatisticData data = new MonthStatisticData();
+            data.setConsumeMonth(entry.getKey());
+            data.setTypeSum(entry.getValue());
+            data.setAllSum(allSum);
+            datas.add(data);
+        }
+        return datas;
+    }
+    
+    /**
+     * 得到所有数据金额总和
+     * @param result
+     * @return
+     */
+    private double getAllSum(Map<Integer, Double> result) {
+        double sum = 0d;
+        for (Map.Entry<Integer, Double> entry : result.entrySet()) {
+            sum = sum + entry.getValue();
+        }
+        return sum;
+    }
 
     @Override
     public void onLeftClick() {
@@ -353,6 +399,11 @@ public class MonthStatisticActivity extends BaseActivity implements
     public void onStatisticMonthByTypeCompleted(Map<Integer, Double> result) {
         LineData lineData = getData(result);
         showLineChart(mLineChart, lineData);
+        
+        mStatisticDatas.clear();
+        mStatisticDatas.addAll(getShowData(result));
+        mMonthStatisticAdapter.notifyDataSetChanged();
+        
         mLoadingDialog.cancel();
     }
 

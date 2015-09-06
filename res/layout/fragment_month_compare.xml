@@ -104,6 +104,19 @@
                 android:src="@drawable/listitem_btn_right" />
         </RelativeLayout>
     </LinearLayout>
+    
+    
+    <!-- 数据显示列表 -->
+    
+        <ListView
+        android:id="@+id/lv_month_statistic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llyt_line_item"
+        android:layout_marginTop="5dp"
+        android:listSelector="#00000000"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
 
     <!-- 饼图 -->
 
@@ -117,6 +130,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         android:background="@drawable/bg_layout"
         android:orientation="vertical" >
 
