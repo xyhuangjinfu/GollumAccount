@@ -19,9 +19,12 @@
         android:id="@+id/sv_record_info_display"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/llyt_control"
+        android:layout_above="@+id/btn_record_operate"
         android:layout_below="@id/title_view_record"
-        android:layout_marginBottom="5dp" >
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        android:overScrollMode="never" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +36,6 @@
                 android:id="@+id/llyt_record_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
                 android:background="@color/white" >
 
                 <TextView
