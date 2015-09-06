@@ -58,6 +58,8 @@ public class TypeStatisticActivity extends BaseActivity implements
     private TypeStatisticAdapter mTypeStatisticAdapter; //统计分析数据显示列表的适配器
     private List<TypeStatisticData> mStatisticDatas; ////按类型统计分析的数据
     
+    private View mEmptyView; //ListView没有数据时显示的界面
+    
     public TypeStatisticActivity() {
         mStartDate = Calendar.getInstance();
         mEndDate = Calendar.getInstance();
@@ -98,6 +100,10 @@ public class TypeStatisticActivity extends BaseActivity implements
         mEndDateTextView = (TextView) findViewById(R.id.tv_record_time_end);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
+        
+        //绑定空视图
+        mEmptyView = findViewById(R.id.ly_no_data);
+        mShowDataListView.setEmptyView(mEmptyView);
     }
     
     @Override
