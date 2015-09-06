@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_main"
+            android:background="#f0f0f0"
             android:orientation="vertical" >
 
             <TextView
@@ -45,14 +46,6 @@
                 android:textColor="#0099CC"
                 android:textSize="35sp" />
         </LinearLayout>
-
-        <!-- 分割线 -->
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/ll_current_month"
-            android:background="#dddddd" />
 
         <!-- 明细列表 -->
 
@@ -86,9 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:orientation="horizontal" >
 
             <!-- 添加消费记录按钮 -->
@@ -111,7 +101,7 @@
                 android:id="@+id/btn_query"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_button"
                 android:paddingBottom="5dp"
