@@ -3,6 +3,7 @@ package cn.hjf.gollumaccount.adapter;
 import java.util.List;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,13 +43,12 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 		ConsumeRecord record = mItemList.get(position);
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_consume_record_list, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_consume_record_list, parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder.mRecordIcon = (ImageView) convertView.findViewById(R.id.iv_consume_icon);
 			viewHolder.mRecordName = (TextView) convertView.findViewById(R.id.tv_consume_name);
 			viewHolder.mRecordPrice = (TextView) convertView.findViewById(R.id.tv_consume_price);
-			viewHolder.mRecordTime = (TextView) convertView.findViewById(R.id.tv_consume_time);
-			viewHolder.mRecordInfo = (TextView) convertView.findViewById(R.id.tv_consume_info);
+			viewHolder.mRecordDate = (TextView) convertView.findViewById(R.id.tv_consume_date);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -63,8 +63,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		public ImageView mRecordIcon;
 		public TextView mRecordPrice;
 		public TextView mRecordName;
-		public TextView mRecordTime;
-		public TextView mRecordInfo;
+		public TextView mRecordDate;
 	}
 	
 	/**
@@ -72,14 +71,9 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	 * @param viewHolder
 	 */
 	private void initViewValue(ConsumeRecord record, ViewHolder viewHolder) {
-		String displayName = null;
-		String displayPrice = null;
-		displayName = record.getRecordName();
-		displayPrice = String.valueOf(record.getRecordPrice());
-		viewHolder.mRecordPrice.setText(displayPrice);
-		viewHolder.mRecordName.setText(displayName);
-		viewHolder.mRecordTime.setText(TimeUtil.getDateString(record.getConsumeTime()));
-		viewHolder.mRecordInfo.setText(record.getRecordRemark());
+		viewHolder.mRecordPrice.setText(NumberUtil.formatValue(record.getRecordPrice()));
+		viewHolder.mRecordName.setText(record.getRecordName());
+		viewHolder.mRecordDate.setText(TimeUtil.getDateString(record.getConsumeTime()));
 		switch (record.getRecordType().getId()) {
 		case 1:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_clothes);

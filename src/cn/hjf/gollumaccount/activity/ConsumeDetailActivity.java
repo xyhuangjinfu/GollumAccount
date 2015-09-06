@@ -45,6 +45,8 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
+    private EditText mConsumerEditText; // 消费者
+    private EditText mPayerEditText; // 付款者
     private TextView mConsumeTypeTextView; // 消费类型
     private RelativeLayout mTypeLayout; // 消费类型点击布局
     private TextView mConsumeDateTextView; // 消费日期
@@ -102,6 +104,8 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
      */
     @Override
     protected void initView() {
+        mConsumerEditText = (EditText) findViewById(R.id.et_consumer);
+        mPayerEditText = (EditText) findViewById(R.id.et_payer);
         mConsumeNameEditText = (EditText) findViewById(R.id.et_record_name_detail);
         mConsumePriceEditText = (EditText) findViewById(R.id.et_record_price_detail);
         mConsumeDateTextView = (TextView) findViewById(R.id.tv_record_date_detail);
@@ -121,6 +125,17 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
      */
     @Override
     protected void initValue() {
+        
+        mConsumeNameEditText.setText(mConsumeRecord.getRecordName());
+        mConsumePriceEditText.setText(mConsumeRecord.getRecordPrice());
+        mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
+        mConsumeDateTextView.setText(TimeUtil.getDateString(mConsumeRecord.getConsumeTime()));
+        mConsumeTimeTextView.setText(TimeUtil.getTimeString(mConsumeRecord.getConsumeTime()));
+        mConsumeCreateTimeTextView.setText(TimeUtil.getDateTimeString(mConsumeRecord.getCreateTime()));
+        mConsumeRemarksEditText.setText(mConsumeRecord.getRecordRemark());
+        mConsumerEditText.setText(mConsumeRecord.getConsumer());
+        mPayerEditText.setText(mConsumeRecord.getPayer());
+        
         changeToView();
     }
     
@@ -203,6 +218,8 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mConsumeRecord.setRecordName(mConsumeNameEditText.getText().toString());
         mConsumeRecord.setRecordPrice(mConsumePriceEditText.getText().toString());
         mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText().toString());
+        mConsumeRecord.setConsumer(mConsumerEditText.getText().toString());
+        mConsumeRecord.setPayer(mPayerEditText.getText().toString());
     }
 
     /**
@@ -252,6 +269,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
     @Override
     public void OnConsumeRecordUpdated(boolean result) {
         mLoadingDialog.cancel();
+        ConsumeDetailActivity.this.setResult(Activity.RESULT_OK);
         ConsumeDetailActivity.this.finish();
     }
     
@@ -259,17 +277,15 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
      * 改变当前页面状态为编辑模式
      */
     private void changeToEdit() {
-        //设置内容
-        mConsumeNameEditText.setText(mConsumeRecord.getRecordName());
-        mConsumePriceEditText.setText(mConsumeRecord.getRecordPrice());
-        mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());
-        mConsumeDateTextView.setText(TimeUtil.getDateString(mConsumeRecord.getConsumeTime()));
-        mConsumeTimeTextView.setText(TimeUtil.getTimeString(mConsumeRecord.getConsumeTime()));
-        mConsumeCreateTimeTextView.setText(TimeUtil.getDateTimeString(mConsumeRecord.getCreateTime()));
-        mConsumeRemarksEditText.setText(mConsumeRecord.getRecordRemark());
         //设置编辑框可用，显示光标
         mConsumeNameEditText.setEnabled(true);
         mConsumePriceEditText.setEnabled(true);
+        mConsumeTypeTextView.setEnabled(true);
+        mConsumeDateTextView.setEnabled(true);
+        mConsumeTimeTextView.setEnabled(true);
+        mConsumeCreateTimeTextView.setEnabled(true);
+        mConsumerEditText.setEnabled(true);
+        mPayerEditText.setEnabled(true);
         mConsumeRemarksEditText.setEnabled(true);
         //修改UI
         mOperateButton.setText("提交");
@@ -286,17 +302,15 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
      * 改变当前页面状态为预览模式
      */
     private void changeToView() {
-        //设置hint
-        mConsumeNameEditText.setHint(mConsumeRecord.getRecordName());
-        mConsumePriceEditText.setHint(mConsumeRecord.getRecordPrice());
-        mConsumeTypeTextView.setHint(mConsumeRecord.getRecordType().getName());
-        mConsumeDateTextView.setHint(TimeUtil.getDateString(mConsumeRecord.getConsumeTime()));
-        mConsumeTimeTextView.setHint(TimeUtil.getTimeString(mConsumeRecord.getConsumeTime()));
-        mConsumeCreateTimeTextView.setHint(TimeUtil.getDateTimeString(mConsumeRecord.getCreateTime()));
-        mConsumeRemarksEditText.setHint(mConsumeRecord.getRecordRemark());
         //设置编辑框不可用，隐藏光标
         mConsumeNameEditText.setEnabled(false);
         mConsumePriceEditText.setEnabled(false);
+        mConsumeTypeTextView.setEnabled(false);
+        mConsumeDateTextView.setEnabled(false);
+        mConsumeTimeTextView.setEnabled(false);
+        mConsumeCreateTimeTextView.setEnabled(false);
+        mConsumerEditText.setEnabled(false);
+        mPayerEditText.setEnabled(false);
         mConsumeRemarksEditText.setEnabled(false);
         //修改UI
         mOperateButton.setText("修改");

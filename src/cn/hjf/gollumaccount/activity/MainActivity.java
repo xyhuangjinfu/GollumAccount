@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity implements
     
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
     private static final int REQ_CODE_ADD_RECORD = 1; //请求新建消费记录请求码
+    private static final int REQ_CODE_VIEW_RECORD = 2; //请求查看消费记录请求码
     private static final int NUM_PER_PAGE = 7; // 每页查询的数量
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity implements
                     int position, long id) {
                 Intent intent = new Intent(MainActivity.this, ConsumeDetailActivity.class);
                 intent.putExtra(ConsumeDetailActivity.CONSUME_RECORD, mRecords.get(position));
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_VIEW_RECORD);
             }
         });
         
@@ -256,7 +257,7 @@ public class MainActivity extends BaseActivity implements
                     loadData();
                 }
             }
-            if (requestCode == REQ_CODE_ADD_RECORD) {
+            if (requestCode == REQ_CODE_ADD_RECORD || requestCode == REQ_CODE_VIEW_RECORD) {
                 mIsQueryChanged = true;
                 mLoadingDialog.show();
                 loadData();
