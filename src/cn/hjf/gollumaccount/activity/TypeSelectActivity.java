@@ -28,6 +28,9 @@ import android.widget.GridView;
  */
 public class TypeSelectActivity extends BaseActivity implements
         CommonHeaderFragment.ICallback, LoadConsumeTypeTask.OnLoadConsumeTypeListener {
+    
+    public static final String PAGE_TYPE = "page_type";
+    public static final String CONSUME_TYPE = "consume_type";
 
     private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     private LoadingDialog mLoadingDialog; // 加载对话框
@@ -35,6 +38,13 @@ public class TypeSelectActivity extends BaseActivity implements
     private GridView mTypeView; // 消费类型列表
     private ConsumeTypeAdapter mAdapter; // 消费类型显示适配器
     private List<ConsumeType> mTypeData; // 消费类型数据
+    
+    private PageType mPageType; //页面工作模式
+    
+    public enum PageType {
+        MANAGER, //消费记录增删改查
+        STATISTIC //消费记录统计
+    }
 
     public TypeSelectActivity() {
         mTypeData = new ArrayList<ConsumeType>();
@@ -45,6 +55,12 @@ public class TypeSelectActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_select);
 
+        mPageType = (PageType) getIntent().getSerializableExtra(PAGE_TYPE);
+        if (mPageType == null) {
+            finish();
+            return;
+        }
+        
         initTitle();
         initView();
         initValue();
@@ -93,7 +109,7 @@ public class TypeSelectActivity extends BaseActivity implements
                             .show();
                 } else {
                     Intent intent = new Intent();
-                    intent.putExtra("consume_type", mTypeData.get(position));
+                    intent.putExtra(CONSUME_TYPE, mTypeData.get(position));
                     TypeSelectActivity.this.setResult(Activity.RESULT_OK,
                             intent);
                     TypeSelectActivity.this.finish();
@@ -114,6 +130,13 @@ public class TypeSelectActivity extends BaseActivity implements
     @Override
     public void OnLoadConsumeTypeCompleted(List<ConsumeType> consumeTypes) {
         mTypeData.addAll(consumeTypes);
+        if (mPageType == PageType.STATISTIC) {
+            ConsumeType allType = new ConsumeType();
+            allType.setId(0);
+            allType.setName("汇总");
+            allType.setType(ConsumeType.Type.CUSTOME);
+            mTypeData.add(allType);
+        }
         Collections.sort(mTypeData);
         mAdapter.notifyDataSetChanged();
         mLoadingDialog.cancel();

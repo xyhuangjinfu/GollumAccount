@@ -168,6 +168,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(ConsumeDetailActivity.this, TypeSelectActivity.class);
+            intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.MANAGER);
             ConsumeDetailActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
         }
     };
@@ -230,7 +231,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_TYPE) {
-                ConsumeType consumeType = data.getParcelableExtra("consume_type");
+                ConsumeType consumeType = data.getParcelableExtra(TypeSelectActivity.CONSUME_TYPE);
                 if (consumeType != null) {
                     mConsumeRecord.setRecordType(consumeType);
                     mConsumeTypeTextView.setText(mConsumeRecord.getRecordType().getName());

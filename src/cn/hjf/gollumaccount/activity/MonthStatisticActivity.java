@@ -15,7 +15,12 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
+import cn.hjf.gollumaccount.view.LoadingDialog;
+import cn.hjf.gollumaccount.view.SpinnerDialog;
+import cn.hjf.gollumaccount.view.SpinnerDialog.ICallback;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -38,16 +43,15 @@ import android.widget.TextView;
 public class MonthStatisticActivity extends BaseActivity implements
         StatisticMonthByTypeTask.OnStatisticMonthByTypeListener,
         CommonHeaderFragment.ICallback {
+    
+    private static final int REQ_CODE_SELECT_TYPE = 0;
 
-    private Spinner mYearSpinner; // 选择年份
-    private Spinner mItemSpinner; // 选择类型
+    private TextView mYearTextView; // 选择年份
+    private TextView mTypeTextView; // 选择类型
     private LineChart mLineChart; // 线图
     private TextView mSumTextView; // 总金额
 
     private ArrayList<String> mYearData; // 年份数据
-    private ArrayList<String> mItemData; // 分类数据
-    private int mAnalyseYear = 0; // 要分析的年份
-    private int mAnalyseItem = 0; // 要分析的分类
     private Typeface mTypeface; // 图标显示的样式
 
     private float mSumPrice = 0; // 各分类的总额
@@ -55,6 +59,8 @@ public class MonthStatisticActivity extends BaseActivity implements
      * 顶部标题栏
      */
     private CommonHeaderFragment mTitleFragment;
+    private SpinnerDialog mYearSelectDialog;
+    private LoadingDialog mLoadingDialog;
     
     private Calendar mStatisticYear;
     private ConsumeType mConsumeType;
@@ -62,20 +68,22 @@ public class MonthStatisticActivity extends BaseActivity implements
     public MonthStatisticActivity() {
         mStatisticYear = Calendar.getInstance();
         mConsumeType = new ConsumeType();
+        mConsumeType.setId(0);
+        mConsumeType.setName("汇总");
+        mConsumeType.setType(ConsumeType.Type.CUSTOME);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_month_compare);
-//        mConsumeItemService = new ConsumeItemService(this);
         
         initTitle();
         initView();
         initValue();
         initEvent();
         
-        
+        mLoadingDialog.show();
         new StatisticMonthByTypeTask(this, this).execute(mStatisticYear, mConsumeType);
 
     }
@@ -96,10 +104,12 @@ public class MonthStatisticActivity extends BaseActivity implements
      */
     @Override
     protected void initView() {
-        mYearSpinner = (Spinner) findViewById(R.id.spn_line_year);
-        mItemSpinner = (Spinner) findViewById(R.id.spn_line_item);
+        mYearTextView = (TextView) findViewById(R.id.tv_line_year);
+        mTypeTextView = (TextView) findViewById(R.id.tv_line_type);
         mSumTextView = (TextView) findViewById(R.id.tv_sum);
         mLineChart = (LineChart) findViewById(R.id.lc_by_month);
+        mYearSelectDialog = new SpinnerDialog(this, R.style.transparent_dialog1);
+        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
     }
 
     /**
@@ -107,19 +117,16 @@ public class MonthStatisticActivity extends BaseActivity implements
      */
     @Override
     protected void initValue() {
-        initSpinnerData();
-
-        Calendar calendar = Calendar.getInstance();
-        mAnalyseYear = calendar.get(Calendar.YEAR);
-        mAnalyseItem = mItemData.size();
+        initYearData();
+        
         mTypeface = Typeface.createFromAsset(this.getAssets(),
                 "OpenSans-Bold.ttf");
-        mYearSpinner.setAdapter(new ArrayAdapter<>(this,
-                R.layout.item_spinner, mYearData));
-        mItemSpinner.setAdapter(new ArrayAdapter<>(this,
-                R.layout.item_spinner, mItemData));
-
-        mItemSpinner.setSelection(mAnalyseItem - 1, true);
+        
+        mYearSelectDialog.setData(mYearData);
+        
+        mYearTextView.setText(mYearData.get(0));
+        
+        mTypeTextView.setText(mConsumeType.getName());
     }
 
     /**
@@ -127,27 +134,47 @@ public class MonthStatisticActivity extends BaseActivity implements
      */
     @Override
     protected void initEvent() {
-        mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+        mYearTextView.setOnClickListener(new OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                    int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                mYearSelectDialog.show();
             }
         });
 
-        mItemSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+        mTypeTextView.setOnClickListener(new OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                    int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                Intent intent = new Intent(MonthStatisticActivity.this, TypeSelectActivity.class);
+                intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.STATISTIC);
+                MonthStatisticActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
             }
         });
+        
+        mYearSelectDialog.setCallback(new ICallback() {
+            @Override
+            public void onItemClick(int positon) {
+                mYearSelectDialog.cancel();
+                mYearTextView.setText(mYearData.get(positon));
+                mStatisticYear.set(Calendar.YEAR, Integer.valueOf(mYearData.get(positon)));
+                mLoadingDialog.show();
+                new StatisticMonthByTypeTask(MonthStatisticActivity.this, MonthStatisticActivity.this).execute(mStatisticYear, mConsumeType);
+            }
+        });
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQ_CODE_SELECT_TYPE) {
+                mConsumeType = data.getParcelableExtra("consume_type");
+                if (mConsumeType != null) {
+                    mTypeTextView.setText(mConsumeType.getName());
+                    mLoadingDialog.show();
+                    new StatisticMonthByTypeTask(MonthStatisticActivity.this, MonthStatisticActivity.this).execute(mStatisticYear, mConsumeType);
+                }
+            }
+        }
     }
 
     /**
@@ -174,18 +201,14 @@ public class MonthStatisticActivity extends BaseActivity implements
     }
 
     /**
-     * 初始化下拉列表的数据
+     * 初始化年份选择的数据
      */
-    private void initSpinnerData() {
+    private void initYearData() {
         // 初始化年份下拉列表数据
         mYearData = new ArrayList<String>();
         for (int i = TimeUtil.getNowYear(); i >= 1980; i--) {
             mYearData.add(String.valueOf(i));
         }
-        // 初始化分类下拉列表数据
-        mItemData = new ArrayList<String>();
-//        mItemData = mConsumeItemService.getAllItemName();
-        mItemData.add("汇总");
     }
 
     /**
@@ -330,6 +353,7 @@ public class MonthStatisticActivity extends BaseActivity implements
     public void onStatisticMonthByTypeCompleted(Map<Integer, Double> result) {
         LineData lineData = getData(result);
         showLineChart(mLineChart, lineData);
+        mLoadingDialog.cancel();
     }
 
 }

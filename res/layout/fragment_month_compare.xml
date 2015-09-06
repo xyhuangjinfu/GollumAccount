@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#dddddd" >
-    
-        <!-- 顶部标题栏 -->
+
+    <!-- 顶部标题栏 -->
 
     <fragment
         android:id="@+id/title_month_statistic"
@@ -24,7 +24,7 @@
         android:background="#f0f0f0" >
 
         <TextView
-            android:id="@+id/tv_line_year"
+            android:id="@+id/tv_line_year_label"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -34,13 +34,29 @@
             android:textColor="#323232"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/spn_line_year"
+        <RelativeLayout
+            android:id="@+id/rl_line_year"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:padding="0dp" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_line_year"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:textColor="#323232"
+                android:layout_toLeftOf="@+id/iv_ic_right"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@id/iv_ic_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/listitem_btn_right" />
+        </RelativeLayout>
     </LinearLayout>
 
     <!-- 分类 -->
@@ -50,8 +66,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/llyt_line_year"
-        android:background="#f0f0f0"
-        android:layout_marginTop="1dp" >
+        android:layout_marginTop="1dp"
+        android:background="#f0f0f0" >
 
         <TextView
             android:id="@+id/tv_line_item"
@@ -64,13 +80,29 @@
             android:textColor="#323232"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/spn_line_item"
+        <RelativeLayout
+            android:id="@+id/rl_line_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:padding="0dp" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_line_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:textColor="#323232"
+                android:layout_toLeftOf="@+id/iv_ic_right"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@id/iv_ic_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/listitem_btn_right" />
+        </RelativeLayout>
     </LinearLayout>
 
     <!-- 饼图 -->

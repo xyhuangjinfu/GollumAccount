@@ -32,6 +32,7 @@ import android.widget.TimePicker;
 public class QueryActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
     
     private static final int REQ_CODE_SELECT_TYPE = 0;
+    public static final String QUERY_INFO = "query_info";
     
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     
@@ -55,7 +56,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
         
         Intent intent = getIntent();
         if (intent != null) {
-            mQueryInfo = intent.getParcelableExtra("query_info");
+            mQueryInfo = intent.getParcelableExtra(QUERY_INFO);
             if (mQueryInfo == null) {
                 finish();
                 return;
@@ -104,7 +105,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
             public void onClick(View v) {
                 buildQueryInfo();
                 Intent intent = new Intent();
-                intent.putExtra("query_info", mQueryInfo);
+                intent.putExtra(QUERY_INFO, mQueryInfo);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -113,6 +114,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(QueryActivity.this, TypeSelectActivity.class);
+                intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.MANAGER);
                 QueryActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
             }
         });
@@ -175,7 +177,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_TYPE) {
-                ConsumeType type = data.getParcelableExtra("consume_type");
+                ConsumeType type = data.getParcelableExtra(TypeSelectActivity.CONSUME_TYPE);
                 if (type != null) {
                     mConsumeType.setText(type.getName());
                     mQueryInfo.setType(type);

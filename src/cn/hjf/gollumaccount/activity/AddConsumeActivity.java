@@ -145,6 +145,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AddConsumeActivity.this, TypeSelectActivity.class);
+                intent.putExtra(TypeSelectActivity.PAGE_TYPE, TypeSelectActivity.PageType.MANAGER);
                 AddConsumeActivity.this.startActivityForResult(intent, REQ_CODE_SELECT_TYPE);
             }
         });
@@ -245,7 +246,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_TYPE) {
-                mConsumeType = data.getParcelableExtra("consume_type");
+                mConsumeType = data.getParcelableExtra(TypeSelectActivity.CONSUME_TYPE);
                 if (mConsumeType != null) {
                     mConsumeTypeTextView.setText(mConsumeType.getName());
                 }

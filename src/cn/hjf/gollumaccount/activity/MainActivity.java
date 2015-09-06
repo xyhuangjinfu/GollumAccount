@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QueryActivity.class);
-                intent.putExtra("query_info", mQueryInfo);
+                intent.putExtra(QueryActivity.QUERY_INFO, mQueryInfo);
                 startActivityForResult(intent, REQ_CODE_QUERY_INFO);
             }
         });
@@ -239,7 +239,7 @@ public class MainActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_QUERY_INFO) {
-                mQueryInfo = data.getParcelableExtra("query_info");
+                mQueryInfo = data.getParcelableExtra(QueryActivity.QUERY_INFO);
                 if (mQueryInfo != null) {
                     refreshQueryStatus();
                     mLoadingDialog.show();

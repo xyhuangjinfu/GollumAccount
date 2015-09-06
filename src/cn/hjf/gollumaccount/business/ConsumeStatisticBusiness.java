@@ -85,6 +85,7 @@ public final class ConsumeStatisticBusiness {
             result.put(i, sum);
             currentYear.add(Calendar.MONTH, 1);
         }
+        currentYear.add(Calendar.MONTH, -12);
         return result;
     }
 }
