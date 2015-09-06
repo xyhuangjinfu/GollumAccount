@@ -18,6 +18,7 @@ import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -63,6 +64,15 @@ public class MainActivity extends BaseActivity implements
 	private boolean mIsQueryChanged = false; //查询条件是否改变，true-查询条件被改变了
 	
 	private QueryInfo mQueryInfo; //查询信息
+	
+    /**
+     * 上一次按下返回键的时间，不考虑关闭侧边栏的动作
+     */
+    private long mLastBackTime;
+    /**
+     * 退出程序的时间阈值，两次返回键间隔
+     */
+    private static final long EXIT_TIME = 2000;
 	
 	
 	public MainActivity() {
@@ -266,6 +276,22 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onRightClick() {
+    }
+    
+    @Override
+    public void onBackPressed() {
+        if (mSideMenuFragment.isDrawerOpen()) {
+            mSideMenuFragment.close();
+            return;
+        }
+        if ( (System.currentTimeMillis() - mLastBackTime) <= EXIT_TIME) {
+            finish();
+            return;
+        } else {
+            mLastBackTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     @Override
