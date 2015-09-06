@@ -59,31 +59,31 @@ public class TypeStatisticAdapter extends BaseAdapter {
         holder.sum.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum()));
         switch (mDatas.get(position).getConsumeType().getId()) {
         case 1:
-            holder.typeIcon.setImageResource(R.drawable.ic_clothes);
+            holder.typeIcon.setImageResource(R.drawable.ic_clothes_white);
             break;
         case 2:
-            holder.typeIcon.setImageResource(R.drawable.ic_food);
+            holder.typeIcon.setImageResource(R.drawable.ic_food_white);
             break;
         case 3:
-            holder.typeIcon.setImageResource(R.drawable.ic_house);
+            holder.typeIcon.setImageResource(R.drawable.ic_house_white);
             break;
         case 4:
-            holder.typeIcon.setImageResource(R.drawable.ic_traffic);
+            holder.typeIcon.setImageResource(R.drawable.ic_traffic_white);
             break;
         case 5:
-            holder.typeIcon.setImageResource(R.drawable.ic_social);
+            holder.typeIcon.setImageResource(R.drawable.ic_social_white);
             break;
         case 6:
-            holder.typeIcon.setImageResource(R.drawable.ic_entertainment);
+            holder.typeIcon.setImageResource(R.drawable.ic_entertainment_white);
             break;
         case 7:
-            holder.typeIcon.setImageResource(R.drawable.ic_work);
+            holder.typeIcon.setImageResource(R.drawable.ic_work_white);
             break;
         case 8:
-            holder.typeIcon.setImageResource(R.drawable.ic_study);
+            holder.typeIcon.setImageResource(R.drawable.ic_study_white);
             break;
         default:
-            holder.typeIcon.setImageResource(R.drawable.ic_custom_type);
+            holder.typeIcon.setImageResource(R.drawable.ic_custom_type_white);
             break;
         }
         holder.ratio.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum()) + "%" );
