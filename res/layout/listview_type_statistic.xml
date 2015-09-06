@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#f0f0f0" >
+
+    <ImageView
+        android:id="@+id/iv_type"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_round_gray"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_custom_type" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/iv_type"
+        android:gravity="center_vertical"
+        android:text="一般" />
+
+    <TextView
+        android:id="@+id/tv_ratio"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tv_type"
+        android:gravity="center_vertical"
+        android:text="80%" />
+
+    <ProgressBar
+        android:id="@+id/pb_ratio"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tv_sum"
+        android:layout_toRightOf="@id/iv_type"
+        android:max="100"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:progress="30"
+        android:progressDrawable="@drawable/bg_progress_type_statistic" />
+
+    <TextView
+        android:id="@id/tv_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="258.95" />
+
+</RelativeLayout>

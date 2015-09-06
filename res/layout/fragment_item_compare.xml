@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#dddddd" >
-    
-        <!-- 顶部标题栏 -->
+
+    <!-- 顶部标题栏 -->
 
     <fragment
         android:id="@+id/title_statistic_type"
@@ -12,136 +12,117 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
-    
-    
+
     <!-- 日期 -->
 
-            <LinearLayout
-                android:id="@+id/llyt_query_date_start"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/title_statistic_type"
-                android:layout_marginTop="1dp"
-                android:background="#f0f0f0" >
-
-                <TextView
-                    android:id="@+id/tv_record_date_start_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="开 始："
-                    android:textColor="#323232"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_record_date_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:padding="10dp"
-                    android:hint="选择开始日期"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <!-- 时间 -->
-
-            <LinearLayout
-                android:id="@+id/llyt_query_date_end"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/llyt_query_date_start"
-                android:layout_marginTop="1dp"
-                android:background="#f0f0f0" >
-
-                <TextView
-                    android:id="@+id/tv_record_time_end_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="结 束："
-                    android:textColor="#323232"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_record_time_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:padding="10dp"
-                    android:hint="选择结束日期"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-    <!-- 年份 -->
-<!-- 
     <LinearLayout
-        android:id="@+id/llyt_pie_year"
+        android:id="@+id/llyt_query_date_start"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_height="50dp"
         android:layout_below="@id/title_statistic_type"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="1dp"
+        android:background="#f0f0f0" >
 
         <TextView
-            android:id="@+id/tv_pie_year"
+            android:id="@+id/tv_record_date_start_label"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/bg_textview_left"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="年 份："
-            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:text="开 始："
+            android:textColor="#323232"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/spn_pie_year"
+        <RelativeLayout
+            android:id="@+id/rl_record_date_start"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_layout_right"
-            android:padding="0dp" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_record_date_start"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toLeftOf="@+id/iv_ic_right"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="选择开始日期"
+                android:padding="10dp"
+                android:textColor="#323232"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@id/iv_ic_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/listitem_btn_right" />
+        </RelativeLayout>
     </LinearLayout>
- -->
-    <!-- 月份 -->
-<!-- 
+
+    <!-- 时间 -->
+
     <LinearLayout
-        android:id="@+id/llyt_pie_month"
+        android:id="@+id/llyt_query_date_end"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llyt_pie_year"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp" >
+        android:layout_height="50dp"
+        android:layout_below="@id/llyt_query_date_start"
+        android:layout_marginTop="1dp"
+        android:background="#f0f0f0" >
 
         <TextView
-            android:id="@+id/tv_pie_month"
+            android:id="@+id/tv_record_time_end_label"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/bg_textview_left"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="月 份："
-            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:text="结 束："
+            android:textColor="#323232"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/spn_pie_month"
+        <RelativeLayout
+            android:id="@+id/rl_record_time_end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_layout_right"
-            android:padding="0dp" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_record_time_end"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toLeftOf="@+id/iv_ic_right"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="选择结束日期"
+                android:padding="10dp"
+                android:textColor="#323232"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@id/iv_ic_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/listitem_btn_right" />
+        </RelativeLayout>
     </LinearLayout>
- -->
+
+    <!-- 数据展示列表 -->
+
+    <ListView
+        android:id="@+id/lv_type_statistic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llyt_query_date_end"
+        android:layout_marginTop="5dp"
+        android:listSelector="#00000000"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
     <!-- 饼图 -->
 
     <LinearLayout
@@ -153,7 +134,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bg_layout" >
+        android:background="@drawable/bg_layout"
+        android:visibility="gone" >
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pc_by_month"

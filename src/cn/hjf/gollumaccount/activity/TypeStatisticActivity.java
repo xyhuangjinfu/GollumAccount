@@ -3,6 +3,7 @@ package cn.hjf.gollumaccount.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -11,8 +12,10 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.adapter.TypeStatisticAdapter;
 import cn.hjf.gollumaccount.asynctask.TypeStatisticTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.TimeUtil;
@@ -24,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -50,10 +54,15 @@ public class TypeStatisticActivity extends BaseActivity implements
     
     private Map<ConsumeType, Double> mStatisticData; //消费类型与金额总计映射的统计数据
     
+    private ListView mShowDataListView; //统计分析数据显示的列表
+    private TypeStatisticAdapter mTypeStatisticAdapter; //统计分析数据显示列表的适配器
+    private List<TypeStatisticData> mStatisticDatas; ////按类型统计分析的数据
+    
     public TypeStatisticActivity() {
         mStartDate = Calendar.getInstance();
         mEndDate = Calendar.getInstance();
         mStatisticData = new HashMap<ConsumeType, Double>();
+        mStatisticDatas = new ArrayList<TypeStatisticData>();
     }
 
     @Override
@@ -83,6 +92,7 @@ public class TypeStatisticActivity extends BaseActivity implements
     
     @Override
     protected void initView() {
+        mShowDataListView = (ListView) findViewById(R.id.lv_type_statistic);
         mPieChart = (PieChart) findViewById(R.id.pc_by_month);
         mStartDateTextView = (TextView) findViewById(R.id.tv_record_date_start);
         mEndDateTextView = (TextView) findViewById(R.id.tv_record_time_end);
@@ -94,6 +104,8 @@ public class TypeStatisticActivity extends BaseActivity implements
     protected void initValue() {
         mStartDateTextView.setText(TimeUtil.getDateString(mStartDate));
         mEndDateTextView.setText(TimeUtil.getDateString(mEndDate));
+        mTypeStatisticAdapter = new TypeStatisticAdapter(this, mStatisticDatas);
+        mShowDataListView.setAdapter(mTypeStatisticAdapter);
     }
 
     @Override
@@ -203,6 +215,37 @@ public class TypeStatisticActivity extends BaseActivity implements
 //        }
         return data;
     }
+    
+    /**
+     * 得到列表显示的数据
+     * @param result
+     * @return
+     */
+    private List<TypeStatisticData> getShowData(Map<ConsumeType, Double> result) {
+        List<TypeStatisticData> datas = new ArrayList<TypeStatisticData>();
+        double allSum = getAllSum(result);
+        for (Map.Entry<ConsumeType, Double> entry : result.entrySet()) {
+            TypeStatisticData data = new TypeStatisticData();
+            data.setConsumeType(entry.getKey());
+            data.setTypeSum(entry.getValue());
+            data.setAllSum(allSum);
+            datas.add(data);
+        }
+        return datas;
+    }
+    
+    /**
+     * 得到所有数据金额总和
+     * @param result
+     * @return
+     */
+    private double getAllSum(Map<ConsumeType, Double> result) {
+        double sum = 0d;
+        for (Map.Entry<ConsumeType, Double> entry : result.entrySet()) {
+            sum = sum + entry.getValue();
+        }
+        return sum;
+    }
 
     @Override
     public void onLeftClick() {
@@ -217,6 +260,11 @@ public class TypeStatisticActivity extends BaseActivity implements
     public void onItemCompareSuccess(Map<ConsumeType, Double> result) {
         PieData pieData = getData(result);
         showPieChart(mPieChart, pieData);
+        
+        mStatisticDatas.clear();
+        mStatisticDatas.addAll(getShowData(result));
+        mTypeStatisticAdapter.notifyDataSetChanged();
+        
         mLoadingDialog.cancel();
     }
 
