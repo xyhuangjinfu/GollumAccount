@@ -3,7 +3,7 @@
     android:id="@+id/spinner_dialog_parent"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="@drawable/gridview_consume_type"
+    android:background="@drawable/bg_abslistview_item"
     android:layout_gravity="center_vertical"
      >
 

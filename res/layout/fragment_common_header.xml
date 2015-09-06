@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="#0099CC"
+    android:background="@color/theme"
     android:id="@+id/fragment_common_header_parent" >
 
     <!-- 标题 -->
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="标题"
-        android:textColor="#e5e6e1"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <!-- 返回操作 -->
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="返回"
-            android:textColor="#e5e6e1"
+            android:textColor="@color/white"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -65,7 +65,7 @@
         android:layout_alignParentRight="true"
 		android:layout_toLeftOf="@id/right_image"
         android:layout_centerVertical="true"
-        android:textColor="#e5e6e1"
+        android:textColor="@color/white"
         android:visibility="gone"
         android:textSize="18sp" />
 </RelativeLayout>

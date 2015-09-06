@@ -44,7 +44,7 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.gridview_item_consume_type, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.gridview_consume_type, parent, false);
             holder.icon = (ImageView) convertView.findViewById(R.id.iv_type_icon);
             holder.name = (TextView) convertView.findViewById(R.id.tv_type_name);
             convertView.setTag(holder);

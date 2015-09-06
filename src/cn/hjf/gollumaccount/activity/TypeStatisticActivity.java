@@ -68,7 +68,7 @@ public class TypeStatisticActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_item_compare);
+        setContentView(R.layout.activity_type_statistic);
         
         initTitle();
         initView();

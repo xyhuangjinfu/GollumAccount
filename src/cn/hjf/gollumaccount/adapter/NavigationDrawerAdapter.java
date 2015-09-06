@@ -42,7 +42,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 		String drawerName = mDrawerList.get(position);
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_navigation_drawer_list, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_side_menu_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.iv_drawer_icon);
 			viewHolder.mTextView = (TextView) convertView.findViewById(R.id.iv_drawer_name);

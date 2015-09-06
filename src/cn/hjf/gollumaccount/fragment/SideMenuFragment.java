@@ -79,7 +79,7 @@ public class SideMenuFragment extends Fragment {
     	mDrawers.add(getString(R.string.title_analyse));
     	mDrawers.add(getString(R.string.title_about));
     	mDrawerAdapter = new NavigationDrawerAdapter(this.getActivity(), mDrawers);
-    	View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+    	View view = inflater.inflate(R.layout.fragment_side_menu, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.lv_menu);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" 
-    android:background="@drawable/gridview_consume_type" >
+    android:background="@drawable/bg_abslistview_item" >
 
     <ImageView
         android:id="@+id/iv_consume_icon"
@@ -26,7 +26,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            
+            android:textColor="@color/black"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
@@ -43,9 +43,8 @@
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
-            
+            android:textColor="@color/gray_deep"
             android:text="TextView"
-            android:textColor="#969696"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -62,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            
+            android:textColor="@color/black"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
@@ -77,12 +76,11 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            
+            android:textColor="@color/gray_deep"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
             android:singleLine="true"
             android:text="TextView"
-            android:textColor="#969696"
             android:textSize="16sp" />
     </LinearLayout>
 

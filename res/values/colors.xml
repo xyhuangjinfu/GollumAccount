@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="font_gray">#82898C</color>
-    <color name="font_black">#000000</color>
+
+    <!-- 半透明 50000000 -->
     <color name="translucent">#50000000</color>
+
+    <!-- 透明 00000000 -->
     <color name="transparent">#00000000</color>
-    <color name="transparent_fix">#50000000</color>
+
+    <!-- 页面背景 FFF0F0F0 -->
+    <color name="background">#FFF0F0F0</color>
+
+    <!-- 白 FFFFFFFF -->
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- 黑色 FF000000 -->
+    <color name="black">#FF000000</color>
+
+    <!-- 深灰色 FF646464 -->
+    <color name="gray_deep">#FF646464</color>
     
-    <color name="theme">#ff0099cc</color>
-    <color name="theme_translucent">#880099cc</color>
+    <!-- 浅灰色 FFC8C8C8 -->
+    <color name="gray_shallow">#FFC8C8C8</color>
     
-    <color name="white">#fff0f0f0</color>
     
+    <!-- 主题蓝 FF0099CC -->
+    <color name="theme_blue">#FF0099CC</color>
+
+    <!-- 交互蓝(半透明主题蓝) 880099CC -->
+    <color name="theme_blue_translucent">#880099CC</color>
+
+    <!-- 主题紫 FF9933CC -->
+    <color name="theme_purple">#FF9933CC</color>
+
+    <!-- 交互紫(半透明主题紫) 889933CC -->
+    <color name="theme_purple_translucent">#889933CC</color>
+
+    
+    
+    <!-- 主题 -->
+    <color name="theme">@color/theme_blue</color>
+
+    <!-- 主题交互(半透明主题) -->
+    <color name="theme_translucent">@color/theme_blue_translucent</color>
+
 </resources>

@@ -42,7 +42,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 		ConsumeRecord record = mItemList.get(position);
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_consume_list, null);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_consume_record_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.mRecordIcon = (ImageView) convertView.findViewById(R.id.iv_consume_icon);
 			viewHolder.mRecordName = (TextView) convertView.findViewById(R.id.tv_consume_name);

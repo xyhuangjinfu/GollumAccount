@@ -3,7 +3,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dddddd" >
+    android:background="@color/background" >
 
     <!-- 主页面 -->
 
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_main"
-            android:background="#f0f0f0"
+            android:background="@color/white"
             android:orientation="vertical" >
 
             <TextView
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="当月累计消费金额（元）"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <TextView
@@ -43,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-                android:textColor="#0099CC"
+                android:textColor="@color/theme"
                 android:textSize="35sp" />
         </LinearLayout>
 
@@ -58,7 +59,7 @@
             android:layout_marginTop="1dp"
             android:scrollbars="none"
             android:overScrollMode="never"
-            android:listSelector="@drawable/gridview_consume_type"
+            android:listSelector="@color/transparent"
              />
         
         <!-- EmptyView -->
@@ -92,7 +93,7 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="记一笔"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <!-- 查询过滤按钮 -->
@@ -107,7 +108,7 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="查询"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
     </RelativeLayout>

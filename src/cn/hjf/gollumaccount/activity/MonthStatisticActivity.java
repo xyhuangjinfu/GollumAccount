@@ -87,7 +87,7 @@ public class MonthStatisticActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_month_compare);
+        setContentView(R.layout.activity_month_statistic);
         
         initTitle();
         initView();

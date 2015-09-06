@@ -26,7 +26,7 @@ public class AboutActivity extends BaseActivity implements CommonHeaderFragment.
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_about);
+		setContentView(R.layout.activity_about);
 		
 		initTitle();
 		initView();
@@ -61,9 +61,9 @@ public class AboutActivity extends BaseActivity implements CommonHeaderFragment.
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        mVersionTextView.setHint(info.versionName);
-        mAuthorTextView.setHint("黄金夫");
-        mDeclareTextView.setHint("本应用所涉及的图片资源均来自互联网，本应用不做任何商业用途，不会侵犯图片资源所有者的利益。");
+        mVersionTextView.setText(info.versionName);
+        mAuthorTextView.setText("黄金夫");
+        mDeclareTextView.setText("本应用所涉及的图片资源均来自互联网，本应用不做任何商业用途，不会侵犯图片资源所有者的利益。");
     }
 
     @Override

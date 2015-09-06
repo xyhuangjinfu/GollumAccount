@@ -68,7 +68,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_view_record);
+        setContentView(R.layout.activity_consume_record_detail);
         
         if (getIntent().getParcelableExtra(CONSUME_RECORD) == null) {
             finish();
