@@ -79,23 +79,6 @@ public class ConsumeRecordManagerBusiness {
         return getBusinessModels(mConsumeRecordDao.queryRecords(mDaoModelTransfer.getQueryInfoModel(queryInfo)));
     }
     
-    /**
-     * 按类型统计，查询
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    public Map<ConsumeType, Double> statisticByType(Calendar startDate, Calendar endDate) {
-        Map<ConsumeType, Double> statisticData = new HashMap<ConsumeType, Double>();
-        Map<Integer, Double> rawData = mConsumeRecordDao.statisticByType(
-                TimeUtil.getFirstDayOfDate(startDate), TimeUtil.getLastDayOfDate(endDate));
-        Set<Entry<Integer, Double>> entries = rawData.entrySet();
-        for (Entry<Integer, Double> entry : entries) {
-            ConsumeTypeModel consumeTypeModel = mConsumeTypeDao.queryById(entry.getKey());
-            statisticData.put(mBusinessModelTransfer.getConsumeType(consumeTypeModel), entry.getValue());
-        }
-        return statisticData;
-    }
     
     /**
      * 把多个数据层模型转换为业务逻辑模型

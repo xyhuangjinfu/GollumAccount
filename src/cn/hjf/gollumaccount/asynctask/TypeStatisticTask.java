@@ -1,12 +1,9 @@
 package cn.hjf.gollumaccount.asynctask;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
-import com.tencent.bugly.proguard.p;
-
-import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
+import cn.hjf.gollumaccount.business.ConsumeStatisticBusiness;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 
 
@@ -24,7 +21,7 @@ public class TypeStatisticTask extends
 
 	private Context mContext; // 上下文对象
 	private OnTypeCompareListener mListener; // 类型统计计算结果监听对象
-	private ConsumeRecordManagerBusiness mConsumeRecordManagerBusiness; // 消费记录管理的业务逻辑
+	private ConsumeStatisticBusiness mConsumeStatisticBusiness; // 消费记录管理的业务逻辑
 
 	public interface OnTypeCompareListener {
 		public abstract void onItemCompareSuccess(Map<ConsumeType, Double> result);
@@ -33,12 +30,12 @@ public class TypeStatisticTask extends
 	public TypeStatisticTask(Context context, OnTypeCompareListener listener) {
 		this.mContext = context;
 		this.mListener = listener;
-		mConsumeRecordManagerBusiness = new ConsumeRecordManagerBusiness(mContext);
+		mConsumeStatisticBusiness = new ConsumeStatisticBusiness(mContext);
 	}
 
 	@Override
 	protected Map<ConsumeType, Double> doInBackground(Calendar... params) {
-	    return mConsumeRecordManagerBusiness.statisticByType(params[0], params[1]);
+	    return mConsumeStatisticBusiness.statisticByType(params[0], params[1]);
 	}
 
 	@Override
