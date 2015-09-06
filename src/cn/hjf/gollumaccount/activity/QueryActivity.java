@@ -49,6 +49,11 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
     private Calendar mStartCalendar; //查询开始时间
     private Calendar mEndCalendar; //查询结束时间
     
+    public QueryActivity() {
+        mStartCalendar = Calendar.getInstance();
+        mEndCalendar = Calendar.getInstance();
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -24,7 +24,7 @@
         android:layout_toRightOf="@id/iv_drawer_icon"
         android:gravity="center_vertical"
         android:text="menu"
-        android:textColor="#323232"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <ImageView
