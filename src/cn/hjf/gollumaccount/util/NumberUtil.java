@@ -9,6 +9,24 @@ import java.text.DecimalFormat;
  * 
  */
 public class NumberUtil {
+    
+    /**
+     * 把数字转换为两位数字
+     * @param intValue
+     * @return
+     */
+    public static String formatTwoInt(String intValue) {
+        return formatValue(intValue, "#00");
+    }
+    
+    /**
+     * 把数字转换为两位数字
+     * @param intValue
+     * @return
+     */
+    public static String formatTwoInt(int intValue) {
+        return formatValue(intValue, "#00");
+    }
 
     /**
      * 把double类型的值格式化为指定格式，默认保留小数点后2位

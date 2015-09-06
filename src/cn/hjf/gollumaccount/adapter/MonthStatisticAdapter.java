@@ -56,8 +56,7 @@ public class MonthStatisticAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         
-//        holder.typeName.setText(mDatas.get(position).getConsumeType().getName());
-        holder.month.setText(mDatas.get(position).getConsumeMonth() + 1 + "月");
+        holder.month.setText(NumberUtil.formatTwoInt(mDatas.get(position).getConsumeMonth() + 1));
         holder.sum.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum()));
         holder.ratio.setText(NumberUtil.formatValue(mDatas.get(position).getAllSum() == 0 ? 0 : mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum()) + "%" );
         holder.ratioBar.setMax((int) mDatas.get(position).getAllSum());
