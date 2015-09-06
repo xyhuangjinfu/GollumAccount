@@ -53,4 +53,13 @@ public final class ConsumeStatisticBusiness {
         }
         return statisticData;
     }
+    
+    /**
+     * 获得每个月消费总额
+     * @param currentMonth
+     * @return
+     */
+    public Double getSumByMonth(Calendar currentMonth) {
+        return mConsumeRecordDao.statisticSum(TimeUtil.getFirstDayMillsOfMonth(currentMonth), TimeUtil.getLastDayMillsOfMonth(currentMonth));
+    }
 }

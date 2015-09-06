@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
  * @author xfujohn
  * 
  */
-public class NumberUtils {
+public class NumberUtil {
 
     /**
      * 把double类型的值格式化为指定格式，默认保留小数点后2位

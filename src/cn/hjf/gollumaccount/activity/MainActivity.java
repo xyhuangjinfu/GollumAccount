@@ -1,17 +1,19 @@
 package cn.hjf.gollumaccount.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
-import cn.hjf.gollumaccount.asynctask.IConsumeRecordOperateListener;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
+import cn.hjf.gollumaccount.asynctask.StatisticSumAsyncTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,9 +35,11 @@ import android.support.v4.widget.DrawerLayout;
 public class MainActivity extends BaseActivity implements
 		SideMenuFragment.NavigationDrawerCallbacks,
 		CommonHeaderFragment.ICallback,
-		IConsumeRecordOperateListener {
+		LoadConsumeRecordTask.LoadConsumeRecordListener,
+		StatisticSumAsyncTask.OnStatisticSumListener {
     
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
+    private static final int REQ_CODE_ADD_RECORD = 1; //请求新建消费记录请求码
     private static final int NUM_PER_PAGE = 7; // 每页查询的数量
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
@@ -80,7 +84,7 @@ public class MainActivity extends BaseActivity implements
 		
 		mLoadingDialog.show();
 		loadData();
-		
+		new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
 	}
 	
 	   /**
@@ -104,6 +108,7 @@ public class MainActivity extends BaseActivity implements
 	
     @Override
     protected void initView() {
+        mCurrentMonthSum = (TextView) findViewById(R.id.tv_current_month);
         mAddButton = (Button) findViewById(R.id.btn_add);
         mQueryButton = (Button) findViewById(R.id.btn_query);
         
@@ -138,7 +143,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddConsumeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_ADD_RECORD);
             }
         });
         
@@ -241,6 +246,12 @@ public class MainActivity extends BaseActivity implements
                     loadData();
                 }
             }
+            if (requestCode == REQ_CODE_ADD_RECORD) {
+                mIsQueryChanged = true;
+                mLoadingDialog.show();
+                loadData();
+                new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
+            }
         }
     }
 
@@ -258,7 +269,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void OnRecordLoadCompleted(List<ConsumeRecord> consumeRecords) {
+    public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
         mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
             mIsNoMoreData = true;
@@ -271,6 +282,11 @@ public class MainActivity extends BaseActivity implements
         mRecords.addAll(consumeRecords);
         mConsumeRecordAdapter.notifyDataSetChanged();
         mLoadingDialog.cancel();
+    }
+
+    @Override
+    public void onStatisticSumCompleted(Double sum) {
+        mCurrentMonthSum.setText(NumberUtil.formatValue(sum));
     }
 
 }

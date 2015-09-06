@@ -18,10 +18,14 @@ public class LoadConsumeRecordTask extends
 		AsyncTask<QueryInfo, Void, List<ConsumeRecord>> {
 
 	private ConsumeRecordManagerBusiness mConsumeRecordManagerBusines; //消费记录管理业务逻辑
-	private IConsumeRecordOperateListener mListener; // 查询结果回调对象
+	private LoadConsumeRecordListener mListener; // 查询结果回调对象
 	private Context mContext; // 上下文对象
+	
+	public interface LoadConsumeRecordListener {
+	    public abstract void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords);
+	}
 
-	public LoadConsumeRecordTask(Context context, IConsumeRecordOperateListener listener) {
+	public LoadConsumeRecordTask(Context context, LoadConsumeRecordListener listener) {
 		this.mContext = context;
 		this.mListener = listener;
 		mConsumeRecordManagerBusines = new ConsumeRecordManagerBusiness(mContext);
@@ -35,7 +39,7 @@ public class LoadConsumeRecordTask extends
 	@Override
 	protected void onPostExecute(List<ConsumeRecord> result) {
 		super.onPostExecute(result);
-		mListener.OnRecordLoadCompleted(result);
+		mListener.OnLoadRecordCompleted(result);
 
 	}
 }

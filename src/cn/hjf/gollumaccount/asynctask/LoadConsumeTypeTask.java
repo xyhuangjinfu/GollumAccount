@@ -15,11 +15,15 @@ import android.os.AsyncTask;
  */
 public class LoadConsumeTypeTask extends AsyncTask<Void, Void, List<ConsumeType>> {
     
-    private IConsumeTypeOperateListener mListener;
+    private OnLoadConsumeTypeListener mListener;
     private Context mContext;
     private ConsumeTypeManagerBusiness mConsumeTypeManagerBusiness;
     
-    public LoadConsumeTypeTask(Context context, IConsumeTypeOperateListener listener) {
+    public interface OnLoadConsumeTypeListener {
+        public abstract void OnLoadConsumeTypeCompleted(List<ConsumeType> consumeTypes);
+    }
+    
+    public LoadConsumeTypeTask(Context context, OnLoadConsumeTypeListener listener) {
         this.mContext = context;
         this.mListener = listener;
         mConsumeTypeManagerBusiness = new ConsumeTypeManagerBusiness(mContext);
@@ -32,7 +36,7 @@ public class LoadConsumeTypeTask extends AsyncTask<Void, Void, List<ConsumeType>
     
     @Override
     protected void onPostExecute(List<ConsumeType> result) {
-        mListener.OnTypeLoadCompleted(result);
+        mListener.OnLoadConsumeTypeCompleted(result);
         mListener = null;
     }
 

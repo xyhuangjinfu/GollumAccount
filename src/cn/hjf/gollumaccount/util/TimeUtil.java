@@ -12,6 +12,22 @@ import java.util.Date;
  */
 public final class TimeUtil {
     
+    public static long getFirstDayMillsOfMonth(Calendar monthCalendar) {
+        monthCalendar.set(Calendar.DAY_OF_MONTH, getFirstDay(monthCalendar.get(Calendar.YEAR), monthCalendar.get(Calendar.MONTH)));
+        monthCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        monthCalendar.set(Calendar.MINUTE, 0);
+        monthCalendar.set(Calendar.SECOND, 0);
+        return monthCalendar.getTimeInMillis();
+    }
+    
+    public static long getLastDayMillsOfMonth(Calendar monthCalendar) {
+        monthCalendar.set(Calendar.DAY_OF_MONTH, getLastDay(monthCalendar.get(Calendar.YEAR), monthCalendar.get(Calendar.MONTH)));
+        monthCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        monthCalendar.set(Calendar.MINUTE, 0);
+        monthCalendar.set(Calendar.SECOND, 0);
+        return monthCalendar.getTimeInMillis();
+    }
+    
     public static long getFirstDayOfDate(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

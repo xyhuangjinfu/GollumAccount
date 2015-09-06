@@ -132,6 +132,17 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         return datas;
     }
     
+
+    @Override
+    public Double statisticSum(long startDate, long endDate) {
+        Double sum = 0d;
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.statisticSum(startDate, endDate), null);
+        while (cursor.moveToNext()) {
+            sum = cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )"));
+        }
+        return sum;
+    }
+    
     /**
      * 从Cursor中构造消费记录列表
      * @param cursor
@@ -449,6 +460,10 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append(" = ");
             sql.append("1");
 
+            
+            sql.append(" ORDER BY ");
+            sql.append(Table.CLM_CREATE_TIME);
+            sql.append(" DESC ");
                     
             sql.append(" LIMIT ");
                 sql.append("'");
@@ -458,6 +473,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                 sql.append("'");
                 sql.append((queryInfo.getPageNumber() - 1) * queryInfo.getPageSize());
                 sql.append("'");
+                
             
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
@@ -492,6 +508,35 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append("'");
             sql.append(" GROUP BY ");
             sql.append(Table.CLM_TYPE);
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 统计时间段内消费金额总计
+         */
+        public String statisticSum(long startDate, long endDate) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT ");
+            sql.append(" sum ( ");
+            sql.append(Table.CLM_PRICE);
+            sql.append(" ) ");
+            sql.append(" FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" >= ");
+            sql.append("'");
+            sql.append(startDate);
+            sql.append("'");
+            sql.append(" AND ");
+            sql.append(Table.CLM_CONSUME_TIME);
+            sql.append(" <= ");
+            sql.append("'");
+            sql.append(endDate);
+            sql.append("'");
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }

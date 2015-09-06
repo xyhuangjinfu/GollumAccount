@@ -58,4 +58,11 @@ public interface IConsumeRecordDao {
      * @return
      */
     public abstract Map<Integer, Double> statisticByType(long startDate, long endDate);
+    /**
+     * 统计时间段内消费金额总计
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public abstract Double statisticSum(long startDate, long endDate);
 }

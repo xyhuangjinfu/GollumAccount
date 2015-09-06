@@ -132,6 +132,7 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
                     mCreateButton.setEnabled(false);
                     buildConsumeRecord();
                     mConsumeRecordManagerBusiness.addRecord(mConsumeRecord);
+                    AddConsumeActivity.this.setResult(Activity.RESULT_OK);
                     AddConsumeActivity.this.finish();
                 }
             }
