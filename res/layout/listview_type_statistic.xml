@@ -23,7 +23,7 @@
         android:layout_toRightOf="@+id/iv_type"
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
-        android:textSize="14sp"
+        android:textSize="@dimen/textsize_content"
         android:textColor="@color/black"
         android:text="一般" />
 
@@ -35,7 +35,7 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/tv_type"
         android:gravity="center_vertical"
-        android:textSize="14sp"
+        android:textSize="@dimen/textsize_content"
         android:textColor="@color/black"
         android:text="80%" />
 
@@ -60,7 +60,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="@dimen/textsize_price"
         android:padding="15dp"
         android:textColor="@color/theme"
         android:text="258.95" />

@@ -3,7 +3,7 @@ package cn.hjf.gollumaccount.view;
 import java.util.List;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.adapter.DialogSelectAdapter;
+import cn.hjf.gollumaccount.adapter.SpinnerDialogAdapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -41,7 +41,7 @@ public class SpinnerDialog extends Dialog {
     /**
      * 显示数据的ListView的适配器
      */
-    private DialogSelectAdapter mDialogselectadapter;
+    private SpinnerDialogAdapter mDialogselectadapter;
     /**
      * 显示数据的ListView
      */
@@ -89,7 +89,7 @@ public class SpinnerDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.dialog_select_list);
+        this.setContentView(R.layout.dialog_spinner);
         initView();
         initValue();
         initEvent();
@@ -108,7 +108,7 @@ public class SpinnerDialog extends Dialog {
      * 初始化各控件的值
      */
     private void initValue() {
-        mDialogselectadapter = new DialogSelectAdapter(mContext, mList);
+        mDialogselectadapter = new SpinnerDialogAdapter(mContext, mList);
         mSpinnerListView.setAdapter(mDialogselectadapter);
     }
 

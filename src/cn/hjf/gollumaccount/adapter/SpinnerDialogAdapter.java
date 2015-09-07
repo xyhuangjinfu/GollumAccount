@@ -12,13 +12,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
-public class DialogSelectAdapter extends BaseAdapter {
+public class SpinnerDialogAdapter extends BaseAdapter {
     
     private Context mContext;
     private List<String> list;
     
 
-    public DialogSelectAdapter(Context context, List<String> list) {
+    public SpinnerDialogAdapter(Context context, List<String> list) {
         this.mContext = context;
         this.list = list;
     }
@@ -42,7 +42,7 @@ public class DialogSelectAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.spinner_dialog_list_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_spinner_dialog, parent, false);
             holder = new ViewHolder();
             holder.mName = (TextView) convertView.findViewById(R.id.dialog_txt_item);
             convertView.setTag(holder);

@@ -32,7 +32,7 @@
             android:padding="10dp"
             android:text="开 始："
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textsize_content" />
 
         <RelativeLayout
             android:id="@+id/rl_record_date_start"
@@ -50,7 +50,7 @@
                 android:hint="选择开始日期"
                 android:padding="10dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_content" />
 
             <ImageView
                 android:id="@id/iv_ic_right"
@@ -81,7 +81,7 @@
             android:padding="10dp"
             android:text="结 束："
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textsize_content" />
 
         <RelativeLayout
             android:id="@+id/rl_record_time_end"
@@ -99,7 +99,7 @@
                 android:hint="选择结束日期"
                 android:padding="10dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_content" />
 
             <ImageView
                 android:id="@id/iv_ic_right"

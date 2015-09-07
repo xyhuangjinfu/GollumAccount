@@ -47,7 +47,7 @@
                     android:padding="10dp"
                     android:text="名 称："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_record_name_detail"
@@ -58,7 +58,7 @@
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 金额 -->
@@ -80,7 +80,7 @@
                     android:padding="10dp"
                     android:text="金 额："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_record_price_detail"
@@ -92,7 +92,7 @@
                     android:maxLength="7"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 类别 -->
@@ -114,7 +114,7 @@
                     android:padding="10dp"
                     android:text="类 别："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <RelativeLayout
                     android:id="@+id/rl_record_type"
@@ -132,7 +132,7 @@
                         android:hint="选择类别"
                         android:padding="10dp"
                         android:textColor="@color/color_textview_content"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/textsize_content" />
 
                     <ImageView
                         android:id="@id/iv_ic_right"
@@ -163,7 +163,7 @@
                     android:padding="10dp"
                     android:text="消 费："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_consumer"
@@ -175,7 +175,7 @@
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 付款者 -->
@@ -197,7 +197,7 @@
                     android:padding="10dp"
                     android:text="付 款："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_payer"
@@ -209,7 +209,7 @@
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 消费日期 -->
@@ -231,7 +231,7 @@
                     android:padding="10dp"
                     android:text="日 期："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_record_date_detail"
@@ -241,7 +241,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 消费时间 -->
@@ -263,7 +263,7 @@
                     android:padding="10dp"
                     android:text="时 间："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_record_time_detail"
@@ -273,7 +273,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 消费记录创建时间 -->
@@ -295,7 +295,7 @@
                     android:padding="10dp"
                     android:text="创 建："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_record_create_time_detail"
@@ -305,7 +305,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 备注 -->
@@ -328,7 +328,7 @@
                     android:padding="10dp"
                     android:text="备 注："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_record_remarks_detail"
@@ -339,7 +339,7 @@
                     android:maxLength="50"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
@@ -355,6 +355,6 @@
         android:padding="10dp"
         android:text="修 改"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="@dimen/textsize_indicator" />
 
 </RelativeLayout>

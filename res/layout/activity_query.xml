@@ -45,7 +45,7 @@
                     android:padding="10dp"
                     android:text="名 称："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <EditText
                     android:id="@+id/et_record_name"
@@ -57,7 +57,7 @@
                     android:textColor="@color/color_textview_content"
                     android:maxLength="20"
                     android:padding="10dp"
-                    android:textSize="16sp" >
+                    android:textSize="@dimen/textsize_content" >
 
                     <requestFocus />
                 </EditText>
@@ -82,7 +82,7 @@
                     android:padding="10dp"
                     android:text="类 别："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
 
                 <RelativeLayout
@@ -101,7 +101,7 @@
                         android:hint="选择类别"
                         android:textColor="@color/color_textview_content"
                         android:padding="10dp"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/textsize_content" />
 
                     <ImageView
                         android:id="@id/iv_ic_right"
@@ -132,7 +132,7 @@
                     android:padding="10dp"
                     android:text="开 始："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_record_date_start"
@@ -143,7 +143,7 @@
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
                     android:hint="选择开始日期"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <!-- 时间 -->
@@ -165,7 +165,7 @@
                     android:padding="10dp"
                     android:text="结 束："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_record_time_end"
@@ -176,7 +176,7 @@
                     android:padding="10dp"
                     android:hint="选择结束日期"
                     android:textColor="@color/color_textview_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
@@ -193,6 +193,6 @@
         android:padding="10dp"
         android:text="查 询"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="@dimen/textsize_indicator" />
 
 </RelativeLayout>

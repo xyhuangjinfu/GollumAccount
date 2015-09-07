@@ -4,6 +4,7 @@ import cn.hjf.gollumaccount.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,7 +64,10 @@ public class PullListView extends RelativeLayout {
         mListView = new ListView(context, attrs, defStyle);
         mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mListView.setSelector(R.color.transparent);
-        mListView.setDividerHeight(3);
+        mListView.setDividerHeight(2);
+//        float px = (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+//        Log.i("O_O", "px : " + px);
+//        mListView.setDividerHeight(px);
         
         mScroller = new Scroller(context);
         mGestureDetector = new GestureDetector(context, new CustomGestureListener());

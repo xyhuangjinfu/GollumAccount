@@ -38,7 +38,7 @@
                     android:padding="10dp"
                     android:text="版 本："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_version"
@@ -48,7 +48,7 @@
                     android:padding="5dp"
                     android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,7 +68,7 @@
                     android:gravity="center_vertical"
                     android:text="作 者："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_author"
@@ -78,7 +78,7 @@
                     android:padding="5dp"
                     android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -98,7 +98,7 @@
                     android:gravity="center_vertical"
                     android:text="声 明："
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
 
                 <TextView
                     android:id="@+id/tv_declare"
@@ -108,7 +108,7 @@
                     android:padding="5dp"
                     android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_content" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

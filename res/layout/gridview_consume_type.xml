@@ -23,6 +23,6 @@
         android:layout_centerHorizontal="true"
         android:text="TextView"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="@dimen/textsize_content" />
 
 </RelativeLayout>
