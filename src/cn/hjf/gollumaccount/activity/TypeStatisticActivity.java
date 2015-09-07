@@ -2,15 +2,8 @@ package cn.hjf.gollumaccount.activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.TypeStatisticAdapter;
 import cn.hjf.gollumaccount.asynctask.TypeStatisticTask;
@@ -18,20 +11,21 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * 按消费类型进行统计的界面
+ * 在指定的时间段内，按消费类型进行统计分析的界面
  * 
  * @author huangjinfu
  * 
@@ -45,16 +39,14 @@ public class TypeStatisticActivity extends BaseActivity implements
     
     private TextView mStartDateTextView; // 统计开始时间
     private TextView mEndDateTextView; // 统计结束时间
-    private PieChart mPieChart; // 饼图
+    private ListView mShowDataListView; //统计分析数据显示的列表
+    private DatePickerDialog mStartDatePickerDialog; // 统计开始日期选择对话框
+    private DatePickerDialog mEndDatePickerDialog; // 统计结束日期选择对话框
+    private LinearLayout mSumLayout; //金额总计布局
+    private TextView mSumTextView; //金额总计
     
     private Calendar mStartDate; //统计开始时间
     private Calendar mEndDate; //统计结束时间
-    private DatePickerDialog mStartDatePickerDialog; // 统计开始日期选择对话框
-    private DatePickerDialog mEndDatePickerDialog; // 统计结束日期选择对话框
-    
-    private Map<ConsumeType, Double> mStatisticData; //消费类型与金额总计映射的统计数据
-    
-    private ListView mShowDataListView; //统计分析数据显示的列表
     private TypeStatisticAdapter mTypeStatisticAdapter; //统计分析数据显示列表的适配器
     private List<TypeStatisticData> mStatisticDatas; ////按类型统计分析的数据
     
@@ -63,7 +55,6 @@ public class TypeStatisticActivity extends BaseActivity implements
     public TypeStatisticActivity() {
         mStartDate = Calendar.getInstance();
         mEndDate = Calendar.getInstance();
-        mStatisticData = new HashMap<ConsumeType, Double>();
         mStatisticDatas = new ArrayList<TypeStatisticData>();
     }
 
@@ -94,8 +85,10 @@ public class TypeStatisticActivity extends BaseActivity implements
     
     @Override
     protected void initView() {
+        mSumLayout = (LinearLayout) findViewById(R.id.ll_sum);
+        mSumLayout.setVisibility(View.GONE);
+        mSumTextView = (TextView) findViewById(R.id.tv_sum);
         mShowDataListView = (ListView) findViewById(R.id.lv_type_statistic);
-        mPieChart = (PieChart) findViewById(R.id.pc_by_month);
         mStartDateTextView = (TextView) findViewById(R.id.tv_record_date_start);
         mEndDateTextView = (TextView) findViewById(R.id.tv_record_time_end);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
@@ -159,68 +152,6 @@ public class TypeStatisticActivity extends BaseActivity implements
             }
         });
     }
-
-    /**
-     * 显示饼图
-     * 
-     * @param map
-     */
-    private void showPieChart(PieChart chart, PieData data) {
-      //对饼图进行一些设置
-        chart.setDescription(null);
-        chart.setNoDataText("您本月没有消费数据！");
-//        chart.setOnChartValueSelectedListener(this);
-        if (data == null) {
-            Log.i("hjf", "没有数据");
-            chart.clear();
-        } else {
-            Log.i("hjf", "有数据");
-            chart.setData(data);
-            chart.setCenterTextSize(15f);
-        }
-      //绘制饼图
-        // chart.invalidate();
-        chart.setOnTouchListener(null);//解决从有数据到无数据的状态下，点击图标会报NullPointerException的问题。
-        chart.animateXY(1000, 1000);
-        chart.invalidate();
-    }
-
-    /**
-     * 根据数据库查询出来的Map对象，生成PieData对象
-     * 
-     * @param map
-     * @return
-     */
-    private PieData getData(Map<ConsumeType, Double> map) {
-        PieData data = null;
-//        if (isHaveData(map)) {
-            // 初始化 x、y轴的
-            ArrayList<String> xVals = new ArrayList<String>();
-            ArrayList<Entry> yVals = new ArrayList<Entry>();
-            
-            for (Map.Entry<ConsumeType, Double> entry : map.entrySet()) {
-                int i = 0;
-                xVals.add(entry.getKey().getName());
-                float price = (float) ((double) entry.getValue());
-                yVals.add(new Entry(price, i++));
-            }
-            
-            PieDataSet dataSet = new PieDataSet(yVals, null);
-            // 指定每个值得颜色
-            ArrayList<Integer> colors = new ArrayList<Integer>();
-            for (int c : ColorTemplate.COLORFUL_COLORS)
-                colors.add(c);
-            for (int c : ColorTemplate.PASTEL_COLORS)
-                colors.add(c);
-            for (int c : ColorTemplate.VORDIPLOM_COLORS)
-                colors.add(c);
-            colors.add(ColorTemplate.getHoloBlue());
-            dataSet.setColors(colors);
-            // 创建PieData对象，绑定到饼图
-            data = new PieData(xVals, dataSet);
-//        }
-        return data;
-    }
     
     /**
      * 得到列表显示的数据
@@ -264,12 +195,19 @@ public class TypeStatisticActivity extends BaseActivity implements
 
     @Override
     public void onItemCompareSuccess(Map<ConsumeType, Double> result) {
-        PieData pieData = getData(result);
-        showPieChart(mPieChart, pieData);
-        
         mStatisticDatas.clear();
-        mStatisticDatas.addAll(getShowData(result));
+        
+        List<TypeStatisticData> showData = getShowData(result);
+        mStatisticDatas.addAll(showData);
         mTypeStatisticAdapter.notifyDataSetChanged();
+        
+        if (showData.size() != 0) {
+            mSumLayout.setVisibility(View.VISIBLE);
+            mSumTextView.setText(NumberUtil.formatValue(showData.get(0).getAllSum()));
+        } else {
+            mSumLayout.setVisibility(View.GONE);
+        }
+        
         
         mLoadingDialog.cancel();
     }

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <!-- 日期 -->
+    <!-- 开始日期 -->
 
     <LinearLayout
         android:id="@+id/llyt_query_date_start"
@@ -62,7 +62,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- 时间 -->
+    <!-- 结束日期 -->
 
     <LinearLayout
         android:id="@+id/llyt_query_date_end"
@@ -110,6 +110,39 @@
                 android:src="@drawable/listitem_btn_right" />
         </RelativeLayout>
     </LinearLayout>
+    
+            <!-- 消费金额总计 -->
+
+        <LinearLayout
+            android:id="@+id/ll_sum"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/llyt_query_date_end"
+            android:background="@color/white"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_sum_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="总 计："
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_content" />
+
+            <TextView
+                android:id="@+id/tv_sum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/theme"
+                android:text="285.54"
+                android:textSize="25sp" />
+        </LinearLayout>
 
     <!-- 数据展示列表 -->
 
@@ -117,7 +150,7 @@
         android:id="@+id/lv_type_statistic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/llyt_query_date_end"
+        android:layout_below="@id/ll_sum"
         android:layout_marginTop="5dp"
         android:listSelector="@color/transparent"
         android:overScrollMode="never"
@@ -132,25 +165,5 @@
             android:layout_height="match_parent"
             android:layout_below="@id/llyt_query_date_end"
             />
-
-    <!-- 饼图 -->
-
-    <LinearLayout
-        android:id="@+id/llyt_pie_chart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llyt_query_date_end"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/bg_layout"
-        android:visibility="gone" >
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pc_by_month"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
 </RelativeLayout>
