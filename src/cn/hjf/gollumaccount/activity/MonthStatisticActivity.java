@@ -2,46 +2,32 @@ package cn.hjf.gollumaccount.activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.MonthStatisticAdapter;
-import cn.hjf.gollumaccount.adapter.TypeStatisticAdapter;
 import cn.hjf.gollumaccount.asynctask.StatisticMonthByTypeTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.businessmodel.MonthStatisticData;
-import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import cn.hjf.gollumaccount.view.SpinnerDialog;
 import cn.hjf.gollumaccount.view.SpinnerDialog.ICallback;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
- * 按消费月份进行统计的界面
+ * 查看某一年，某一个类型，按消费月份进行统计的界面
  * 
  * @author huangjinfu
  * 
@@ -51,31 +37,24 @@ public class MonthStatisticActivity extends BaseActivity implements
         CommonHeaderFragment.ICallback {
     
     private static final int REQ_CODE_SELECT_TYPE = 0;
+    
+    private CommonHeaderFragment mTitleFragment; //顶部标题栏
+    private LoadingDialog mLoadingDialog; //加载对话框
 
     private TextView mYearTextView; // 选择年份
     private TextView mTypeTextView; // 选择类型
-    private LineChart mLineChart; // 线图
     private TextView mSumTextView; // 总金额
-
-    private ArrayList<String> mYearData; // 年份数据
-    private Typeface mTypeface; // 图标显示的样式
-
-    private float mSumPrice = 0; // 各分类的总额
-    /**
-     * 顶部标题栏
-     */
-    private CommonHeaderFragment mTitleFragment;
-    private SpinnerDialog mYearSelectDialog;
-    private LoadingDialog mLoadingDialog;
-    
-    private Calendar mStatisticYear;
-    private ConsumeType mConsumeType;
-    
+    private LinearLayout mSumLayout; //金额总计布局
     private ListView mShowDataListView; //统计分析数据显示的列表
+    private View mEmptyView; //ListView没有数据时显示的界面
+    private SpinnerDialog mYearSelectDialog; //年份选择对话框
+    
+    private Calendar mStatisticYear; //统计的年份
+    private ConsumeType mConsumeType; //统计的消费类型
     private MonthStatisticAdapter mMonthStatisticAdapter; //统计分析数据显示列表的适配器
     private List<MonthStatisticData> mStatisticDatas; ////按类型统计分析的数据
+    private ArrayList<String> mYearData; // 年份数据
     
-    private View mEmptyView; //ListView没有数据时显示的界面
     
     public MonthStatisticActivity() {
         mStatisticYear = Calendar.getInstance();
@@ -117,11 +96,12 @@ public class MonthStatisticActivity extends BaseActivity implements
      */
     @Override
     protected void initView() {
+        mSumLayout = (LinearLayout) findViewById(R.id.ll_sum);
+        mSumLayout.setVisibility(View.GONE);
+        mSumTextView = (TextView) findViewById(R.id.tv_sum);
         mShowDataListView = (ListView) findViewById(R.id.lv_month_statistic);
         mYearTextView = (TextView) findViewById(R.id.tv_line_year);
         mTypeTextView = (TextView) findViewById(R.id.tv_line_type);
-        mSumTextView = (TextView) findViewById(R.id.tv_sum);
-        mLineChart = (LineChart) findViewById(R.id.lc_by_month);
         mYearSelectDialog = new SpinnerDialog(this, R.style.transparent_dialog1);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
@@ -137,9 +117,6 @@ public class MonthStatisticActivity extends BaseActivity implements
     @Override
     protected void initValue() {
         initYearData();
-        
-        mTypeface = Typeface.createFromAsset(this.getAssets(),
-                "OpenSans-Bold.ttf");
         
         mYearSelectDialog.setData(mYearData);
         
@@ -200,29 +177,6 @@ public class MonthStatisticActivity extends BaseActivity implements
     }
 
     /**
-     * 计算总额，用来显示
-     * 
-     * @param result
-     * @return
-     */
-    private float getSumPrice(HashMap<Integer, Double> result) {
-        float sum = 0;
-        float price = 0;
-        if (isHaveData(result)) {
-            for (int j = 0; j < result.size(); j++) {
-                if ((result.get(j) != null) && (result.get(j) != 0)) {
-                    price = (float) ((double) result.get(j));
-                } else {
-                    price = 0;
-                }
-                Log.i("hjf", "price:" + price);
-                sum = sum + price;
-            }
-        }
-        return sum;
-    }
-
-    /**
      * 初始化年份选择的数据
      */
     private void initYearData() {
@@ -231,135 +185,6 @@ public class MonthStatisticActivity extends BaseActivity implements
         for (int i = TimeUtil.getNowYear(); i >= 1980; i--) {
             mYearData.add(String.valueOf(i));
         }
-    }
-
-    /**
-     * 传入图表和数据，进行设置并显示
-     * 
-     * @param chart
-     * @param data
-     */
-    private void showLineChart(LineChart chart, LineData data) {
-        // if enabled, the chart will always start at zero on the y-axis
-        chart.setStartAtZero(true);
-        // disable the drawing of values into the chart
-        // chart.setDrawYValues(false);
-        chart.setDrawYValues(true); // 在图表上显示具体值ֵ
-        chart.setValueTextColor(Color.WHITE);
-        chart.setDrawBorder(false);
-        // no description text
-        chart.setDescription("");
-        // chart.setNoDataTextDescription("You need to provide data for the chart.");
-        chart.setNoDataText("您本年的此分类没有消费数据！");
-        // enable / disable grid lines
-        chart.setDrawVerticalGrid(false);
-        // mChart.setDrawHorizontalGrid(false);
-        //
-        // enable / disable grid background
-        chart.setDrawGridBackground(false);
-        chart.setGridColor(Color.WHITE & 0x70FFFFFF);
-        chart.setGridWidth(1.25f);
-        // enable touch gestures
-        chart.setTouchEnabled(true);
-        // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(false);
-        chart.setValueTypeface(mTypeface);
-
-        if (data != null) {
-            Log.i("hjf", "有数据");
-            // chart.setBackgroundColor(Color.rgb(89, 199, 250));
-            chart.setBackgroundColor(Color.rgb(109, 202, 236));
-            chart.setData(data);
-            // mSumTextView.setText("�� �" + chart.getAverage() *
-            // chart.getValueCount());
-            mSumTextView.setText("总 额：" + mSumPrice);
-            mSumTextView.setVisibility(View.VISIBLE);
-        } else {
-            Log.i("hjf", "无数据");
-            chart.setBackgroundColor(Color.WHITE);
-            chart.clear();
-            mSumTextView.setText("");
-            mSumTextView.setVisibility(View.GONE);
-        }
-
-        // // add data
-        // chart.setData(data);
-        // // get the legend (only possible after setting data)
-        // Legend l = chart.getLegend();
-        // // modify the legend ...
-        // // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        // l.setForm(LegendForm.CIRCLE);
-        // l.setFormSize(6f);
-        // l.setTextColor(Color.WHITE);
-        // l.setTypeface(mTypeface);
-        //
-        // YLabels y = chart.getYLabels();
-        // y.setTextColor(Color.WHITE);
-        // y.setTypeface(mTypeface);
-        // y.setLabelCount(4);
-        //
-        // XLabels x = chart.getXLabels();
-        // x.setTextColor(Color.WHITE);
-        // x.setTypeface(mTypeface);
-
-        // animate calls invalidate()...
-        chart.setOnTouchListener(null);
-        chart.animateXY(1000, 1000);// ����Ч��
-        chart.invalidate();
-    }
-
-    /**
-     * 根据数据库查询出来的Map对象，生成LineData对象
-     * 
-     * @param map
-     * @return
-     */
-    private LineData getData(Map<Integer, Double> map) {
-        LineData data = null;
-//        if (isHaveData(map)) {
-            // 初始化 x、y轴的值ֵ
-            ArrayList<String> xVals = new ArrayList<String>();
-            ArrayList<Entry> yVals = new ArrayList<Entry>();
-            for (int j = 0; j < map.size(); j++) {
-                xVals.add(String.valueOf(j + 1));
-                if ((map.get(j) != null) && (map.get(j) != 0)) {
-                    float price = (float) ((double) map.get(j));
-                    yVals.add(new Entry(price, j));
-                } else {
-                    yVals.add(new Entry(0, j));
-                }
-            }
-            LineDataSet dataSet = new LineDataSet(yVals, null);
-            dataSet.setLineWidth(1.75f);
-            dataSet.setCircleSize(3f);
-            dataSet.setColor(Color.WHITE);
-            dataSet.setCircleColor(Color.WHITE);
-            dataSet.setHighLightColor(Color.WHITE);
-
-            ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-            dataSets.add(dataSet);
-            data = new LineData(xVals, dataSets);
-//        }
-        return data;
-    }
-
-    /**
-     * 验证查询的结果是否没有数据的结果，如果所有的值都是0，则就是没有数据
-     * 
-     * @param map
-     * @return true表示有消费数据
-     */
-    private boolean isHaveData(HashMap<Integer, Double> map) {
-        boolean result = false;
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i) != 0) {
-                result = true;
-            }
-        }
-        return result;
     }
     
     /**
@@ -406,12 +231,17 @@ public class MonthStatisticActivity extends BaseActivity implements
 
     @Override
     public void onStatisticMonthByTypeCompleted(Map<Integer, Double> result) {
-        LineData lineData = getData(result);
-        showLineChart(mLineChart, lineData);
-        
         mStatisticDatas.clear();
-        mStatisticDatas.addAll(getShowData(result));
+        List<MonthStatisticData> showData = getShowData(result);
+        mStatisticDatas.addAll(showData);
         mMonthStatisticAdapter.notifyDataSetChanged();
+        
+        if (showData.size() != 0) {
+            mSumLayout.setVisibility(View.VISIBLE);
+            mSumTextView.setText(NumberUtil.formatValue(showData.get(0).getAllSum()));
+        } else {
+            mSumLayout.setVisibility(View.GONE);
+        }
         
         mLoadingDialog.cancel();
     }
