@@ -61,8 +61,8 @@ public class ConsumeTypeAdapter extends BaseAdapter {
             holder.icon.setImageResource(R.drawable.ic_custom_type);
         }
         if ("衣服".equals(mTypes.get(position).getName())) {
-//            holder.icon.setImageResource(R.drawable.ic_clothes_white);
-            holder.icon.setImageBitmap(BitmapUtil.getColorfulBitmap(mContext, R.drawable.ic_clothes_white, R.color.theme));
+            holder.icon.setImageResource(R.drawable.ic_clothes);
+//            holder.icon.setImageBitmap(BitmapUtil.getColorfulBitmap(mContext, R.drawable.ic_clothes_white, R.color.theme));
         }
         if ("食物".equals(mTypes.get(position).getName())) {
             holder.icon.setImageResource(R.drawable.ic_food);

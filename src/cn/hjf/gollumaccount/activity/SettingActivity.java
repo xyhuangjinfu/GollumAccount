@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * 设置选择界面
@@ -91,8 +92,10 @@ public class SettingActivity extends BaseActivity implements CommonHeaderFragmen
                     SettingActivity.this.startActivity(intent0);
                     break;
                 case 1:
-                    Intent intent1 = new Intent(SettingActivity.this, ThemeSettingActivity.class);
-                    SettingActivity.this.startActivity(intent1);
+//                    Intent intent1 = new Intent(SettingActivity.this, ThemeSettingActivity.class);
+//                    SettingActivity.this.startActivity(intent1);
+                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0)
+                    .show();
                     break;
                 default:
                     break;

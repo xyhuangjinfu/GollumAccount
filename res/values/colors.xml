@@ -38,7 +38,7 @@
     
     
     <!-- 主题 -->
-    <color name="theme">@color/theme_purple</color>
+    <color name="theme">@color/theme_blue</color>
 
     <!-- 主题交互(半透明主题) -->
     <color name="theme_translucent">@color/theme_blue_translucent</color>
