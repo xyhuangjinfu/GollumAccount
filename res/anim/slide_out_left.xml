@@ -3,4 +3,6 @@
     android:zAdjustment="bottom">
     <translate android:fromXDelta="0" android:toXDelta="-20%p"
             android:duration="@integer/animate_duration"/>
+    <alpha android:fromAlpha="1.0" android:toAlpha="0.5"
+        android:duration="@integer/animate_duration"/>
 </set>

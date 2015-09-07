@@ -312,6 +312,11 @@ public class MainActivity extends BaseActivity implements
             return;
         }
     }
+    
+    @Override
+    protected boolean needFinishAnimate() {
+        return false;
+    }
 
     @Override
     public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
