@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+    
+        <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_theme_setting"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+    
+    
+    <ListView
+        android:id="@+id/lv_theme_select"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_theme_setting"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:dividerHeight="1dp"
+        android:listSelector="@color/transparent"
+        />
+</RelativeLayout>

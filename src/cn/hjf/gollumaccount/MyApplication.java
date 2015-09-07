@@ -3,10 +3,13 @@ package cn.hjf.gollumaccount;
 import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
 import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.GASQLiteDatabase;
+import cn.hjf.gollumaccount.util.SharedPreferencesUtil;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
@@ -24,6 +27,9 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		
+		SharedPreferencesUtil.getSharedPreferences(this).edit().putString("theme", "blue");
 		
 		//��ʼ׷��Bug�����ڵ�һ��ִ��
 //		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);

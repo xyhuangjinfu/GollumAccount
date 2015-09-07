@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity implements
 			this.startActivity(intentStatisticSelect);
 			break;
 		case 2:
-            Intent intentAbout = new Intent(this, AboutActivity.class);
+            Intent intentAbout = new Intent(this, SettingActivity.class);
             this.startActivity(intentAbout);
             break;
 		default:

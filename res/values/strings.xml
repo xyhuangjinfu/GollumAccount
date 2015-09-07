@@ -12,6 +12,8 @@
     <string name="title_analyse_item">按类型查看</string>
     <string name="title_analyse_month">按月份查看</string>
     <string name="title_modify_record">修改消费记录</string>
+    <string name="title_setting">设置</string>
+    <string name="title_theme_setting">主题设置</string>
     
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -45,6 +47,11 @@
     <string-array name="statistic_select_menu">
         <item>按类型统计</item>
         <item>按月份统计</item>
+    </string-array>
+    
+    <string-array name="setting_select_menu">
+        <item>关于信息</item>
+        <item>主题设置</item>
     </string-array>
 
 </resources>

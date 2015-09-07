@@ -74,7 +74,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 			index = 1;
 		} else if ("消费统计".equals(drawerName)) {
 			index = 2;
-		} else if ("关于信息".equals(drawerName)) {
+		} else if ("设置".equals(drawerName)) {
 			index = 3;
 		}
 		return index;
