@@ -15,6 +15,8 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
+import cn.hjf.gollumaccount.view.PullListView;
+import cn.hjf.gollumaccount.view.PullListView.OnRefreshListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +44,7 @@ public class MainActivity extends BaseActivity implements
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
     private static final int REQ_CODE_ADD_RECORD = 1; //请求新建消费记录请求码
     private static final int REQ_CODE_VIEW_RECORD = 2; //请求查看消费记录请求码
-    private static final int NUM_PER_PAGE = 7; // 每页查询的数量
+    private static final int NUM_PER_PAGE = 10; // 每页查询的数量
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
@@ -50,9 +52,10 @@ public class MainActivity extends BaseActivity implements
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAddButton; //记一笔按钮
     private Button mQueryButton; //查询按钮
-	private ListView mRecordListView; //消费记录显示ListView
+//	private ListView mRecordListView; //消费记录显示ListView
+    private PullListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
-	private View mFooterView; //底部加载视图
+//	private View mFooterView; //底部加载视图
 	private LinearLayout mFooterViewLayout; //底部加载视图布局
 	
 	private LoadingDialog mLoadingDialog; //加载对话框
@@ -125,18 +128,18 @@ public class MainActivity extends BaseActivity implements
         
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         
-        mRecordListView = (ListView) findViewById(R.id.ptflv_consume_list);
+        mRecordListView = (PullListView) findViewById(R.id.ptflv_consume_list);
         
         //绑定空视图
         mEmptyView = findViewById(R.id.ly_no_data);
         mRecordListView.setEmptyView(mEmptyView);
         
-        //绑定footerView，加载视图
-        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
-        mFooterViewLayout = new LinearLayout(this);
-        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        mRecordListView.addFooterView(mFooterViewLayout);
-        mFooterView.setVisibility(View.GONE);
+//        //绑定footerView，加载视图
+//        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
+//        mFooterViewLayout = new LinearLayout(this);
+//        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+//        mRecordListView.addFooterView(mFooterViewLayout);
+//        mFooterView.setVisibility(View.GONE);
         
     }
 
@@ -177,34 +180,49 @@ public class MainActivity extends BaseActivity implements
             }
         });
         
-        mRecordListView.setOnScrollListener(new OnScrollListener() {
+        mRecordListView.setOnRefreshListener(new OnRefreshListener() {
+            
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-             // 当不滚动时  
-                if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
-                    // 判断是否滚动到底部  
-                    if (view.getLastVisiblePosition() == view.getCount() - 1) {  
-                        //还在刷新中，直接返回
-                        if (mIsInRefresh) {
-                            return;
-                        }
-                        //没有更多数据，提示
-                        if (mIsNoMoreData) {
-                            Toast.makeText(MainActivity.this, "没有更多数据了", 0).show();
-                            return;
-                        }
-                        mFooterView.setVisibility(View.VISIBLE);
-                        mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
-                        loadData();
-                    }  
-                }
+            public void onPullUpRefresh() {
+                mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
+                loadData();
             }
             
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                    int visibleItemCount, int totalItemCount) {
+            public void onPullDownRefresh() {
+                // TODO Auto-generated method stub
+                
             }
         });
+        
+//        mRecordListView.setOnScrollListener(new OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//             // 当不滚动时  
+//                if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
+//                    // 判断是否滚动到底部  
+//                    if (view.getLastVisiblePosition() == view.getCount() - 1) {  
+//                        //还在刷新中，直接返回
+//                        if (mIsInRefresh) {
+//                            return;
+//                        }
+//                        //没有更多数据，提示
+//                        if (mIsNoMoreData) {
+//                            Toast.makeText(MainActivity.this, "没有更多数据了", 0).show();
+//                            return;
+//                        }
+//                        mFooterView.setVisibility(View.VISIBLE);
+//                        mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
+//                        loadData();
+//                    }  
+//                }
+//            }
+//            
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem,
+//                    int visibleItemCount, int totalItemCount) {
+//            }
+//        });
     }
 	
 	
@@ -300,7 +318,7 @@ public class MainActivity extends BaseActivity implements
         mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
             mIsNoMoreData = true;
-            mFooterView.setVisibility(View.GONE);
+//            mFooterView.setVisibility(View.GONE);
         }
         if (mIsQueryChanged) {
             mRecords.clear();
@@ -309,6 +327,7 @@ public class MainActivity extends BaseActivity implements
         mRecords.addAll(consumeRecords);
         mConsumeRecordAdapter.notifyDataSetChanged();
         mLoadingDialog.cancel();
+        mRecordListView.reset();
     }
 
     @Override
