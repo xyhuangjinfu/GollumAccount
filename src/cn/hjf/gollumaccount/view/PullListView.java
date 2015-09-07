@@ -86,9 +86,15 @@ public class PullListView extends RelativeLayout {
         mFooterView = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, null);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        mFooterView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        lp.bottomMargin = -mFooterView.getMeasuredHeight();
+//        mFooterView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+//        lp.bottomMargin = -mFooterView.getMeasuredHeight();
         mFooterView.setLayoutParams(lp);
+        
+        mFooterView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        RelativeLayout.LayoutParams lp1 = (LayoutParams) mFooterView.getLayoutParams();
+        lp1.bottomMargin = -mFooterView.getMeasuredHeight();
+        mFooterView.setLayoutParams(lp1);
+        
         addView(mFooterView);
     }
 
