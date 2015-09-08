@@ -52,7 +52,7 @@
     
     <string-array name="setting_select_menu">
         <item>关于信息</item>
-        <item>主题设置</item>
+<!--         <item>主题设置</item> -->
     </string-array>
 
 </resources>

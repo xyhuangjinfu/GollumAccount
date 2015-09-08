@@ -60,9 +60,10 @@ public class MainActivity extends BaseActivity implements
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
 	
-	private boolean mIsNoMoreData = false; //当前查询条件是否还有更多数据，true-没有更多数据
-	private boolean mIsInRefresh = false; //是否在刷新状态，true-还在刷新
-	private boolean mIsQueryChanged = false; //查询条件是否改变，true-查询条件被改变了
+//	private boolean mIsNoMoreData = false; //当前查询条件是否还有更多数据，true-没有更多数据
+//	private boolean mIsInRefresh = false; //是否在刷新状态，true-还在刷新
+//	private boolean mIsQueryChanged = false; //查询条件是否改变，true-查询条件被改变了
+	private boolean mNeedClearData = false; //是否需要清空已有的数据集合，true-需要
 	
 	private QueryInfo mQueryInfo; //查询信息
 	
@@ -222,7 +223,7 @@ public class MainActivity extends BaseActivity implements
 	 * 加载数据
 	 */
 	private void loadData() {
-	    mIsInRefresh = true;
+//	    mIsInRefresh = true;
 	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
 	}
 
@@ -247,8 +248,8 @@ public class MainActivity extends BaseActivity implements
      * 刷新查询状态
      */
     private void refreshQueryStatus() {
-        mIsQueryChanged = true;
-        mIsNoMoreData = false;
+//        mIsQueryChanged = true;
+//        mIsNoMoreData = false;
         mQueryInfo.setPageNumber(1);
     }
 
@@ -256,21 +257,34 @@ public class MainActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+            //更改查询条件，清空数据集，从第一页按已有的QueryInfo进行查询
             if (requestCode == REQ_CODE_QUERY_INFO) {
                 mQueryInfo = data.getParcelableExtra(QueryActivity.QUERY_INFO);
                 if (mQueryInfo != null) {
                     refreshQueryStatus();
 //                    mLoadingDialog.show();
+                    mNeedClearData = true;
                     mRecordListView.setPull(PullListView.PullMode.UP);
                     loadData();
                 }
+                return;
             }
+            //添加消费记录，清空数据集，从第一页按空的QueryInfo进行查询
             if (requestCode == REQ_CODE_ADD_RECORD || requestCode == REQ_CODE_VIEW_RECORD) {
-                mIsQueryChanged = true;
+//                mIsQueryChanged = true;
 //                mLoadingDialog.show();
+                mNeedClearData = true;
                 mRecordListView.setPull(PullListView.PullMode.UP);
+                //清空QueryInfo
+                mQueryInfo.setPageNumber(1);
+                mQueryInfo.setEndTime(null);
+                mQueryInfo.setStartTime(null);
+                mQueryInfo.setType(null);
+                mQueryInfo.setName(null);
                 loadData();
+                //计算本月金额总计
                 new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
+                return;
             }
         }
     }
@@ -311,15 +325,16 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
-        mIsInRefresh = false;
+//        mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
             Toast.makeText(this, "没有数据", 0).show();
-            mIsNoMoreData = true;
+//            mIsNoMoreData = true;
 //            mFooterView.setVisibility(View.GONE);
         }
-        if (mIsQueryChanged) {
+        if (mNeedClearData) {
             mRecords.clear();
-            mIsQueryChanged = false;
+            mNeedClearData = false;
+//            mIsQueryChanged = false;
         }
         mRecords.addAll(consumeRecords);
         mConsumeRecordAdapter.notifyDataSetChanged();
