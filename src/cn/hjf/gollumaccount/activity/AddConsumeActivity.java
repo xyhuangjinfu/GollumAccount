@@ -11,6 +11,7 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
+import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -221,23 +222,23 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
         boolean result = false;
         if (mConsumeNameEditText.getText().toString() == null
                 || mConsumeNameEditText.getText().toString().equals("")) {
-            Toast.makeText(this, "消费名称为空", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "消费名称为空", Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumePriceEditText.getText().toString() == null
                 || mConsumePriceEditText.getText().toString().equals("")) {
-            Toast.makeText(this, "消费金额为空", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "消费金额为空", Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeDateTextView.getText().toString() == null
                 || mConsumeDateTextView.getText().toString().equals("")) {
-            Toast.makeText(this, "请选择消费日期", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "请选择消费日期", Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeTimeTextView.getText().toString() == null
                 || mConsumeTimeTextView.getText().toString().equals("")) {
-            Toast.makeText(this, "请选择消费时间", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "请选择消费时间", Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeTypeTextView.getText().toString() == null
                 || mConsumeTypeTextView.getText().toString().equals("")) {
-            Toast.makeText(this, "请选择消费类型", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "请选择消费类型", Toast.LENGTH_SHORT);
             return result;
         } else {
             result = true;
@@ -276,7 +277,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
             AddConsumeActivity.this.setResult(Activity.RESULT_OK);
             AddConsumeActivity.this.finish();
         } else {
-            Toast.makeText(this, "新建消费记录失败！", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "新建消费记录失败！", Toast.LENGTH_SHORT);
         }
     }
 

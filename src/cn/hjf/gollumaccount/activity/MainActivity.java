@@ -17,6 +17,7 @@ import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import cn.hjf.gollumaccount.view.PullListView;
 import cn.hjf.gollumaccount.view.PullListView.OnRefreshListener;
+import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -201,7 +202,7 @@ public class MainActivity extends BaseActivity implements
 //                        }
 //                        //没有更多数据，提示
 //                        if (mIsNoMoreData) {
-//                            Toast.makeText(MainActivity.this, "没有更多数据了", 0).show();
+//                            ToastUtil.showToast(MainActivity.this, "没有更多数据了", 0);
 //                            return;
 //                        }
 //                        mFooterView.setVisibility(View.VISIBLE);
@@ -313,7 +314,7 @@ public class MainActivity extends BaseActivity implements
             return;
         } else {
             mLastBackTime = System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(), "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(getApplicationContext(), "再按一次返回键退出", Toast.LENGTH_SHORT);
             return;
         }
     }
@@ -327,7 +328,7 @@ public class MainActivity extends BaseActivity implements
     public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
 //        mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
-            Toast.makeText(this, "没有数据", 0).show();
+            ToastUtil.showToast(this, "没有数据", 0);
 //            mIsNoMoreData = true;
 //            mFooterView.setVisibility(View.GONE);
         }

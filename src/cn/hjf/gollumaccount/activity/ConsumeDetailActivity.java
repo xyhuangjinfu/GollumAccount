@@ -11,6 +11,7 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
+import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -237,11 +238,11 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         boolean result = false;
         if (mConsumeNameEditText.getText().toString().equals("")
                 || mConsumeNameEditText.getText().toString() == null) {
-            Toast.makeText(this, "消费名称为空", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "消费名称为空", Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumePriceEditText.getText().toString().equals("")
                 || mConsumePriceEditText.getText().toString() == null) {
-            Toast.makeText(this, "消费金额为空", Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(this, "消费金额为空", Toast.LENGTH_SHORT);
             return result;
         } else {
             result = true;

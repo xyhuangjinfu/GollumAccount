@@ -27,6 +27,8 @@
     <string name="consume_empty">您本月没有消费记录\n点击“新建”按钮来添加消费记录</string>
     <string name="analyse_empty">没有统计</string>
     <string name="info_about">关于信息</string>
+    
+    <string name="toast_common_unknown_error">未知错误</string>
 
     <string name="title_main">首页</string>
     <string name="title_back">返回</string>

@@ -9,6 +9,7 @@ import cn.hjf.gollumaccount.adapter.SettingSelectMenuAdapter;
 import cn.hjf.gollumaccount.adapter.StatisticSelectMenuAdapter;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -94,8 +95,7 @@ public class SettingActivity extends BaseActivity implements CommonHeaderFragmen
                 case 1:
 //                    Intent intent1 = new Intent(SettingActivity.this, ThemeSettingActivity.class);
 //                    SettingActivity.this.startActivity(intent1);
-                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0)
-                    .show();
+                    ToastUtil.showToast(getApplicationContext(), "暂时还不支持此功能", 0);
                     break;
                 default:
                     break;

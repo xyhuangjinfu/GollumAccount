@@ -12,6 +12,7 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.view.LoadingDialog;
+import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -108,11 +109,11 @@ public class TypeSelectActivity extends BaseActivity implements
             public void onClick(DialogInterface dialog, int which) {  
                 String input = et.getText().toString();  
                 if (input.equals("")) {  
-                    Toast.makeText(getApplicationContext(), "类型不能为空！", Toast.LENGTH_LONG).show();
+                    ToastUtil.showToast(getApplicationContext(), "类型不能为空！", Toast.LENGTH_LONG);
                     return;
                 }
                 if (input.length() > 4) {
-                    Toast.makeText(getApplicationContext(), "类型长度太长！", Toast.LENGTH_LONG).show();
+                    ToastUtil.showToast(getApplicationContext(), "类型长度太长！", Toast.LENGTH_LONG);
                     return;
                 }
                 else {
@@ -138,8 +139,7 @@ public class TypeSelectActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
-//                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0)
-//                            .show();
+//                    ToastUtil.showToast(getApplicationContext(), "暂时还不支持此功能", 0);
                     mCreateTypeDialog.show();
                 } else {
                     Intent intent = new Intent();
@@ -181,11 +181,11 @@ public class TypeSelectActivity extends BaseActivity implements
     public void OnCreateConsumeTypeCompleted(boolean isCreateSucess) {
         mLoadingDialog.cancel();
         if (isCreateSucess) {
-            Toast.makeText(getApplicationContext(), "类型添加成功！", Toast.LENGTH_LONG).show();
+            ToastUtil.showToast(getApplicationContext(), "类型添加成功！", Toast.LENGTH_LONG);
             mLoadingDialog.show();
             new LoadConsumeTypeTask(TypeSelectActivity.this, TypeSelectActivity.this).execute(); 
         } else {
-            Toast.makeText(getApplicationContext(), "类型添加失败！", Toast.LENGTH_LONG).show();
+            ToastUtil.showToast(getApplicationContext(), "类型添加失败！", Toast.LENGTH_LONG);
         }
     }
 
