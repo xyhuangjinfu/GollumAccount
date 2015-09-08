@@ -37,7 +37,7 @@ public class ConsumeTypeManagerBusiness {
             for (int i = 0; i < types.length; i++) {
                 consumeTypes.add(new ConsumeType(types[i], ConsumeType.Type.INSIDE));
             }
-            consumeTypes.add(new ConsumeType("添加类型", ConsumeType.Type.CONTROL));
+//            consumeTypes.add(new ConsumeType("添加类型", ConsumeType.Type.CONTROL));
             mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
         }
     }

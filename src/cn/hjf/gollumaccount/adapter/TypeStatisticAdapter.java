@@ -82,8 +82,11 @@ public class TypeStatisticAdapter extends BaseAdapter {
         case 8:
             holder.typeIcon.setImageResource(R.drawable.ic_study_white);
             break;
+        case 9:
+            holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
+            break;
         default:
-            holder.typeIcon.setImageResource(R.drawable.ic_custom_type_white);
+            holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
             break;
         }
         holder.ratio.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum()) + "%" );

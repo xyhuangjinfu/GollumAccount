@@ -99,8 +99,11 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		case 8:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_study);
 			break;
+	    case 9:
+	            viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
+	            break;
 		default:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_custom_type);
+			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
 			break;
 		}
 	}

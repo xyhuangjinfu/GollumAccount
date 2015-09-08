@@ -85,6 +85,9 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         if ("学习".equals(mTypes.get(position).getName())) {
             holder.icon.setImageResource(R.drawable.ic_study);
         }
+        if ("其他".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_other_type);
+        }
         holder.name.setText(mTypes.get(position).getName());
         return convertView;
     }
