@@ -27,52 +27,63 @@ public class PullListView extends RelativeLayout {
     
     private static final String TAG = "PullListView";
     
-    private ListView mListView;
+    private ListView mListView; //内部包含的真实ListView
     private View mFooterView; //底部加载视图
     private View mHeaderView; //顶部加载视图
-    private LinearLayout mFooterViewLayout; //底部加载视图布局
-    private Scroller mScroller;
-    private GestureDetector mGestureDetector;
-//    private ScrollStatus mStatus = ScrollStatus.SCROLL; 
+    private Scroller mScroller; //滚动控制器
+    private GestureDetector mGestureDetector; //手势监听器
     
-//    private RefreshMode mRefreshMode;
+    private float mLastMotionY = 0; //上一个触摸事件的Y位置
     
-    private float mLastMotionY = 0;
+    private OnRefreshListener mOnRefreshListener; //刷新事件监听器
     
-    private OnRefreshListener mOnRefreshListener;
+    /**
+     * 内部ListView当前的状态
+     */
+    private static final int ALIGN_TO_TOP = 0x00000001; //滑动到最顶部
+    private static final int ALIGN_TO_TOP_MASK = 0x00000001; //判断是否在最顶部的Mask
+    private static final int ALIGN_TO_BOTTOM = 0x00000002; //滑动到最底部
+    private static final int ALIGN_TO_BOTTOM_MASK = 0x00000002; //判断是否在最底部的Mask
+    private static final int ALIGN_TO_CENTER = 0x00000004; //滑动到中间位置(既不时最顶部，也不是最底部)
+    private static final int ALIGN_TO_CENTER_MASK = 0x00000004; //判断是否在中间的Mask
+    private int mListViewStatusFlag = 0; //内部ListView当前的状态
     
-    private static final int ALIGN_TO_TOP = 0x00000001;
-    private static final int ALIGN_TO_TOP_MASK = 0x00000001;
-    private static final int ALIGN_TO_BOTTOM = 0x00000002;
-    private static final int ALIGN_TO_BOTTOM_MASK = 0x00000002;
-    private static final int ALIGN_TO_CENTER = 0x00000004;
-    private static final int ALIGN_TO_CENTER_MASK = 0x00000004;
-    private int mListViewStatusFlag = 0;
+    /**
+     * 当前ListView可以Pull的模式
+     */
+    private static final int PULL_DOWN = 0x00000001; //下拉模式
+    private static final int PULL_DOWN_MASK = 0x00000001; //判断是否可以下拉的Mask
+    private static final int PULL_UP = 0x00000002; //上拉模式
+    private static final int PULL_UP_MASK = 0x00000002; //判断是否可以上拉的Mask
+    private static final int PULL_BOTH = 0x00000003; //上下拉模式(上拉下拉都可以)
+    private static final int PULL_BOTH_MASK = 0x00000003; //判断是否可以上下拉的Mask
+    private static final int PULL_NONE = -1; //不可上拉下拉模式
+    private int mPullModeFlag = 0; //当前ListView可以Pull的模式
     
-    private static final int PULL_DOWN = 0x00000001;
-    private static final int PULL_DOWN_MASK = 0x00000001;
-    private static final int PULL_UP = 0x00000002;
-    private static final int PULL_UP_MASK = 0x00000002;
-    private static final int PULL_BOTH = 0x00000003;
-    private static final int PULL_BOTH_MASK = 0x00000003;
-    private int mPullModeFlag = 0;
-    
+    /**
+     * 当前刷新的状态，上拉还是下拉
+     * {@link RefreshStatus}
+     */
     private RefreshStatus mRefreshStatus;
     
-//    private enum ScrollStatus {
-//        REFRESH_DOWN, //下拉刷新
-//        REFRESH_UP, //上拉刷新
-//        SCROLL //ListView滚动
-//    }
-    
+    /**
+     * 触发上下拉成功后，当前的pull模式
+     * @author xfujohn
+     *
+     */
     private enum RefreshStatus {
         UP, //上拉刷新
         DOWN //下拉刷新
     }
     
+    /**
+     * 刷新事件监听器
+     * @author huangjinfu
+     *
+     */
     public interface OnRefreshListener {
-        public abstract void onPullUpRefresh();
-        public abstract void onPullDownRefresh();
+        public abstract void onPullUpRefresh(); //上拉
+        public abstract void onPullDownRefresh(); //下拉
     }
 
     public PullListView(Context context, AttributeSet attrs, int defStyle) {
@@ -90,7 +101,7 @@ public class PullListView extends RelativeLayout {
         
 //        mRefreshMode = RefreshMode.UP;
         
-        mPullModeFlag = PULL_UP;
+        mPullModeFlag = PULL_BOTH;
         
 //        this.setBackgroundResource(R.color.transparent);
 //        this.setOrientation(LinearLayout.VERTICAL);
