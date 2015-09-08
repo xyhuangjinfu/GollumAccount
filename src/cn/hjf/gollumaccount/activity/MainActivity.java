@@ -229,12 +229,10 @@ public class MainActivity extends BaseActivity implements
 	public void onNavigationDrawerItemSelected(int position) {
 		switch (position) {
 		case 0:
-			break;
-		case 1:
 			Intent intentStatisticSelect = new Intent(this, StatisticSelectActivity.class);
 			this.startActivity(intentStatisticSelect);
 			break;
-		case 2:
+		case 1:
             Intent intentAbout = new Intent(this, SettingActivity.class);
             this.startActivity(intentAbout);
             break;

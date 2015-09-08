@@ -3,7 +3,7 @@ package cn.hjf.gollumaccount.fragment;
 import java.util.ArrayList;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.adapter.NavigationDrawerAdapter;
+import cn.hjf.gollumaccount.adapter.SideMenuAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -46,7 +46,7 @@ public class SideMenuFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     
-    private NavigationDrawerAdapter mDrawerAdapter;
+    private SideMenuAdapter mDrawerAdapter;
     
     private ArrayList<String> mDrawers = new ArrayList<String>();
     		 
@@ -74,11 +74,11 @@ public class SideMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	mDrawers.add(getString(R.string.title_consume));
+//    	mDrawers.add(getString(R.string.title_consume));
 //    	mDrawers.add(getString(R.string.title_item_manager));
     	mDrawers.add(getString(R.string.title_analyse));
     	mDrawers.add(getString(R.string.title_setting));
-    	mDrawerAdapter = new NavigationDrawerAdapter(this.getActivity(), mDrawers);
+    	mDrawerAdapter = new SideMenuAdapter(this.getActivity(), mDrawers);
     	View view = inflater.inflate(R.layout.fragment_side_menu, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.lv_menu);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

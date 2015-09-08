@@ -12,12 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class NavigationDrawerAdapter extends BaseAdapter {
+public class SideMenuAdapter extends BaseAdapter {
 	
 	private ArrayList<String> mDrawerList;
 	private Context mContext;
 	
-	public NavigationDrawerAdapter(Context context, ArrayList<String> drawerList) {
+	public SideMenuAdapter(Context context, ArrayList<String> drawerList) {
 		this.mContext = context;
 		this.mDrawerList = drawerList;
 	}
