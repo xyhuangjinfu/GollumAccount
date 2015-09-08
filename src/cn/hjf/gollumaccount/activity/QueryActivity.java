@@ -7,8 +7,10 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.businessmodel.QueryInfo;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -131,12 +133,13 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                     mQueryInfo.setStartTime(Calendar.getInstance());
                 }
                 mDatePickerDialog = new DatePickerDialog(QueryActivity.this,
+                        AlertDialog.THEME_HOLO_LIGHT,
                         new OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                     int monthOfYear, int dayOfMonth) {
                                 mStartTime.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                                 mQueryInfo.getStartTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getStartTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getStartTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -154,12 +157,13 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                     mQueryInfo.setEndTime(Calendar.getInstance());
                 }
                 mDatePickerDialog = new DatePickerDialog(QueryActivity.this,
+                        AlertDialog.THEME_HOLO_LIGHT,
                         new OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                     int monthOfYear, int dayOfMonth) {
                                 mEndTime.setText(year + "-"
-                                        + (monthOfYear + 1) + "-" + dayOfMonth);
+                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                                 mQueryInfo.getEndTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getEndTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getEndTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);

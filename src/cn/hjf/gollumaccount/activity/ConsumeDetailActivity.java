@@ -8,9 +8,11 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -144,14 +146,16 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         public void onClick(View v) {
             Calendar calendar = Calendar.getInstance();
             mDatePickerDialog = new DatePickerDialog(
-                    ConsumeDetailActivity.this, new OnDateSetListener() {
+                    ConsumeDetailActivity.this, 
+                    AlertDialog.THEME_HOLO_LIGHT,
+                    new OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                 int monthOfYear, int dayOfMonth) {
                             mConsumeRecord.getConsumeTime().set(Calendar.YEAR, year);
                             mConsumeRecord.getConsumeTime().set(Calendar.MONTH, monthOfYear);
                             mConsumeRecord.getConsumeTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                            mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            mConsumeDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                         }
                     }, calendar.get(Calendar.YEAR), calendar
                             .get(Calendar.MONTH), calendar
@@ -165,13 +169,15 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         public void onClick(View v) {
             Calendar calendar = Calendar.getInstance();
             mTimePickerDialog = new TimePickerDialog(
-                    ConsumeDetailActivity.this, new OnTimeSetListener() {
+                    ConsumeDetailActivity.this, 
+                    AlertDialog.THEME_HOLO_LIGHT,
+                    new OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view,
                                 int hourOfDay, int minute) {
                             mConsumeRecord.getConsumeTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
                             mConsumeRecord.getConsumeTime().set(Calendar.MINUTE, minute);
-                            mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
+                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + ":" + NumberUtil.formatTwoInt(minute) + ":" + "00");
                         }
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar
                             .get(Calendar.MINUTE), false);

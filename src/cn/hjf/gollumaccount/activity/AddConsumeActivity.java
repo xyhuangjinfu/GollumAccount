@@ -9,8 +9,10 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
@@ -155,6 +157,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
         @Override
         public void onClick(View v) {
             mDatePickerDialog = new DatePickerDialog(AddConsumeActivity.this,
+                    AlertDialog.THEME_HOLO_LIGHT,
                     new OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year,
@@ -162,7 +165,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
                             mConsumeCalendar.set(Calendar.YEAR, year);
                             mConsumeCalendar.set(Calendar.MONTH, monthOfYear);
                             mConsumeCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                            mConsumeDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                            mConsumeDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                         }
                     }, mConsumeCalendar.get(Calendar.YEAR),
                     mConsumeCalendar.get(Calendar.MONTH),
@@ -175,13 +178,14 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
         @Override
         public void onClick(View v) {
             mTimePickerDialog = new TimePickerDialog(AddConsumeActivity.this,
+                    AlertDialog.THEME_HOLO_LIGHT,
                     new OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                 int minute) {
                             mConsumeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             mConsumeCalendar.set(Calendar.MINUTE, minute);
-                            mConsumeTimeTextView.setText(hourOfDay + ":" + minute + ":" + "00");
+                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + ":" + NumberUtil.formatTwoInt(minute) + ":" + "00");
                         }
                     }, mConsumeCalendar.get(Calendar.HOUR_OF_DAY),
                     mConsumeCalendar.get(Calendar.MINUTE), false);

@@ -14,6 +14,7 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import cn.hjf.gollumaccount.view.LoadingDialog;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
@@ -113,6 +114,7 @@ public class TypeStatisticActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mStartDatePickerDialog = new DatePickerDialog(TypeStatisticActivity.this,
+                        AlertDialog.THEME_HOLO_LIGHT,
                         new OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
@@ -120,7 +122,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                                 mStartDate.set(Calendar.YEAR, year);
                                 mStartDate.set(Calendar.MONTH, monthOfYear);
                                 mStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                mStartDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                mStartDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                                 mLoadingDialog.show();
                                 new TypeStatisticTask(TypeStatisticActivity.this, TypeStatisticActivity.this).execute(mStartDate, mEndDate);
                             }
@@ -134,6 +136,7 @@ public class TypeStatisticActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mEndDatePickerDialog = new DatePickerDialog(TypeStatisticActivity.this,
+                        AlertDialog.THEME_HOLO_LIGHT,
                         new OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
@@ -141,7 +144,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                                 mEndDate.set(Calendar.YEAR, year);
                                 mEndDate.set(Calendar.MONTH, monthOfYear);
                                 mEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                mEndDateTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                mEndDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
                                 mLoadingDialog.show();
                                 new TypeStatisticTask(TypeStatisticActivity.this, TypeStatisticActivity.this).execute(mStartDate, mEndDate);
                             }
