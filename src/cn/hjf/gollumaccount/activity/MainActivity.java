@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity implements
     private PullListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
 	
-	private LoadingDialog mLoadingDialog; //加载对话框
+//	private LoadingDialog mLoadingDialog; //加载对话框
 	
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
@@ -93,7 +93,8 @@ public class MainActivity extends BaseActivity implements
 		initValue();
 		initEvent();
 		
-		mLoadingDialog.show();
+//		mLoadingDialog.show();
+		mRecordListView.setPull(PullListView.PullMode.UP);
 		loadData();
 		new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
 	}
@@ -123,14 +124,14 @@ public class MainActivity extends BaseActivity implements
         mAddButton = (Button) findViewById(R.id.btn_add);
         mQueryButton = (Button) findViewById(R.id.btn_query);
         
-        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+//        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         
         mRecordListView = (PullListView) findViewById(R.id.ptflv_consume_list);
         mRecordListView.setPullMode(PullListView.PULL_UP);
         
         //绑定空视图
-        mEmptyView = findViewById(R.id.ly_no_data);
-        mRecordListView.setEmptyView(mEmptyView);
+//        mEmptyView = findViewById(R.id.ly_no_data);
+//        mRecordListView.setEmptyView(mEmptyView);
         
     }
 
@@ -259,13 +260,15 @@ public class MainActivity extends BaseActivity implements
                 mQueryInfo = data.getParcelableExtra(QueryActivity.QUERY_INFO);
                 if (mQueryInfo != null) {
                     refreshQueryStatus();
-                    mLoadingDialog.show();
+//                    mLoadingDialog.show();
+                    mRecordListView.setPull(PullListView.PullMode.UP);
                     loadData();
                 }
             }
             if (requestCode == REQ_CODE_ADD_RECORD || requestCode == REQ_CODE_VIEW_RECORD) {
                 mIsQueryChanged = true;
-                mLoadingDialog.show();
+//                mLoadingDialog.show();
+                mRecordListView.setPull(PullListView.PullMode.UP);
                 loadData();
                 new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
             }
@@ -310,6 +313,7 @@ public class MainActivity extends BaseActivity implements
     public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
         mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
+            Toast.makeText(this, "没有数据", 0).show();
             mIsNoMoreData = true;
 //            mFooterView.setVisibility(View.GONE);
         }
@@ -319,7 +323,7 @@ public class MainActivity extends BaseActivity implements
         }
         mRecords.addAll(consumeRecords);
         mConsumeRecordAdapter.notifyDataSetChanged();
-        mLoadingDialog.cancel();
+//        mLoadingDialog.cancel();
         mRecordListView.reset();
     }
 

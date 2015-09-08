@@ -73,7 +73,7 @@ public class PullListView extends RelativeLayout {
      * @author xfujohn
      *
      */
-    private enum PullMode {
+    public enum PullMode {
         UP, //上拉刷新
         DOWN //下拉刷新
     }
@@ -303,6 +303,12 @@ public class PullListView extends RelativeLayout {
      */
     private void computeStatus() {
         mListViewStatusFlag = 0;
+        //当前ListView没有数据
+        if (mListView.getAdapter() == null || mListView.getAdapter().getCount() == 0) {
+            mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_TOP | ALIGN_TO_BOTTOM;
+            return;
+        }
+        Log.i("O_O", mListView.getAdapter().getCount() + "");
         //第一个可见View的位置为0，并且第一个可见View的顶部也为0，可以判断状态为 ALIGN_TO_TOP
         if (mListView.getFirstVisiblePosition() == 0 && mListView.getChildAt(0).getTop() == 0) {
             mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_TOP;
@@ -372,6 +378,19 @@ public class PullListView extends RelativeLayout {
      */
     public void setPullMode(int pullMode) {
         this.mPullModeFlag = pullMode;
+    }
+    
+    /**
+     * 设置当前状态为Pull状态
+     * @param pullMode
+     */
+    public void setPull(PullMode pullMode) {
+        this.mPullMode = pullMode;
+        if (mPullMode == PullMode.UP) {
+            smoothScrollTo(0, mFooterView.getMeasuredHeight());
+        } else if (mPullMode == PullMode.DOWN) {
+            smoothScrollTo(0, -mHeaderView.getMeasuredHeight());
+        }
     }
 
     /**

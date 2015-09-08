@@ -74,6 +74,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/ll_operate"
             android:layout_below="@id/ll_current_month"
+            android:visibility="gone"
             />
 
         <!-- 操作 -->
