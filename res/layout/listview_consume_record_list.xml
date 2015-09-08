@@ -63,6 +63,6 @@
             android:padding="15dp"
             android:singleLine="true"
             android:text="238.50"
-            android:textSize="@dimen/textsize_price" />
+            android:textSize="@dimen/textsize_price_small" />
 
 </RelativeLayout>

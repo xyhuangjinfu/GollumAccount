@@ -12,6 +12,7 @@
     
     <dimen name="textsize_indicator">18sp</dimen>
     <dimen name="textsize_content">14sp</dimen>
-    <dimen name="textsize_price">18sp</dimen>
+    <dimen name="textsize_price_small">18sp</dimen>
+    <dimen name="textsize_price_big">25sp</dimen>
 
 </resources>

@@ -60,7 +60,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:textSize="@dimen/textsize_price"
+        android:textSize="@dimen/textsize_price_small"
         android:padding="15dp"
         android:textColor="@color/theme"
         android:text="258.95" />
