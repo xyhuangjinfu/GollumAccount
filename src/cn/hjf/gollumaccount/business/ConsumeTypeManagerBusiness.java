@@ -46,8 +46,8 @@ public class ConsumeTypeManagerBusiness {
      * 添加消费类型
      * @param type
      */
-    public void addType(ConsumeType type) {
-        mConsumeTypeDao.insert(getDaoModel(type));
+    public boolean addType(ConsumeType type) {
+        return mConsumeTypeDao.insert(getDaoModel(type));
     }
     
     /**

@@ -7,15 +7,20 @@ import java.util.List;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeTypeAdapter;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeTypeTask;
+import cn.hjf.gollumaccount.asynctask.CreateConsumeTypeTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -27,13 +32,15 @@ import android.widget.GridView;
  * 
  */
 public class TypeSelectActivity extends BaseActivity implements
-        CommonHeaderFragment.ICallback, LoadConsumeTypeTask.OnLoadConsumeTypeListener {
+        CommonHeaderFragment.ICallback, LoadConsumeTypeTask.OnLoadConsumeTypeListener, CreateConsumeTypeTask.OnCreateConsumeTypeListener {
     
     public static final String PAGE_TYPE = "page_type";
     public static final String CONSUME_TYPE = "consume_type";
 
     private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     private LoadingDialog mLoadingDialog; // 加载对话框
+    
+    private AlertDialog mCreateTypeDialog; //添加消费类型对话框
 
     private GridView mTypeView; // 消费类型列表
     private ConsumeTypeAdapter mAdapter; // 消费类型显示适配器
@@ -90,6 +97,32 @@ public class TypeSelectActivity extends BaseActivity implements
 
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
+        
+        final EditText et = new EditText(this);
+        et.setHint("最多4个字");
+        mCreateTypeDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
+        .setTitle("添加类型")
+        .setIcon(android.R.drawable.ic_dialog_info) 
+        .setView(et)  
+        .setPositiveButton("添加", new OnClickListener() {  
+            public void onClick(DialogInterface dialog, int which) {  
+                String input = et.getText().toString();  
+                if (input.equals("")) {  
+                    Toast.makeText(getApplicationContext(), "类型不能为空！", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (input.length() > 4) {
+                    Toast.makeText(getApplicationContext(), "类型长度太长！", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    ConsumeType type = new ConsumeType(input, ConsumeType.Type.CUSTOME);
+                    mLoadingDialog.show();
+                    new CreateConsumeTypeTask(TypeSelectActivity.this, TypeSelectActivity.this).execute(type); 
+                }  
+            }  
+        })  
+        .setNegativeButton("取消", null).create();
     }
 
     @Override
@@ -105,8 +138,9 @@ public class TypeSelectActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
-                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0)
-                            .show();
+//                    Toast.makeText(getApplicationContext(), "暂时还不支持此功能", 0)
+//                            .show();
+                    mCreateTypeDialog.show();
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra(CONSUME_TYPE, mTypeData.get(position));
@@ -129,6 +163,7 @@ public class TypeSelectActivity extends BaseActivity implements
 
     @Override
     public void OnLoadConsumeTypeCompleted(List<ConsumeType> consumeTypes) {
+        mTypeData.clear();
         mTypeData.addAll(consumeTypes);
         if (mPageType == PageType.STATISTIC) {
             ConsumeType allType = new ConsumeType();
@@ -140,6 +175,18 @@ public class TypeSelectActivity extends BaseActivity implements
         Collections.sort(mTypeData);
         mAdapter.notifyDataSetChanged();
         mLoadingDialog.cancel();
+    }
+
+    @Override
+    public void OnCreateConsumeTypeCompleted(boolean isCreateSucess) {
+        mLoadingDialog.cancel();
+        if (isCreateSucess) {
+            Toast.makeText(getApplicationContext(), "类型添加成功！", Toast.LENGTH_LONG).show();
+            mLoadingDialog.show();
+            new LoadConsumeTypeTask(TypeSelectActivity.this, TypeSelectActivity.this).execute(); 
+        } else {
+            Toast.makeText(getApplicationContext(), "类型添加失败！", Toast.LENGTH_LONG).show();
+        }
     }
 
 }
