@@ -30,11 +30,4 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>xUtils</name>
-			<type>2</type>
-			<location>F:/MyWorkspace/GollumAccountGit/GollumAccount/librarys/xUtils</location>
-		</link>
-	</linkedResources>
 </projectDescription>
