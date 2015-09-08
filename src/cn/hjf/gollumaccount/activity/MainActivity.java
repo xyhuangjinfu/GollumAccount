@@ -190,8 +190,8 @@ public class MainActivity extends BaseActivity implements
             
             @Override
             public void onPullDownRefresh() {
-                // TODO Auto-generated method stub
-                
+//                mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
+//                loadData();
             }
         });
         
