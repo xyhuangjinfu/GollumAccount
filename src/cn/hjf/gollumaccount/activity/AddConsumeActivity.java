@@ -4,11 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
-import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
+import cn.hjf.gollumaccount.asynctask.CreateConsumeRecordTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
+import cn.hjf.gollumaccount.view.LoadingDialog;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -16,7 +17,6 @@ import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,11 +33,13 @@ import android.widget.Toast;
  * @author huangjinfu
  * 
  */
-public class AddConsumeActivity extends BaseActivity implements CommonHeaderFragment.ICallback{
+public class AddConsumeActivity extends BaseActivity implements CommonHeaderFragment.ICallback,
+CreateConsumeRecordTask.OnCreateConsumeRecordListener {
 
     private static final int REQ_CODE_SELECT_TYPE = 0;
 
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
+    private LoadingDialog mLoadingDialog; //加载对话框
 
     private EditText mConsumeNameEditText; // 消费名称
     private EditText mConsumePriceEditText; // 消费金额
@@ -55,11 +57,9 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
 
     private ConsumeType mConsumeType; // 消费类型
     private ConsumeRecord mConsumeRecord; //消费记录
-    private ConsumeRecordManagerBusiness mConsumeRecordManagerBusiness; //消费记录管理业务逻辑
     private Calendar mConsumeCalendar; //消费时间
     
     public AddConsumeActivity() {
-        mConsumeRecordManagerBusiness = new ConsumeRecordManagerBusiness(this);
         mConsumeRecord = new ConsumeRecord();
         mConsumeCalendar = Calendar.getInstance();
     }
@@ -79,7 +79,6 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mConsumeRecordManagerBusiness = null;
         mConsumeRecord = null;
         mConsumeCalendar = null;
     }
@@ -111,6 +110,9 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
         mConsumeTimeTextView = (TextView) findViewById(R.id.et_record_time);
         mConsumerEditText = (EditText) findViewById(R.id.et_consumer);
         mPayerEditText = (EditText) findViewById(R.id.et_payer);
+        
+        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+        mLoadingDialog.setCancelable(false);
     }
 
     /**
@@ -129,11 +131,9 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
             @Override
             public void onClick(View v) {
                 if (validateInput()) {
-                    mCreateButton.setEnabled(false);
                     buildConsumeRecord();
-                    mConsumeRecordManagerBusiness.addRecord(mConsumeRecord);
-                    AddConsumeActivity.this.setResult(Activity.RESULT_OK);
-                    AddConsumeActivity.this.finish();
+                    mLoadingDialog.show();
+                    new CreateConsumeRecordTask(AddConsumeActivity.this, AddConsumeActivity.this).execute(mConsumeRecord);
                 }
             }
         });
@@ -263,6 +263,17 @@ public class AddConsumeActivity extends BaseActivity implements CommonHeaderFrag
 
     @Override
     public void onRightClick() {
+    }
+
+    @Override
+    public void OnCreateConsumeRecordCompleted(boolean isCreateSuccess) {
+        mLoadingDialog.cancel();
+        if (isCreateSuccess) {
+            AddConsumeActivity.this.setResult(Activity.RESULT_OK);
+            AddConsumeActivity.this.finish();
+        } else {
+            Toast.makeText(this, "新建消费记录失败！", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

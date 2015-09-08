@@ -58,8 +58,8 @@ public class ConsumeRecordManagerBusiness {
      * 添加新的消费记录
      * @param record
      */
-    public void addRecord(ConsumeRecord record) {
-        mConsumeRecordDao.insert(mDaoModelTransfer.getConsumeRecordModel(record));
+    public boolean addRecord(ConsumeRecord record) {
+        return mConsumeRecordDao.insert(mDaoModelTransfer.getConsumeRecordModel(record));
     }
     
     /**
