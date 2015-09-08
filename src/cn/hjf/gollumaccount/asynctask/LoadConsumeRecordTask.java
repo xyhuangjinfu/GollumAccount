@@ -33,6 +33,12 @@ public class LoadConsumeRecordTask extends
 
 	@Override
 	protected List<ConsumeRecord> doInBackground(QueryInfo... params) {
+//	    try {
+//            Thread.sleep(0);
+//        } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 	    return mConsumeRecordManagerBusines.queryRecords(params[0]);
 	}
 

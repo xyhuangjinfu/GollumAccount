@@ -4,19 +4,18 @@ import cn.hjf.gollumaccount.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
+import android.view.View.MeasureSpec;
+import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * 自定义下拉刷新ListView
@@ -38,7 +37,10 @@ public class PullListView extends RelativeLayout {
     private OnRefreshListener mOnRefreshListener; //刷新事件监听器
     
     /**
-     * 内部ListView当前的状态
+     * 内部ListView当前的状态，判断当前动作是滑动ListView还是Pull时使用。
+     * 如果当前状态为 ALIGN_TO_TOP ，除法下滑的事件，如果 {@link #mPullModeFlag} 允许下拉，
+     * 就会进行下拉，而不是继续滑动ListView，（此时应该是 overScroll 状态）
+     * 参考：{@link #computeStatus()}
      */
     private static final int ALIGN_TO_TOP = 0x00000001; //滑动到最顶部
     private static final int ALIGN_TO_TOP_MASK = 0x00000001; //判断是否在最顶部的Mask
@@ -51,39 +53,45 @@ public class PullListView extends RelativeLayout {
     /**
      * 当前ListView可以Pull的模式
      */
-    private static final int PULL_DOWN = 0x00000001; //下拉模式
+    public static final int PULL_DOWN = 0x00000001; //下拉模式
     private static final int PULL_DOWN_MASK = 0x00000001; //判断是否可以下拉的Mask
-    private static final int PULL_UP = 0x00000002; //上拉模式
+    public static final int PULL_UP = 0x00000002; //上拉模式
     private static final int PULL_UP_MASK = 0x00000002; //判断是否可以上拉的Mask
-    private static final int PULL_BOTH = 0x00000003; //上下拉模式(上拉下拉都可以)
+    public static final int PULL_BOTH = 0x00000003; //上下拉模式(上拉下拉都可以)
     private static final int PULL_BOTH_MASK = 0x00000003; //判断是否可以上下拉的Mask
-    private static final int PULL_NONE = -1; //不可上拉下拉模式
+    public static final int PULL_NONE = 0x00000004; //不可上拉下拉模式
     private int mPullModeFlag = 0; //当前ListView可以Pull的模式
-    
+
     /**
      * 当前刷新的状态，上拉还是下拉
-     * {@link RefreshStatus}
+     * {@link PullMode}
      */
-    private RefreshStatus mRefreshStatus;
+    private PullMode mPullMode;
     
     /**
      * 触发上下拉成功后，当前的pull模式
      * @author xfujohn
      *
      */
-    private enum RefreshStatus {
+    private enum PullMode {
         UP, //上拉刷新
         DOWN //下拉刷新
     }
     
     /**
-     * 刷新事件监听器
+     * Pull事件监听器
      * @author huangjinfu
      *
      */
     public interface OnRefreshListener {
-        public abstract void onPullUpRefresh(); //上拉
-        public abstract void onPullDownRefresh(); //下拉
+        /**
+         * 上拉事件
+         */
+        public abstract void onPullUpRefresh();
+        /**
+         * 下拉事件
+         */
+        public abstract void onPullDownRefresh();
     }
 
     public PullListView(Context context, AttributeSet attrs, int defStyle) {
@@ -91,36 +99,14 @@ public class PullListView extends RelativeLayout {
         mListView = new ListView(context, attrs, defStyle);
         mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mListView.setSelector(R.color.transparent);
-        mListView.setDividerHeight(2);
-//        float px = (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-//        Log.i("O_O", "px : " + px);
-//        mListView.setDividerHeight(px);
-        
-        mScroller = new Scroller(context);
-        mGestureDetector = new GestureDetector(context, new CustomGestureListener());
-        
-//        mRefreshMode = RefreshMode.UP;
-        
-        mPullModeFlag = PULL_BOTH;
-        
-//        this.setBackgroundResource(R.color.transparent);
-//        this.setOrientation(LinearLayout.VERTICAL);
-        
-        //绑定footerView，加载视图
-//        mFooterView = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, null);
-//        mFooterViewLayout = new LinearLayout(context);
-//        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//        mListView.addFooterView(mFooterViewLayout);
-//        mFooterView.setVisibility(View.GONE);
+        mListView.setDividerHeight(1);
         
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         
-      //绑定footerView，加载视图
+        //加载footerView，加载视图
         mFooterView = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, null);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-//        mFooterView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//        lp.bottomMargin = -mFooterView.getMeasuredHeight();
         mFooterView.setLayoutParams(lp);
         
         mFooterView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -130,7 +116,7 @@ public class PullListView extends RelativeLayout {
         
         addView(mFooterView);
         
-        //绑定headerView，加载视图
+        //加载headerView，加载视图
         mHeaderView = LayoutInflater.from(context).inflate(R.layout.view_footer_loading, null);
         RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
@@ -142,6 +128,13 @@ public class PullListView extends RelativeLayout {
         mHeaderView.setLayoutParams(lp3);
         
         addView(mHeaderView);
+        
+        //实例化滚动控制器和手势监听器
+        mScroller = new Scroller(context);
+        mGestureDetector = new GestureDetector(context, new InternalGestureListener());
+        
+        //设置初始Pull模式,默认不可Pull
+        mPullModeFlag = PULL_NONE;
     }
 
     public PullListView(Context context, AttributeSet attrs) {
@@ -151,18 +144,45 @@ public class PullListView extends RelativeLayout {
     public PullListView(Context context) {
         this(context, null, 0);
     }
+
+    /**
+     * 计算ListView的高度
+     * 
+     * @param listView
+     * @return
+     */
+    public int getTotalHeightofListView(ListView listView) {
+        Adapter adapter = listView.getAdapter();
+        if (adapter == null) {
+            return 0;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View view = adapter.getView(i, null, listView);
+            view.measure(
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            totalHeight += view.getMeasuredHeight();
+        }
+        totalHeight = totalHeight
+                + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        return totalHeight;
+    }
     
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        Log.i("O_O", "Intercept mStatus : " );
         boolean result = false;
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
+            
             mLastMotionY = event.getY();
+            //把事件交给手势监听器处理，防止出现事件跳跃问题(onScroll时，第一次的distance会很大)。
             result = mGestureDetector.onTouchEvent(event);
+            
             break;
         case MotionEvent.ACTION_MOVE:
             
+            //计算内部ListView状态
             computeStatus();
             //当前为下拉动作
             if (event.getY() - mLastMotionY > 0) {
@@ -173,7 +193,7 @@ public class PullListView extends RelativeLayout {
                         result = true;
                     }
                 }
-            } 
+            }
             //当前为上拉动作
             else if (event.getY() - mLastMotionY < 0) {
                 //ListView处于底端(ListView滑动到最下面)
@@ -184,9 +204,8 @@ public class PullListView extends RelativeLayout {
                     }
                 }
             }
-            
+            //记录上一次触摸位置
             mLastMotionY = event.getY();
-            
             
             break;
         default:
@@ -198,7 +217,6 @@ public class PullListView extends RelativeLayout {
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        Log.e("O_O", "mStatus : " + mStatus);
         super.onTouchEvent(event);
         boolean result = false;
         switch (event.getAction()) {
@@ -206,6 +224,8 @@ public class PullListView extends RelativeLayout {
             result = true;
             break;
         case MotionEvent.ACTION_MOVE:
+            
+            //计算内部ListView状态
             computeStatus();
             //当前为下拉动作
             if (event.getY() - mLastMotionY > 0) {
@@ -227,23 +247,25 @@ public class PullListView extends RelativeLayout {
                     }
                 }
             }
-//            result = mGestureDetector.onTouchEvent(event);
+            
           break;
         case MotionEvent.ACTION_UP :
-            //上拉刷新
+            
+            //上拉动作
             if (mScroller.getFinalY() >= mFooterView.getMeasuredHeight()) {
                 smoothScrollTo(0, mFooterView.getMeasuredHeight());
                 mOnRefreshListener.onPullUpRefresh();
             } 
-            //下拉刷新
+            //下拉动作
             else if (mScroller.getFinalY() <= -mHeaderView.getMeasuredHeight()) {
                 smoothScrollTo(0, -mHeaderView.getMeasuredHeight());
                 mOnRefreshListener.onPullDownRefresh();
             }
-            //没有刷新
+            //没有动作
             else {
                 smoothScrollTo(0, 0);
             }
+            
             break;
         default:
             break;
@@ -251,48 +273,57 @@ public class PullListView extends RelativeLayout {
         return result;
     }
     
-    //调用此方法滚动到目标位置
+    /**
+     * 调用此方法滚动到目标位置
+     * @param fx
+     * @param fy
+     */
     public void smoothScrollTo(int fx, int fy) {
         int dx = fx - mScroller.getFinalX();
         int dy = fy - mScroller.getFinalY();
         smoothScrollBy(dx, dy);
     }
     
-    //调用此方法设置滚动的相对偏移
+    /**
+     * 调用此方法设置滚动的相对偏移
+     * @param dx
+     * @param dy
+     */
     public void smoothScrollBy(int dx, int dy) {
         //设置mScroller的滚动偏移量
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
-        invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
+        //这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
+        invalidate();
     }
     
     /**
-     * 计算当前状态
+     * 计算内部ListView当前的状态
+     * 参考：{@link #ALIGN_TO_TOP} {@link #ALIGN_TO_BOTTOM} {@link #ALIGN_TO_CENTER}
      */
     private void computeStatus() {
         mListViewStatusFlag = 0;
-        Log.d("O_O", "---");
-        Log.i("O_O", "mListView.getLastVisiblePosition() : " + mListView.getLastVisiblePosition());
-        Log.i("O_O", "mListView.getAdapter().getCount() - 1 : " + (mListView.getAdapter().getCount() - 1));
-        Log.i("O_O", "mListView.getChildAt(last).getBottom() : " + mListView.getChildAt(mListView.getLastVisiblePosition() - mListView.getFirstVisiblePosition()).getBottom());
-        Log.i("O_O", "mListView.getBottom() : " + mListView.getBottom());
+        //第一个可见View的位置为0，并且第一个可见View的顶部也为0，可以判断状态为 ALIGN_TO_TOP
         if (mListView.getFirstVisiblePosition() == 0 && mListView.getChildAt(0).getTop() == 0) {
-//            mStatus = ScrollStatus.REFRESH_DOWN;
             mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_TOP;
-        } else if (mListView.getLastVisiblePosition() == mListView.getAdapter().getCount() - 1 
-                && mListView.getChildAt(mListView.getLastVisiblePosition() - mListView.getFirstVisiblePosition()).getBottom() == mListView.getBottom()) {
-//            mStatus = ScrollStatus.REFRESH_UP;
-            mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_BOTTOM;
-        } else {
-//            mStatus = ScrollStatus.SCROLL;
-            mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_CENTER;
         }
-//        Log.i("O_O", "mListViewStatusFlag : " + mListViewStatusFlag);
+        //最后一个可见View的位置为数据中的最后一个，并且最后一个可见View的底部跟ListView的底部相等，可以判断状态为 ALIGN_TO_BOTTOM
+        if (mListView.getLastVisiblePosition() == mListView.getAdapter().getCount() - 1 
+                && mListView.getChildAt(mListView.getLastVisiblePosition() - mListView.getFirstVisiblePosition()).getBottom() == mListView.getBottom()) {
+            mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_BOTTOM;
+        }
     }
     
+    /**
+     * 重置控件状态，隐藏footerView或者headerView
+     */
     public void reset() {
         smoothScrollTo(0, 0);
     }
     
+    /**
+     * 设置监听器
+     * @param onRefreshListener
+     */
     public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
         this.mOnRefreshListener = onRefreshListener;
     }
@@ -301,37 +332,55 @@ public class PullListView extends RelativeLayout {
     public void computeScroll() {
         //先判断mScroller滚动是否完成
         if (mScroller.computeScrollOffset()) {
-        
             //这里调用View的scrollTo()完成实际的滚动
             scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
             //必须调用该方法，否则不一定能看到滚动效果
             postInvalidate();
-        } else {
         }
         super.computeScroll();
     }
     
+    /**
+     * 设置数据适配器
+     * @param adapter
+     */
     public void setAdapter(ListAdapter adapter) {
         mListView.setAdapter(adapter);
     }
     
+    /**
+     * 设置空视图
+     * @param emptyView
+     */
     public void setEmptyView(View emptyView) {
         mListView.setEmptyView(emptyView);
     }
     
+    /**
+     * 设置数据项click事件监听器
+     * @param listener
+     */
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListView.setOnItemClickListener(listener);
     }
+    
+    /**
+     * 设置控件支持的Pull模式
+     * 参考：{@link #PULL_DOWN} {@link #PULL_UP} {@link #PULL_BOTH} {@link #PULL_NONE}
+     * @param pullMode
+     */
+    public void setPullMode(int pullMode) {
+        this.mPullModeFlag = pullMode;
+    }
 
     /**
-     * 手势监听器
-     * @author xfujohn
+     * 手势监听器,用来滚动控件，达到Pull的效果
+     * @author huangjinfu
      *
      */
-    class CustomGestureListener implements GestureDetector.OnGestureListener {
+    private class InternalGestureListener implements GestureDetector.OnGestureListener {
         @Override
         public boolean onDown(MotionEvent e) {
-//            Log.d("O_O", "onDown : ");
             return false;
         }
 
@@ -349,7 +398,7 @@ public class PullListView extends RelativeLayout {
                 float distanceX, float distanceY) {
             int dis = (int)((distanceY-0.5)/2);
             smoothScrollBy(0, dis);
-            return false;
+            return true;
         }
 
         @Override
@@ -363,5 +412,4 @@ public class PullListView extends RelativeLayout {
         }
         
     }
-    
 }

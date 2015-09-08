@@ -52,11 +52,8 @@ public class MainActivity extends BaseActivity implements
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAddButton; //记一笔按钮
     private Button mQueryButton; //查询按钮
-//	private ListView mRecordListView; //消费记录显示ListView
     private PullListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
-//	private View mFooterView; //底部加载视图
-	private LinearLayout mFooterViewLayout; //底部加载视图布局
 	
 	private LoadingDialog mLoadingDialog; //加载对话框
 	
@@ -129,17 +126,11 @@ public class MainActivity extends BaseActivity implements
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         
         mRecordListView = (PullListView) findViewById(R.id.ptflv_consume_list);
+        mRecordListView.setPullMode(PullListView.PULL_UP);
         
         //绑定空视图
         mEmptyView = findViewById(R.id.ly_no_data);
         mRecordListView.setEmptyView(mEmptyView);
-        
-//        //绑定footerView，加载视图
-//        mFooterView = LayoutInflater.from(this).inflate(R.layout.view_footer_loading, null);
-//        mFooterViewLayout = new LinearLayout(this);
-//        mFooterViewLayout.addView(mFooterView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//        mRecordListView.addFooterView(mFooterViewLayout);
-//        mFooterView.setVisibility(View.GONE);
         
     }
 
@@ -231,7 +222,6 @@ public class MainActivity extends BaseActivity implements
 	 */
 	private void loadData() {
 	    mIsInRefresh = true;
-//	    mFooterView.setVisibility(View.VISIBLE);
 	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
 	}
 
