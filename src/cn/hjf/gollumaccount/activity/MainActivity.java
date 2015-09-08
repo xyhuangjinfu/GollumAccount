@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity implements
     private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
     private static final int REQ_CODE_ADD_RECORD = 1; //请求新建消费记录请求码
     private static final int REQ_CODE_VIEW_RECORD = 2; //请求查看消费记录请求码
-    private static final int NUM_PER_PAGE = 10; // 每页查询的数量
+    private static final int NUM_PER_PAGE = 20; // 每页查询的数量
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
