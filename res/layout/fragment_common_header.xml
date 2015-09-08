@@ -2,19 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/theme"
+    android:background="#00000000"
     android:id="@+id/fragment_common_header_parent" >
 
-    <!-- 标题 -->
-
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="标题"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
 
     <!-- 返回操作 -->
 
@@ -28,13 +18,13 @@
         android:layout_centerVertical="true">
 
         <ImageView
-            android:paddingLeft="11dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:id="@+id/left_image"
-            android:layout_width="29dp"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:src="@drawable/title_back_btn" />
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:background="@drawable/bg_button"
+            android:src="@drawable/ic_left_arrow_white" />
 
         <TextView
             android:id="@+id/left_txt"
@@ -42,10 +32,30 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="返回"
+            android:visibility="gone"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="@dimen/textsize_indicator" />
     </LinearLayout>
 
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_toRightOf="@id/left_linearlayout"
+        android:background="@color/theme" />
+    
+            <!-- 标题 -->
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="标题"
+        android:background="@color/transparent"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_indicator" />
+    
     
     
     <ImageView
@@ -67,5 +77,5 @@
         android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:visibility="gone"
-        android:textSize="18sp" />
+        android:textSize="@dimen/textsize_indicator" />
 </RelativeLayout>

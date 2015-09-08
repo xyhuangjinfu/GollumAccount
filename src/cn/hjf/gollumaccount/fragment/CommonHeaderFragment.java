@@ -162,15 +162,15 @@ public class CommonHeaderFragment extends BaseFragment {
     private void setVisibility(HEAD_TYPE type) {
     	switch (type) {
 		case LEFT_BACK_TEXT:
-			mLeftText.setVisibility(View.VISIBLE);
+//			mLeftText.setVisibility(View.VISIBLE);
 			mLeftIcon.setVisibility(View.VISIBLE);
-			mLeftIcon.setImageResource(R.drawable.title_back_btn);
+			mLeftIcon.setImageResource(R.drawable.ic_left_arrow_white);
 			break;
 			
 		case LEFT_MENU:
 			mLeftText.setVisibility(View.GONE);
 			mLeftIcon.setVisibility(View.VISIBLE);
-			mLeftIcon.setImageResource(R.drawable.btn_personal);
+			mLeftIcon.setImageResource(R.drawable.ic_account_white);
 			break;
 			
 		case LEFT_NULL:
