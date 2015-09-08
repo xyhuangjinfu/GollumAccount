@@ -96,10 +96,11 @@ public class PullListView extends RelativeLayout {
 
     public PullListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mListView = new ListView(context, attrs, defStyle);
+        mListView = new ListView(context);
         mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mListView.setSelector(R.color.transparent);
-        mListView.setDividerHeight(1);
+        mListView.setVerticalScrollBarEnabled(false);
+        mListView.setDividerHeight(2);
         
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         
