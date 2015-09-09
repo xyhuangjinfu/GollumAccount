@@ -3,19 +3,16 @@ package cn.hjf.gollumaccount.view;
 import cn.hjf.gollumaccount.R;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * 自定义下拉刷新ListView
@@ -63,17 +60,18 @@ public class PullListView extends RelativeLayout {
     private int mPullModeFlag = 0; //当前ListView可以Pull的模式
 
     /**
-     * 当前刷新的状态，上拉还是下拉
+     * 当前控件内部的状态，上拉,下拉,无动作
      * {@link PullMode}
      */
     private PullMode mPullMode;
     
     /**
      * 触发上下拉成功后，当前的pull模式
-     * @author xfujohn
+     * @author huangjinfu
      *
      */
     public enum PullMode {
+        NONE, //没有动作
         UP, //上拉刷新
         DOWN //下拉刷新
     }
@@ -253,14 +251,24 @@ public class PullListView extends RelativeLayout {
         case MotionEvent.ACTION_UP :
             
             //上拉动作
-            if (mScroller.getFinalY() >= mFooterView.getMeasuredHeight()) {
+            if (mScroller.getFinalY() >= mFooterView.getMeasuredHeight() && mPullMode != PullMode.UP) {
+                mPullMode = PullMode.UP;
                 smoothScrollTo(0, mFooterView.getMeasuredHeight());
                 mOnRefreshListener.onPullUpRefresh();
             } 
             //下拉动作
-            else if (mScroller.getFinalY() <= -mHeaderView.getMeasuredHeight()) {
+            else if (mScroller.getFinalY() <= -mHeaderView.getMeasuredHeight() && mPullMode != PullMode.DOWN) {
+                mPullMode = PullMode.DOWN;
                 smoothScrollTo(0, -mHeaderView.getMeasuredHeight());
                 mOnRefreshListener.onPullDownRefresh();
+            }
+            //还在上拉状态
+            else if (mPullMode == PullMode.UP) {
+                smoothScrollTo(0, mFooterView.getMeasuredHeight());
+            }
+            //还在下拉状态
+            else if (mPullMode == PullMode.DOWN) {
+                smoothScrollTo(0, -mHeaderView.getMeasuredHeight());
             }
             //没有动作
             else {
@@ -308,7 +316,6 @@ public class PullListView extends RelativeLayout {
             mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_TOP | ALIGN_TO_BOTTOM;
             return;
         }
-        Log.i("O_O", mListView.getAdapter().getCount() + "");
         //第一个可见View的位置为0，并且第一个可见View的顶部也为0，可以判断状态为 ALIGN_TO_TOP
         if (mListView.getFirstVisiblePosition() == 0 && mListView.getChildAt(0).getTop() == 0) {
             mListViewStatusFlag = mListViewStatusFlag | ALIGN_TO_TOP;
@@ -325,6 +332,7 @@ public class PullListView extends RelativeLayout {
      */
     public void reset() {
         smoothScrollTo(0, 0);
+        mPullMode = PullMode.NONE;
     }
     
     /**
