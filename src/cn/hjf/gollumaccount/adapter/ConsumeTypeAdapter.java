@@ -4,10 +4,8 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
-import cn.hjf.gollumaccount.util.BitmapUtil;
-
 import android.content.Context;
-import android.util.Log;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +13,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 选择消费类型页面，类型显示的适配器
+ * @author huangjinfu
+ *
+ */
 public class ConsumeTypeAdapter extends BaseAdapter {
     
     private List<ConsumeType> mTypes;
+    private TypedArray mIcons;
     private Context mContext;
     
     public ConsumeTypeAdapter(Context context, List<ConsumeType> types) {
         this.mContext = context;
         this.mTypes = types;
+        mIcons = mContext.getResources().obtainTypedArray(R.array.consume_types_icon);
     }
 
     @Override
@@ -52,55 +57,24 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        //控制按钮，添加类型
-        if (mTypes.get(position).getType() == ConsumeType.Type.CONTROL) {
-            holder.icon.setImageResource(R.drawable.ic_add_type);
-        }
-//        自定义类型
-//        if (mTypes.get(position).getType() == ConsumeType.Type.CUSTOME) {
-//            holder.icon.setImageResource(R.drawable.ic_other_type);
-//        }
-        if ("汇总".equals(mTypes.get(position).getName())) {
+        
+        if (mContext.getString(R.string.label_all_type).equals(mTypes.get(position).getName())) {
             holder.icon.setImageResource(R.drawable.ic_all_type);
-        }
-        if ("衣服".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_clothes);
-//            holder.icon.setImageBitmap(BitmapUtil.getColorfulBitmap(mContext, R.drawable.ic_clothes_white, R.color.theme));
-        }
-        if ("食物".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_food);
-        }
-        if ("住宿".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_house);
-        }
-        if ("交通".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_traffic);
-        }
-        if ("社交".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_social);
-        }
-        if ("娱乐".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_entertainment);
-        }
-        if ("办公".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_work);
-        }
-        if ("学习".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_study);
-        }
-        if ("医疗".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_medical);
-        }
-        if ("其他".equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_other_type);
+        } else {
+            holder.icon.setImageResource(mIcons.getResourceId(position, 0));
         }
         holder.name.setText(mTypes.get(position).getName());
+        
         return convertView;
     }
     
     private class ViewHolder {
         ImageView icon;
         TextView name;
+    }
+    
+    public void release() {
+        mIcons.recycle();
     }
 
 }

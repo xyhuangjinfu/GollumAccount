@@ -35,8 +35,8 @@ import android.widget.GridView;
 public class TypeSelectActivity extends BaseActivity implements
         CommonHeaderFragment.ICallback, LoadConsumeTypeTask.OnLoadConsumeTypeListener, CreateConsumeTypeTask.OnCreateConsumeTypeListener {
     
-    public static final String PAGE_TYPE = "page_type";
-    public static final String CONSUME_TYPE = "consume_type";
+    public static final String PAGE_TYPE = "page_type"; //从Intent中接收PageType的key
+    public static final String CONSUME_TYPE = "consume_type"; //从Intent中接收ConsumeType的key
 
     private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     private LoadingDialog mLoadingDialog; // 加载对话框
@@ -77,6 +77,15 @@ public class TypeSelectActivity extends BaseActivity implements
         mLoadingDialog.show();
         new LoadConsumeTypeTask(this, this).execute();
     }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.release();
+        mAdapter = null;
+        mTypeData.clear();
+        mTypeData = null;
+    }
 
     /**
      * 初始化顶部导航栏
@@ -100,20 +109,20 @@ public class TypeSelectActivity extends BaseActivity implements
         mLoadingDialog.setCancelable(false);
         
         final EditText et = new EditText(this);
-        et.setHint("最多4个字");
+        et.setHint(R.string.hint_add_type);
         mCreateTypeDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
-        .setTitle("添加类型")
+        .setTitle(R.string.label_add_type)
         .setIcon(android.R.drawable.ic_dialog_info) 
-        .setView(et)  
-        .setPositiveButton("添加", new OnClickListener() {  
+        .setView(et)
+        .setPositiveButton(getString(R.string.label_add), new OnClickListener() {  
             public void onClick(DialogInterface dialog, int which) {  
                 String input = et.getText().toString();  
                 if (input.equals("")) {  
-                    ToastUtil.showToast(getApplicationContext(), "类型不能为空！", Toast.LENGTH_LONG);
+                    ToastUtil.showToast(getApplicationContext(), getResources().getString(R.string.hint_type_name_null), Toast.LENGTH_LONG);
                     return;
                 }
                 if (input.length() > 4) {
-                    ToastUtil.showToast(getApplicationContext(), "类型长度太长！", Toast.LENGTH_LONG);
+                    ToastUtil.showToast(getApplicationContext(), getString(R.string.hint_type_name_length_long), Toast.LENGTH_LONG);
                     return;
                 }
                 else {
@@ -123,7 +132,7 @@ public class TypeSelectActivity extends BaseActivity implements
                 }  
             }  
         })  
-        .setNegativeButton("取消", null).create();
+        .setNegativeButton(getString(R.string.label_cancel), null).create();
     }
 
     @Override
@@ -139,13 +148,11 @@ public class TypeSelectActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
-//                    ToastUtil.showToast(getApplicationContext(), "暂时还不支持此功能", 0);
                     mCreateTypeDialog.show();
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra(CONSUME_TYPE, mTypeData.get(position));
-                    TypeSelectActivity.this.setResult(Activity.RESULT_OK,
-                            intent);
+                    TypeSelectActivity.this.setResult(Activity.RESULT_OK, intent);
                     TypeSelectActivity.this.finish();
                 }
             }
@@ -168,7 +175,7 @@ public class TypeSelectActivity extends BaseActivity implements
         if (mPageType == PageType.STATISTIC) {
             ConsumeType allType = new ConsumeType();
             allType.setId(0);
-            allType.setName("汇总");
+            allType.setName(getResources().getString(R.string.label_all_type));
             allType.setType(ConsumeType.Type.CUSTOME);
             mTypeData.add(allType);
         }
@@ -181,11 +188,10 @@ public class TypeSelectActivity extends BaseActivity implements
     public void OnCreateConsumeTypeCompleted(boolean isCreateSucess) {
         mLoadingDialog.cancel();
         if (isCreateSucess) {
-            ToastUtil.showToast(getApplicationContext(), "类型添加成功！", Toast.LENGTH_LONG);
             mLoadingDialog.show();
             new LoadConsumeTypeTask(TypeSelectActivity.this, TypeSelectActivity.this).execute(); 
         } else {
-            ToastUtil.showToast(getApplicationContext(), "类型添加失败！", Toast.LENGTH_LONG);
+            ToastUtil.showToast(getApplicationContext(), getResources().getString(R.string.tip_create_consume_type_fail), Toast.LENGTH_LONG);
         }
     }
 

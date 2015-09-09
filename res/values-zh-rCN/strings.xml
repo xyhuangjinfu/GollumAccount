@@ -28,6 +28,7 @@
     <string name="btn_modify_consume_record">修 改</string>
     <string name="btn_submit_consume_record">提 交</string>
     
+    
     <!-- 提示 -->
     <string name="tip_exit_app">再按一次返回键退出</string>
     <string name="tip_no_more_data">没有更多数据</string>
@@ -37,6 +38,7 @@
     <string name="tip_record_date_null">消费日期没有填写</string>
     <string name="tip_record_time_null">消费时间没有填写</string>
     <string name="tip_record_type_null">消费类型没有选择</string>
+    <string name="tip_create_consume_type_fail">消费类型添加失败</string>
     
     <!-- 纯文本 -->
     <string name="label_current_month_sum">当月累计消费金额(元)</string>
@@ -50,6 +52,10 @@
     <string name="label_time">时 间：</string>
     <string name="label_remark">备 注：</string>
     <string name="label_create_time">创 建：</string>
+    <string name="label_all_type">汇总</string>
+    <string name="label_add_type">添加类型</string>
+    <string name="label_add">添加</string>
+    <string name="label_cancel">取消</string>
     
     
     <!-- TextView的hint -->
@@ -61,6 +67,9 @@
     <string name="hint_date">选择日期</string>
     <string name="hint_time">选择时间</string>
     <string name="hint_remark">备注信息(50个字以内)</string>
+    <string name="hint_add_type">最多4个字</string>
+    <string name="hint_type_name_null">请填写类型名称</string>
+    <string name="hint_type_name_length_long">类型名称长度太长</string>
     
     
     
@@ -82,6 +91,20 @@
         <item>学习</item>
         <item>医疗</item>
         <item>其他</item>
+    </string-array>
+    
+    <!-- 内置的所有消费类型对应的图标 -->
+    <string-array name="consume_types_icon">
+        <item>@drawable/ic_clothes</item>
+        <item>@drawable/ic_food</item>
+        <item>@drawable/ic_house</item>
+        <item>@drawable/ic_traffic</item>
+        <item>@drawable/ic_social</item>
+        <item>@drawable/ic_entertainment</item>
+        <item>@drawable/ic_work</item>
+        <item>@drawable/ic_study</item>
+        <item>@drawable/ic_medical</item>
+        <item>@drawable/ic_other_type</item>
     </string-array>
 
     <string-array name="statistic_select_menu">
