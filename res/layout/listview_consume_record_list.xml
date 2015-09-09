@@ -10,7 +10,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:padding="5dp"
+        android:padding="9dp"
         android:background="@drawable/bg_round_gray"/>
 
     <RelativeLayout
@@ -32,7 +32,6 @@
             android:layout_marginTop="9dp"
             android:layout_alignParentTop="true"
             android:singleLine="true"
-            android:text="name"
             android:textSize="@dimen/textsize_content" />
 
         <!-- 消费日期 -->
@@ -47,7 +46,6 @@
             android:layout_marginBottom="9dp"
             android:layout_alignParentBottom="true"
             android:singleLine="true"
-            android:text="2015-06-08"
             android:textSize="@dimen/textsize_content" />
     </RelativeLayout>
     
@@ -62,7 +60,6 @@
             android:gravity="center"
             android:padding="15dp"
             android:singleLine="true"
-            android:text="238.50"
             android:textSize="@dimen/textsize_price_small" />
 
 </RelativeLayout>
