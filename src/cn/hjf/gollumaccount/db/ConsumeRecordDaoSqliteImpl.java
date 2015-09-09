@@ -131,6 +131,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                     cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )") 
                             ));
         }
+        cursor.close();
+        mDB.close();
         return datas;
     }
     
@@ -142,6 +144,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         while (cursor.moveToNext()) {
             sum = cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )"));
         }
+        cursor.close();
+        mDB.close();
         return sum;
     }
     
@@ -154,6 +158,8 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         while (cursor.moveToNext()) {
             sum = cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )"));
         }
+        cursor.close();
+        mDB.close();
         return sum;
     }
     
