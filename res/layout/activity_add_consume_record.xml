@@ -45,7 +45,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="名 称："
+                    android:text="@string/label_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="*"
+                    android:text="@string/label_input_indicator"
                     android:textColor="@color/theme"
                     android:textSize="@dimen/textsize_indicator" />
 
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="消费记录名称"
+                    android:hint="@string/hint_name"
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
@@ -92,7 +92,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="金 额："
+                    android:text="@string/label_price"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -102,7 +102,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="*"
+                    android:text="@string/label_input_indicator"
                     android:textColor="@color/theme"
                     android:textSize="@dimen/textsize_indicator" />
 
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="消费金额（单位：元）"
+                    android:hint="@string/hint_price"
                     android:inputType="numberDecimal"
                     android:maxLength="7"
                     android:padding="10dp"
@@ -138,7 +138,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="类 别："
+                    android:text="@string/label_type"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -148,7 +148,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="*"
+                    android:text="@string/label_input_indicator"
                     android:textColor="@color/theme"
                     android:textSize="@dimen/textsize_indicator" />
 
@@ -165,7 +165,7 @@
                         android:layout_toLeftOf="@+id/iv_ic_right"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="选择类别"
+                        android:hint="@string/hint_type"
                         android:padding="10dp"
                         android:textColor="@color/color_textview_content"
                         android:textSize="@dimen/textsize_content" />
@@ -197,7 +197,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="消 费："
+                    android:text="@string/label_consumer"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="消费人"
+                    android:hint="@string/hint_consumer"
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
@@ -231,7 +231,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="付 款："
+                    android:text="@string/label_payer"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="付款人"
+                    android:hint="@string/hint_payer"
                     android:maxLength="20"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
@@ -265,7 +265,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="日 期："
+                    android:text="@string/label_date"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -275,7 +275,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="*"
+                    android:text="@string/label_input_indicator"
                     android:textColor="@color/theme"
                     android:textSize="@dimen/textsize_indicator" />
 
@@ -285,7 +285,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="选择日期"
+                    android:hint="@string/hint_date"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
                     android:textSize="@dimen/textsize_content" />
@@ -308,7 +308,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="时 间："
+                    android:text="@string/label_time"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -318,7 +318,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="*"
+                    android:text="@string/label_input_indicator"
                     android:textColor="@color/theme"
                     android:textSize="@dimen/textsize_indicator" />
 
@@ -328,7 +328,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="选择时间"
+                    android:hint="@string/hint_time"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
                     android:textSize="@dimen/textsize_content" />
@@ -352,7 +352,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="备 注："
+                    android:text="@string/label_remark"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -362,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="备注信息(50个字以内)"
+                    android:hint="@string/hint_remark"
                     android:maxLength="50"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
@@ -382,7 +382,7 @@
         android:layout_gravity="center"
         android:background="@drawable/bg_button"
         android:padding="10dp"
-        android:text="创 建"
+        android:text="@string/btn_create_consume_record"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_indicator" />
 

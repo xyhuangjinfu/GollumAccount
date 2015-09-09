@@ -24,13 +24,42 @@
     <!-- 按钮 -->
     <string name="btn_add_consume_record">记一笔</string>
     <string name="btn_query_consume_record">查询</string>
+    <string name="btn_create_consume_record">创 建</string>
     
     <!-- 提示 -->
     <string name="tip_exit_app">再按一次返回键退出</string>
     <string name="tip_no_more_data">没有更多数据</string>
+    <string name="tip_create_consume_record_fail">新建消费记录失败</string>
+    <string name="tip_record_name_null">消费名称没有填写</string>
+    <string name="tip_record_price_null">消费金额没有填写</string>
+    <string name="tip_record_date_null">消费日期没有填写</string>
+    <string name="tip_record_time_null">消费时间没有填写</string>
+    <string name="tip_record_type_null">消费类型没有选择</string>
     
     <!-- 纯文本 -->
     <string name="label_current_month_sum">当月累计消费金额(元)</string>
+    <string name="label_input_indicator">*</string>
+    <string name="label_name">名 称：</string>
+    <string name="label_price">金 额：</string>
+    <string name="label_type">类 别：</string>
+    <string name="label_consumer">消 费：</string>
+    <string name="label_payer">付 款：</string>
+    <string name="label_date">日 期：</string>
+    <string name="label_time">时 间：</string>
+    <string name="label_remark">备 注：</string>
+    
+    
+    <!-- TextView的hint -->
+    <string name="hint_name">消费记录名称</string>
+    <string name="hint_price">消费金额(元)</string>
+    <string name="hint_type">选择类别</string>
+    <string name="hint_consumer">消费人</string>
+    <string name="hint_payer">付款人</string>
+    <string name="hint_date">选择日期</string>
+    <string name="hint_time">选择时间</string>
+    <string name="hint_remark">备注信息(50个字以内)</string>
+    
+    
     
     
     <string name="analyse_empty">没有统计</string>
@@ -38,6 +67,7 @@
     
     <string name="toast_common_unknown_error">未知错误</string>
 
+    <!-- 内置的所有消费类型 -->
     <string-array name="consume_types">
         <item>衣服</item>
         <item>食物</item>

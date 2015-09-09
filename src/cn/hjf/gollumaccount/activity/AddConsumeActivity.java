@@ -39,7 +39,7 @@ import android.widget.Toast;
 public class AddConsumeActivity extends BaseActivity implements CommonHeaderFragment.ICallback,
 CreateConsumeRecordTask.OnCreateConsumeRecordListener {
 
-    private static final int REQ_CODE_SELECT_TYPE = 0;
+    private static final int REQ_CODE_SELECT_TYPE = 0; //请求选择消费类型请求码
 
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     private LoadingDialog mLoadingDialog; //加载对话框
@@ -222,23 +222,23 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
         boolean result = false;
         if (mConsumeNameEditText.getText().toString() == null
                 || mConsumeNameEditText.getText().toString().equals("")) {
-            ToastUtil.showToast(this, "消费名称为空", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_name_null), Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumePriceEditText.getText().toString() == null
                 || mConsumePriceEditText.getText().toString().equals("")) {
-            ToastUtil.showToast(this, "消费金额为空", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_price_null), Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeDateTextView.getText().toString() == null
                 || mConsumeDateTextView.getText().toString().equals("")) {
-            ToastUtil.showToast(this, "请选择消费日期", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_date_null), Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeTimeTextView.getText().toString() == null
                 || mConsumeTimeTextView.getText().toString().equals("")) {
-            ToastUtil.showToast(this, "请选择消费时间", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_time_null), Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumeTypeTextView.getText().toString() == null
                 || mConsumeTypeTextView.getText().toString().equals("")) {
-            ToastUtil.showToast(this, "请选择消费类型", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_type_null), Toast.LENGTH_SHORT);
             return result;
         } else {
             result = true;
@@ -277,7 +277,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
             AddConsumeActivity.this.setResult(Activity.RESULT_OK);
             AddConsumeActivity.this.finish();
         } else {
-            ToastUtil.showToast(this, "新建消费记录失败！", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_create_consume_record_fail), Toast.LENGTH_SHORT);
         }
     }
 
