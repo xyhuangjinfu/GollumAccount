@@ -136,6 +136,9 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                 mQueryInfo.getStartTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getStartTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getStartTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                mQueryInfo.getStartTime().set(Calendar.HOUR_OF_DAY, 0);
+                                mQueryInfo.getStartTime().set(Calendar.MINUTE, 0);
+                                mQueryInfo.getStartTime().set(Calendar.SECOND, 0);
                             }
                         }, mQueryInfo.getStartTime().get(Calendar.YEAR),
                         mQueryInfo.getStartTime().get(Calendar.MONTH),
@@ -160,6 +163,9 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                                 mQueryInfo.getEndTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getEndTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getEndTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                mQueryInfo.getEndTime().set(Calendar.HOUR_OF_DAY, 23);
+                                mQueryInfo.getEndTime().set(Calendar.MINUTE, 59);
+                                mQueryInfo.getEndTime().set(Calendar.SECOND, 59);
                             }
                         }, mQueryInfo.getEndTime().get(Calendar.YEAR),
                         mQueryInfo.getEndTime().get(Calendar.MONTH),
