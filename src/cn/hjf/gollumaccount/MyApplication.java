@@ -1,62 +1,29 @@
 package cn.hjf.gollumaccount;
 
-import cn.hjf.gollumaccount.business.ConsumeTypeManagerBusiness;
-import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
-import cn.hjf.gollumaccount.db.GASQLiteDatabase;
 import cn.hjf.gollumaccount.util.SharedPreferencesUtil;
 
-import com.tencent.bugly.crashreport.CrashReport;
-
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Environment;
-import android.util.Log;
 
 /**
- * �Զ���Application��
+ * 自定义的Application类
  * 
  * @author huangjinfu
  * 
  */
 public class MyApplication extends Application {
 	
-	private String mBuglyAppID = "900002004"; //Bugly��AppID
-	private String mBuglyAppKey = "WRHDP8yQOdXUINId"; //Bugly��AppKey
+	private String mBuglyAppID = "900002004"; //Bugly使用的AppID
+	private String mBuglyAppKey = "WRHDP8yQOdXUINId"; //Bugly使用的AppKey
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		
 		
-		SharedPreferencesUtil.getSharedPreferences(this).edit().putString("theme", "blue");
+//		SharedPreferencesUtil.getSharedPreferences(this).edit().putString("theme", "blue");
 		
-		//��ʼ׷��Bug�����ڵ�һ��ִ��
+		//崩溃信息上传到Bugly
 //		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
 		
-		
-		// ��ʼ����Ŀ�е�����·��
-//		initPath();
-		
-		ConsumeTypeManagerBusiness d = new ConsumeTypeManagerBusiness(this);
-		d.initInsideType();
-		
-
 	}
-
-//	/**
-//	 * ��ʼ����Ŀ�����е�·��
-//	 */
-//	private void initPath() {
-//		if (Environment.getExternalStorageState().equals(
-//				Environment.MEDIA_MOUNTED)) {
-//			PathHelper.setDatabasePath(Environment
-//					.getExternalStorageDirectory().getAbsolutePath()
-//					+ "/gollum/account/database");
-//		} else {
-//			PathHelper.setDatabasePath(this.getDatabasePath("account.db")
-//					.getParent());
-//		}
-//	}
-
 }
