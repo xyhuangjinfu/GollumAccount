@@ -101,9 +101,10 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 			break;
 		case 9:
             viewHolder.mRecordIcon.setImageResource(R.drawable.ic_medical);
+            break;
 	    case 10:
-	            viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
-	            break;
+	        viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
+	        break;
 		default:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
 			break;
