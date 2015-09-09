@@ -40,8 +40,8 @@ import android.widget.Toast;
 public class ConsumeDetailActivity extends BaseActivity implements 
 CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordListener {
 
-    public static final String CONSUME_RECORD = "consume_record";
-    private static final int REQ_CODE_SELECT_TYPE = 0;
+    public static final String CONSUME_RECORD = "consume_record"; //从Intent中接收ConsumeType的key
+    private static final int REQ_CODE_SELECT_TYPE = 0; //请求选择消费类型请求码
     
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     private LoadingDialog mLoadingDialog; //加载对话框
@@ -251,11 +251,11 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         boolean result = false;
         if (mConsumeNameEditText.getText().toString().equals("")
                 || mConsumeNameEditText.getText().toString() == null) {
-            ToastUtil.showToast(this, "消费名称为空", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_name_null), Toast.LENGTH_SHORT);
             return result;
         } else if (mConsumePriceEditText.getText().toString().equals("")
                 || mConsumePriceEditText.getText().toString() == null) {
-            ToastUtil.showToast(this, "消费金额为空", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_record_price_null), Toast.LENGTH_SHORT);
             return result;
         } else {
             result = true;
@@ -308,7 +308,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mPayerEditText.setEnabled(true);
         mConsumeRemarksEditText.setEnabled(true);
         //修改UI
-        mOperateButton.setText("提交");
+        mOperateButton.setText(getResources().getString(R.string.btn_submit_consume_record));
         mRightImage.setVisibility(View.VISIBLE);
         //设置页面状态
         mPageStatus = PageStatus.EDIT;
@@ -339,7 +339,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mPayerEditText.setEnabled(false);
         mConsumeRemarksEditText.setEnabled(false);
         //修改UI
-        mOperateButton.setText("修改");
+        mOperateButton.setText(getResources().getString(R.string.btn_modify_consume_record));
         mRightImage.setVisibility(View.GONE);
         //设置页面状态
         mPageStatus = PageStatus.VIEW;

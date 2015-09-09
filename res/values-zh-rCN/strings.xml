@@ -25,6 +25,8 @@
     <string name="btn_add_consume_record">记一笔</string>
     <string name="btn_query_consume_record">查询</string>
     <string name="btn_create_consume_record">创 建</string>
+    <string name="btn_modify_consume_record">修 改</string>
+    <string name="btn_submit_consume_record">提 交</string>
     
     <!-- 提示 -->
     <string name="tip_exit_app">再按一次返回键退出</string>
@@ -47,6 +49,7 @@
     <string name="label_date">日 期：</string>
     <string name="label_time">时 间：</string>
     <string name="label_remark">备 注：</string>
+    <string name="label_create_time">创 建：</string>
     
     
     <!-- TextView的hint -->
