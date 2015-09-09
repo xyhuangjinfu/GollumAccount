@@ -83,6 +83,9 @@ public class TypeStatisticAdapter extends BaseAdapter {
             holder.typeIcon.setImageResource(R.drawable.ic_study_white);
             break;
         case 9:
+            holder.typeIcon.setImageResource(R.drawable.ic_medical_white);
+            break;
+        case 10:
             holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
             break;
         default:

@@ -48,33 +48,27 @@
                 android:textSize="@dimen/textsize_price_big" />
         </LinearLayout>
 
- <!-- 明细列表 -->
-     <cn.hjf.gollumaccount.view.PullListView
-        android:id="@+id/ptflv_consume_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/ll_operate"
-        android:layout_below="@id/ll_current_month"
-        android:layout_marginTop="1dp" >
-         
-                         <!-- EmptyView -->
-        
-        <include 
-            android:id="@+id/ly_no_data" 
-            layout="@layout/view_no_data" 
+        <!-- 明细列表 -->
+
+        <cn.hjf.gollumaccount.view.PullListView
+            android:id="@+id/ptflv_consume_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/ll_operate"
             android:layout_below="@id/ll_current_month"
-            android:visibility="gone"
-            />
-         
-     </cn.hjf.gollumaccount.view.PullListView>
-        
-        
-        
- 
+            android:layout_marginTop="1dp" >
 
+            <!-- EmptyView -->
+
+            <include
+                android:id="@+id/ly_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/ll_operate"
+                android:layout_below="@id/ll_current_month"
+                layout="@layout/view_no_data"
+                android:visibility="gone" />
+        </cn.hjf.gollumaccount.view.PullListView>
 
         <!-- 操作 -->
 
