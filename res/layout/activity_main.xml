@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-                android:text="当月累计消费金额（元）"
+                android:text="@string/label_current_month_sum"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_content" />
 
@@ -89,7 +89,7 @@
                 android:background="@drawable/bg_button"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:text="记一笔"
+                android:text="@string/btn_add_consume_record"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_indicator" />
 
@@ -104,7 +104,7 @@
                 android:background="@drawable/bg_button"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:text="查询"
+                android:text="@string/btn_query_consume_record"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_indicator" />
         </LinearLayout>

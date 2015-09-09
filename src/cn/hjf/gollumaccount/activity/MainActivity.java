@@ -14,23 +14,15 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.util.NumberUtil;
-import cn.hjf.gollumaccount.view.LoadingDialog;
 import cn.hjf.gollumaccount.view.PullListView;
 import cn.hjf.gollumaccount.view.PullListView.OnRefreshListener;
 import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,10 +34,11 @@ public class MainActivity extends BaseActivity implements
 		LoadConsumeRecordTask.LoadConsumeRecordListener,
 		StatisticSumAsyncTask.OnStatisticSumListener {
     
-    private static final int REQ_CODE_QUERY_INFO = 0; //请求修改查询信息请求码
-    private static final int REQ_CODE_ADD_RECORD = 1; //请求新建消费记录请求码
+    private static final int REQ_CODE_QUERY_INFO  = 0; //请求修改查询信息请求码
+    private static final int REQ_CODE_ADD_RECORD  = 1; //请求新建消费记录请求码
     private static final int REQ_CODE_VIEW_RECORD = 2; //请求查看消费记录请求码
     private static final int NUM_PER_PAGE = 20; // 每页查询的数量
+    private static final long EXIT_TIME = 2000; //退出程序的时间阈值，两次返回键间隔
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
@@ -56,26 +49,12 @@ public class MainActivity extends BaseActivity implements
     private PullListView mRecordListView; //消费记录显示ListView
 	private View mEmptyView; //ListView没有数据时显示的界面
 	
-//	private LoadingDialog mLoadingDialog; //加载对话框
-	
 	private List<ConsumeRecord> mRecords; // 查询出来的数据记录
 	private ConsumeRecordAdapter mConsumeRecordAdapter; // 消费记录列表显示的适配器
 	
-//	private boolean mIsNoMoreData = false; //当前查询条件是否还有更多数据，true-没有更多数据
-//	private boolean mIsInRefresh = false; //是否在刷新状态，true-还在刷新
-//	private boolean mIsQueryChanged = false; //查询条件是否改变，true-查询条件被改变了
 	private boolean mNeedClearData = false; //是否需要清空已有的数据集合，true-需要
-	
 	private QueryInfo mQueryInfo; //查询信息
-	
-    /**
-     * 上一次按下返回键的时间，不考虑关闭侧边栏的动作
-     */
-    private long mLastBackTime;
-    /**
-     * 退出程序的时间阈值，两次返回键间隔
-     */
-    private static final long EXIT_TIME = 2000;
+    private long mLastBackTime; //上一次按下返回键的时间，不考虑关闭侧边栏的动作
 	
 	
 	public MainActivity() {
@@ -95,7 +74,6 @@ public class MainActivity extends BaseActivity implements
 		initValue();
 		initEvent();
 		
-//		mLoadingDialog.show();
 		mRecordListView.setPull(PullListView.PullMode.UP);
 		loadData();
 		new StatisticSumAsyncTask(this, this).execute(Calendar.getInstance());
@@ -125,8 +103,6 @@ public class MainActivity extends BaseActivity implements
         mCurrentMonthSum = (TextView) findViewById(R.id.tv_current_month);
         mAddButton = (Button) findViewById(R.id.btn_add);
         mQueryButton = (Button) findViewById(R.id.btn_query);
-        
-//        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         
         mRecordListView = (PullListView) findViewById(R.id.ptflv_consume_list);
         mRecordListView.setPullMode(PullListView.PULL_UP);
@@ -184,39 +160,9 @@ public class MainActivity extends BaseActivity implements
             
             @Override
             public void onPullDownRefresh() {
-//                mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
-//                loadData();
             }
         });
         
-//        mRecordListView.setOnScrollListener(new OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//             // 当不滚动时  
-//                if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
-//                    // 判断是否滚动到底部  
-//                    if (view.getLastVisiblePosition() == view.getCount() - 1) {  
-//                        //还在刷新中，直接返回
-//                        if (mIsInRefresh) {
-//                            return;
-//                        }
-//                        //没有更多数据，提示
-//                        if (mIsNoMoreData) {
-//                            ToastUtil.showToast(MainActivity.this, "没有更多数据了", 0);
-//                            return;
-//                        }
-//                        mFooterView.setVisibility(View.VISIBLE);
-//                        mQueryInfo.setPageNumber(mQueryInfo.getPageNumber() + 1);
-//                        loadData();
-//                    }  
-//                }
-//            }
-//            
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                    int visibleItemCount, int totalItemCount) {
-//            }
-//        });
     }
 	
 	
@@ -224,7 +170,6 @@ public class MainActivity extends BaseActivity implements
 	 * 加载数据
 	 */
 	private void loadData() {
-//	    mIsInRefresh = true;
 	    new LoadConsumeRecordTask(this, this).execute(new QueryInfo[]{mQueryInfo});
 	}
 
@@ -249,8 +194,6 @@ public class MainActivity extends BaseActivity implements
      * 刷新查询状态
      */
     private void refreshQueryStatus() {
-//        mIsQueryChanged = true;
-//        mIsNoMoreData = false;
         mQueryInfo.setPageNumber(1);
     }
 
@@ -263,7 +206,6 @@ public class MainActivity extends BaseActivity implements
                 mQueryInfo = data.getParcelableExtra(QueryActivity.QUERY_INFO);
                 if (mQueryInfo != null) {
                     refreshQueryStatus();
-//                    mLoadingDialog.show();
                     mNeedClearData = true;
                     mRecordListView.setPull(PullListView.PullMode.UP);
                     loadData();
@@ -272,8 +214,6 @@ public class MainActivity extends BaseActivity implements
             }
             //添加消费记录，清空数据集，从第一页按空的QueryInfo进行查询
             if (requestCode == REQ_CODE_ADD_RECORD || requestCode == REQ_CODE_VIEW_RECORD) {
-//                mIsQueryChanged = true;
-//                mLoadingDialog.show();
                 mNeedClearData = true;
                 mRecordListView.setPull(PullListView.PullMode.UP);
                 //清空QueryInfo
@@ -314,7 +254,7 @@ public class MainActivity extends BaseActivity implements
             return;
         } else {
             mLastBackTime = System.currentTimeMillis();
-            ToastUtil.showToast(getApplicationContext(), "再按一次返回键退出", Toast.LENGTH_SHORT);
+            ToastUtil.showToast(getApplicationContext(), getResources().getString(R.string.tip_exit_app), Toast.LENGTH_SHORT);
             return;
         }
     }
@@ -326,20 +266,15 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void OnLoadRecordCompleted(List<ConsumeRecord> consumeRecords) {
-//        mIsInRefresh = false;
         if (consumeRecords.size() == 0) {
-            ToastUtil.showToast(this, "没有数据", 0);
-//            mIsNoMoreData = true;
-//            mFooterView.setVisibility(View.GONE);
+            ToastUtil.showToast(this, getResources().getString(R.string.tip_no_more_data), 0);
         }
         if (mNeedClearData) {
             mRecords.clear();
             mNeedClearData = false;
-//            mIsQueryChanged = false;
         }
         mRecords.addAll(consumeRecords);
         mConsumeRecordAdapter.notifyDataSetChanged();
-//        mLoadingDialog.cancel();
         mRecordListView.reset();
     }
 

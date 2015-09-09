@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 应用名称 -->
+    <string name="app_name">咕噜账本</string>
+    
+    <!-- 页面标题 -->
+    <string name="title_main">首页</string>
+    <string name="title_back">返回</string>
+    <string name="title_query_record">记录查询</string>
+    <string name="title_type_select">类型选择</string>
+    <string name="title_consume">消费记录</string>
+    <string name="title_item_manager">账目管理</string>
+    <string name="title_analyse">消费统计</string>
+    <string name="title_about">关于信息</string>
+    <string name="title_add_record">新建消费记录</string>
+    <string name="title_view_record">消费详细信息</string>
+    <string name="title_analyse_item">按类型统计</string>
+    <string name="title_analyse_month">按月份统计</string>
+    <string name="title_modify_record">修改消费记录</string>
+    <string name="title_setting">设置</string>
+    <string name="title_theme_setting">主题设置</string>
+    
+    <!-- 按钮 -->
+    <string name="btn_add_consume_record">记一笔</string>
+    <string name="btn_query_consume_record">查询</string>
+    
+    <!-- 提示 -->
+    <string name="tip_exit_app">再按一次返回键退出</string>
+    <string name="tip_no_more_data">没有更多数据</string>
+    
+    <!-- 纯文本 -->
+    <string name="label_current_month_sum">当月累计消费金额(元)</string>
+    
+    
+    <string name="analyse_empty">没有统计</string>
+    <string name="info_about">关于信息</string>
+    
+    <string name="toast_common_unknown_error">未知错误</string>
+
+    <string-array name="consume_types">
+        <item>衣服</item>
+        <item>食物</item>
+        <item>住宿</item>
+        <item>交通</item>
+        <item>社交</item>
+        <item>娱乐</item>
+        <item>办公</item>
+        <item>学习</item>
+        <item>医疗</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="statistic_select_menu">
+        <item>按类型统计</item>
+        <item>按月份统计</item>
+    </string-array>
+    
+    <string-array name="setting_select_menu">
+        <item>关于信息</item>
+<!--         <item>主题设置</item> -->
+    </string-array>
+
+</resources>
