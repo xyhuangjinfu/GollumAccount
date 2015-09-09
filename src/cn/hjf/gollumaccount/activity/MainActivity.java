@@ -132,8 +132,8 @@ public class MainActivity extends BaseActivity implements
         mRecordListView.setPullMode(PullListView.PULL_UP);
         
         //绑定空视图
-//        mEmptyView = findViewById(R.id.ly_no_data);
-//        mRecordListView.setEmptyView(mEmptyView);
+        mEmptyView = findViewById(R.id.ly_no_data);
+        mRecordListView.setEmptyView(mEmptyView);
         
     }
 
