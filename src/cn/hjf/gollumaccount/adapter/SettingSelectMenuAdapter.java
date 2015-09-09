@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * 设置选择界面菜单显示适配器
+ * @author huangjinfu
+ *
+ */
 public class SettingSelectMenuAdapter extends BaseAdapter {
 	
 	private List<String> mMenuList;

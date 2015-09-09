@@ -38,7 +38,7 @@ public class ToastUtil {
 			}
 		} else {
 			if(text == null){
-				((TextView) mToast.getView().findViewById(R.id.txt_viewinfo)).setText(ctx.getResources().getString(R.string.toast_common_unknown_error));
+				((TextView) mToast.getView().findViewById(R.id.txt_viewinfo)).setText(ctx.getResources().getString(R.string.tip_common_unknown_error));
 			}else{
 				if(text instanceof Integer) {
 					((TextView) mToast.getView().findViewById(R.id.txt_viewinfo)).setText((Integer)text);

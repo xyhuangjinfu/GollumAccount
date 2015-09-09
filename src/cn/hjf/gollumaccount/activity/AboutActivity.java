@@ -62,8 +62,8 @@ public class AboutActivity extends BaseActivity implements CommonHeaderFragment.
             e.printStackTrace();
         }
         mVersionTextView.setText(info.versionName);
-        mAuthorTextView.setText("黄金夫");
-        mDeclareTextView.setText("本应用所涉及的图片资源均来自互联网，本应用不做任何商业用途，不会侵犯图片资源所有者的利益。");
+        mAuthorTextView.setText(getString(R.string.label_author_content));
+        mDeclareTextView.setText(getString(R.string.label_declare_content));
     }
 
     @Override

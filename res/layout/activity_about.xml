@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="版 本："
+                    android:text="@string/label_version"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -46,7 +46,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="5dp"
-                    android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
                     android:textSize="@dimen/textsize_content" />
             </LinearLayout>
@@ -66,7 +65,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:gravity="center_vertical"
-                    android:text="作 者："
+                    android:text="@string/label_author"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -76,7 +75,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="5dp"
-                    android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
                     android:textSize="@dimen/textsize_content" />
             </LinearLayout>
@@ -96,7 +94,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:gravity="center_vertical"
-                    android:text="声 明："
+                    android:text="@string/label_declare"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -106,7 +104,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="5dp"
-                    android:hint="@string/info_about"
                     android:textColor="@color/gray_deep"
                     android:textSize="@dimen/textsize_content" />
             </LinearLayout>
