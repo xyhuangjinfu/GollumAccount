@@ -56,9 +56,12 @@ public class ConsumeTypeAdapter extends BaseAdapter {
         if (mTypes.get(position).getType() == ConsumeType.Type.CONTROL) {
             holder.icon.setImageResource(R.drawable.ic_add_type);
         }
-        //自定义类型
-        if (mTypes.get(position).getType() == ConsumeType.Type.CUSTOME) {
-            holder.icon.setImageResource(R.drawable.ic_custom_type);
+//        自定义类型
+//        if (mTypes.get(position).getType() == ConsumeType.Type.CUSTOME) {
+//            holder.icon.setImageResource(R.drawable.ic_other_type);
+//        }
+        if ("汇总".equals(mTypes.get(position).getName())) {
+            holder.icon.setImageResource(R.drawable.ic_all_type);
         }
         if ("衣服".equals(mTypes.get(position).getName())) {
             holder.icon.setImageResource(R.drawable.ic_clothes);

@@ -13,7 +13,7 @@
         android:padding="5dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_custom_type_white" />
+        android:src="@drawable/ic_other_type_white" />
 
     <TextView
         android:id="@+id/tv_type"
