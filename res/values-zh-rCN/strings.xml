@@ -56,6 +56,9 @@
     <string name="label_add_type">添加类型</string>
     <string name="label_add">添加</string>
     <string name="label_cancel">取消</string>
+    <string name="label_start_date">开 始：</string>
+    <string name="label_end_date">结 束：</string>
+    <string name="label_sum">总 计：</string>
     
     
     <!-- TextView的hint -->
@@ -70,6 +73,8 @@
     <string name="hint_add_type">最多4个字</string>
     <string name="hint_type_name_null">请填写类型名称</string>
     <string name="hint_type_name_length_long">类型名称长度太长</string>
+    <string name="hint_start_date">选择开始日期</string>
+    <string name="hint_end_date">选择结束日期</string>
     
     
     

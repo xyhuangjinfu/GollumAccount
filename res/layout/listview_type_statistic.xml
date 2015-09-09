@@ -24,8 +24,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:textSize="@dimen/textsize_content"
-        android:textColor="@color/black"
-        android:text="一般" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/tv_ratio"
@@ -36,8 +35,7 @@
         android:layout_toRightOf="@+id/tv_type"
         android:gravity="center_vertical"
         android:textSize="@dimen/textsize_content"
-        android:textColor="@color/black"
-        android:text="80%" />
+        android:textColor="@color/black" />
 
     <ProgressBar
         android:id="@+id/pb_ratio"
@@ -62,7 +60,6 @@
         android:gravity="center"
         android:textSize="@dimen/textsize_price_small"
         android:padding="15dp"
-        android:textColor="@color/theme"
-        android:text="258.95" />
+        android:textColor="@color/theme" />
 
 </RelativeLayout>

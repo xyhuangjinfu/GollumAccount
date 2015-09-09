@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:text="开 始："
+            android:text="@string/label_start_date"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_content" />
 
@@ -47,7 +47,7 @@
                 android:layout_toLeftOf="@+id/iv_ic_right"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="选择开始日期"
+                android:hint="@string/hint_start_date"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_content" />
@@ -79,7 +79,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:text="结 束："
+            android:text="@string/label_end_date"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_content" />
 
@@ -96,7 +96,7 @@
                 android:layout_toLeftOf="@+id/iv_ic_right"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="选择结束日期"
+                android:hint="@string/hint_end_date"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_content" />
@@ -129,7 +129,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="总 计："
+                android:text="@string/label_sum"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_content" />
 
@@ -140,7 +140,6 @@
                 android:paddingLeft="10dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/theme"
-                android:text="285.54"
                 android:textSize="@dimen/textsize_price_big" />
         </LinearLayout>
 
