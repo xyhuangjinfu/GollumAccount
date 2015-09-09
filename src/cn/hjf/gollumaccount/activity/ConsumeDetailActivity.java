@@ -59,6 +59,12 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
     private Button mOperateButton; // 修改按钮
     private ImageView mRightImage; //修改类型的又箭头图标
     
+    private TextView mNameInputIndicator; //消费名称必填指示文本
+    private TextView mPriceInputIndicator; //消费金额必填指示文本
+    private TextView mTypeInputIndicator; //消费类型必填指示文本
+    private TextView mDateInputIndicator; //消费日期必填指示文本
+    private TextView mTimeInputIndicator; //消费时间必填指示文本
+    
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     private TimePickerDialog mTimePickerDialog; // 消费时间选择对话框
     
@@ -119,8 +125,15 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mConsumeRemarksEditText = (EditText) findViewById(R.id.et_record_remarks_detail);
         mOperateButton = (Button) findViewById(R.id.btn_record_operate);
         mRightImage = (ImageView) findViewById(R.id.iv_ic_right);
+        
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
+        
+        mNameInputIndicator = (TextView) findViewById(R.id.tv_name_input_indicator);
+        mPriceInputIndicator = (TextView) findViewById(R.id.tv_price_input_indicator);
+        mTypeInputIndicator = (TextView) findViewById(R.id.tv_type_input_indicator);
+        mDateInputIndicator = (TextView) findViewById(R.id.tv_date_input_indicator);
+        mTimeInputIndicator = (TextView) findViewById(R.id.tv_time_input_indicator);
     }
 
     /**
@@ -303,6 +316,12 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mConsumeDateTextView.setOnClickListener(consumeDateClickListener);
         mConsumeTimeTextView.setOnClickListener(ConsumeTimeClickListener);
         mConsumeTypeTextView.setOnClickListener(ConsumeTypeClickListener);
+        //显示必填指示文本
+        mNameInputIndicator.setVisibility(View.VISIBLE);
+        mPriceInputIndicator.setVisibility(View.VISIBLE);
+        mTypeInputIndicator.setVisibility(View.VISIBLE);
+        mDateInputIndicator.setVisibility(View.VISIBLE);
+        mTimeInputIndicator.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -328,6 +347,13 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mConsumeDateTextView.setOnClickListener(null);
         mConsumeTimeTextView.setOnClickListener(null);
         mConsumeTypeTextView.setOnClickListener(null);
+        //隐藏必填指示文本
+        mNameInputIndicator.setVisibility(View.GONE);
+        mPriceInputIndicator.setVisibility(View.GONE);
+        mTypeInputIndicator.setVisibility(View.GONE);
+        mDateInputIndicator.setVisibility(View.GONE);
+        mTimeInputIndicator.setVisibility(View.GONE);
+        
     }
 
 }

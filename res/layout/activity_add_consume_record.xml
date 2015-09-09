@@ -49,6 +49,16 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="*"
+                    android:textColor="@color/theme"
+                    android:textSize="@dimen/textsize_indicator" />
+
                 <EditText
                     android:id="@+id/et_record_name"
                     android:layout_width="match_parent"
@@ -86,6 +96,16 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="*"
+                    android:textColor="@color/theme"
+                    android:textSize="@dimen/textsize_indicator" />
+
                 <EditText
                     android:id="@+id/et_record_price"
                     android:layout_width="match_parent"
@@ -121,6 +141,16 @@
                     android:text="类 别："
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="*"
+                    android:textColor="@color/theme"
+                    android:textSize="@dimen/textsize_indicator" />
 
                 <RelativeLayout
                     android:id="@+id/rl_record_type"
@@ -240,6 +270,16 @@
                     android:textSize="@dimen/textsize_content" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="*"
+                    android:textColor="@color/theme"
+                    android:textSize="@dimen/textsize_indicator" />
+
+                <TextView
                     android:id="@+id/et_record_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -271,6 +311,16 @@
                     android:text="时 间："
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="*"
+                    android:textColor="@color/theme"
+                    android:textSize="@dimen/textsize_indicator" />
 
                 <TextView
                     android:id="@+id/et_record_time"
