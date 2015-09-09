@@ -23,7 +23,7 @@
 
     <!-- 按钮 -->
     <string name="btn_add_consume_record">记一笔</string>
-    <string name="btn_query_consume_record">查询</string>
+    <string name="btn_query_consume_record">查 询</string>
     <string name="btn_create_consume_record">创 建</string>
     <string name="btn_modify_consume_record">修 改</string>
     <string name="btn_submit_consume_record">提 交</string>

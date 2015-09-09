@@ -43,7 +43,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="名 称："
+                    android:text="@string/label_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -53,9 +53,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:hint="消费记录名称"
+                    android:hint="@string/hint_name"
                     android:textColor="@color/color_textview_content"
                     android:maxLength="20"
+                    android:inputType="text"
                     android:padding="10dp"
                     android:textSize="@dimen/textsize_content" >
 
@@ -80,7 +81,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="类 别："
+                    android:text="@string/label_type"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -98,7 +99,7 @@
                         android:layout_toLeftOf="@+id/iv_ic_right"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="选择类别"
+                        android:hint="@string/hint_type"
                         android:textColor="@color/color_textview_content"
                         android:padding="10dp"
                         android:textSize="@dimen/textsize_content" />
@@ -130,7 +131,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="开 始："
+                    android:text="@string/label_start_date"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -142,7 +143,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:textColor="@color/color_textview_content"
-                    android:hint="选择开始日期"
+                    android:hint="@string/hint_start_date"
                     android:textSize="@dimen/textsize_content" />
             </LinearLayout>
 
@@ -163,7 +164,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="结 束："
+                    android:text="@string/label_end_date"
                     android:textColor="@color/black"
                     android:textSize="@dimen/textsize_content" />
 
@@ -174,7 +175,7 @@
                     android:layout_gravity="center"
                     android:background="@null"
                     android:padding="10dp"
-                    android:hint="选择结束日期"
+                    android:hint="@string/hint_end_date"
                     android:textColor="@color/color_textview_content"
                     android:textSize="@dimen/textsize_content" />
             </LinearLayout>
@@ -191,7 +192,7 @@
         android:layout_gravity="center"
         android:background="@drawable/bg_button"
         android:padding="10dp"
-        android:text="查 询"
+        android:text="@string/btn_query_consume_record"
         android:textColor="@android:color/white"
         android:textSize="@dimen/textsize_indicator" />
 

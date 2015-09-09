@@ -12,9 +12,7 @@ import cn.hjf.gollumaccount.util.TimeUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 /**
  * 查询条件输入界面
@@ -33,8 +30,8 @@ import android.widget.TimePicker;
  */
 public class QueryActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
     
-    private static final int REQ_CODE_SELECT_TYPE = 0;
-    public static final String QUERY_INFO = "query_info";
+    private static final int REQ_CODE_SELECT_TYPE = 0; //请求选择消费类型的请求码
+    public static final String QUERY_INFO = "query_info"; //从Intent中获取QueryInfo的key
     
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     
@@ -48,12 +45,8 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
     private DatePickerDialog mDatePickerDialog; // 消费日期选择对话框
     
     private QueryInfo mQueryInfo; //要返回的查询信息
-//    private Calendar mStartCalendar; //查询开始时间
-//    private Calendar mEndCalendar; //查询结束时间
     
     public QueryActivity() {
-//        mStartCalendar = Calendar.getInstance();
-//        mEndCalendar = Calendar.getInstance();
     }
     
     @Override
