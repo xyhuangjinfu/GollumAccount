@@ -122,7 +122,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                                 mStartDate.set(Calendar.YEAR, year);
                                 mStartDate.set(Calendar.MONTH, monthOfYear);
                                 mStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                mStartDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                                mStartDateTextView.setText(year + " - " + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                                 mLoadingDialog.show();
                                 new TypeStatisticTask(TypeStatisticActivity.this, TypeStatisticActivity.this).execute(mStartDate, mEndDate);
                             }
@@ -144,7 +144,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                                 mEndDate.set(Calendar.YEAR, year);
                                 mEndDate.set(Calendar.MONTH, monthOfYear);
                                 mEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                mEndDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                                mEndDateTextView.setText(year + " - " + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                                 mLoadingDialog.show();
                                 new TypeStatisticTask(TypeStatisticActivity.this, TypeStatisticActivity.this).execute(mStartDate, mEndDate);
                             }

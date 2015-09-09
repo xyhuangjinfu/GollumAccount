@@ -169,7 +169,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
                             mConsumeRecord.getConsumeTime().set(Calendar.YEAR, year);
                             mConsumeRecord.getConsumeTime().set(Calendar.MONTH, monthOfYear);
                             mConsumeRecord.getConsumeTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                            mConsumeDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                            mConsumeDateTextView.setText(year + " - " + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                         }
                     }, calendar.get(Calendar.YEAR), calendar
                             .get(Calendar.MONTH), calendar
@@ -191,7 +191,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
                                 int hourOfDay, int minute) {
                             mConsumeRecord.getConsumeTime().set(Calendar.HOUR_OF_DAY, hourOfDay);
                             mConsumeRecord.getConsumeTime().set(Calendar.MINUTE, minute);
-                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + ":" + NumberUtil.formatTwoInt(minute) + ":" + "00");
+                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + " : " + NumberUtil.formatTwoInt(minute) + " : " + "00");
                         }
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar
                             .get(Calendar.MINUTE), false);

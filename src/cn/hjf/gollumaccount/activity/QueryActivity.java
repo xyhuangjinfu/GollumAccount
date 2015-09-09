@@ -131,8 +131,8 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                     int monthOfYear, int dayOfMonth) {
-                                mStartTime.setText(year + "-"
-                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                                mStartTime.setText(year + " - "
+                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                                 mQueryInfo.getStartTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getStartTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getStartTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -155,8 +155,8 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                     int monthOfYear, int dayOfMonth) {
-                                mEndTime.setText(year + "-"
-                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                                mEndTime.setText(year + " - "
+                                        + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                                 mQueryInfo.getEndTime().set(Calendar.YEAR, year);
                                 mQueryInfo.getEndTime().set(Calendar.MONTH, monthOfYear);
                                 mQueryInfo.getEndTime().set(Calendar.DAY_OF_MONTH, dayOfMonth);

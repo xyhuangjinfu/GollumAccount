@@ -166,7 +166,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
                             mConsumeCalendar.set(Calendar.YEAR, year);
                             mConsumeCalendar.set(Calendar.MONTH, monthOfYear);
                             mConsumeCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                            mConsumeDateTextView.setText(year + "-" + NumberUtil.formatTwoInt(monthOfYear + 1) + "-" + NumberUtil.formatTwoInt(dayOfMonth));
+                            mConsumeDateTextView.setText(year + " - " + NumberUtil.formatTwoInt(monthOfYear + 1) + " - " + NumberUtil.formatTwoInt(dayOfMonth));
                         }
                     }, mConsumeCalendar.get(Calendar.YEAR),
                     mConsumeCalendar.get(Calendar.MONTH),
@@ -186,7 +186,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
                                 int minute) {
                             mConsumeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             mConsumeCalendar.set(Calendar.MINUTE, minute);
-                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + ":" + NumberUtil.formatTwoInt(minute) + ":" + "00");
+                            mConsumeTimeTextView.setText(NumberUtil.formatTwoInt(hourOfDay) + " : " + NumberUtil.formatTwoInt(minute) + " : " + "00");
                         }
                     }, mConsumeCalendar.get(Calendar.HOUR_OF_DAY),
                     mConsumeCalendar.get(Calendar.MINUTE), false);
