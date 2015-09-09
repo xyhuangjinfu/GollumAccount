@@ -1,4 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 应用名称 -->
+    <string name="app_name">咕噜账本</string>
+
+    <!-- 页面标题 -->
+    <string name="title_main">首页</string>
+    <string name="title_back">返回</string>
+    <string name="title_query_record">记录查询</string>
+    <string name="title_type_select">类型选择</string>
+    <string name="title_consume">消费记录</string>
+    <string name="title_item_manager">账目管理</string>
+    <string name="title_analyse">消费统计</string>
+    <string name="title_about">关于信息</string>
+    <string name="title_add_record">新建消费记录</string>
+    <string name="title_view_record">消费详细信息</string>
+    <string name="title_analyse_item">按类型统计</string>
+    <string name="title_analyse_month">按月份统计</string>
+    <string name="title_modify_record">修改消费记录</string>
+    <string name="title_setting">设置</string>
+    <string name="title_theme_setting">主题设置</string>
+
+    <!-- 按钮 -->
+    <string name="btn_add_consume_record">记一笔</string>
+    <string name="btn_query_consume_record">查 询</string>
+    <string name="btn_create_consume_record">创 建</string>
+    <string name="btn_modify_consume_record">修 改</string>
+    <string name="btn_submit_consume_record">提 交</string>
+
+    <!-- 提示 -->
+    <string name="tip_exit_app">再按一次返回键退出</string>
+    <string name="tip_no_more_data">没有更多数据</string>
+    <string name="tip_create_consume_record_fail">新建消费记录失败</string>
+    <string name="tip_record_name_null">消费名称没有填写</string>
+    <string name="tip_record_price_null">消费金额没有填写</string>
+    <string name="tip_record_date_null">消费日期没有填写</string>
+    <string name="tip_record_time_null">消费时间没有填写</string>
+    <string name="tip_record_type_null">消费类型没有选择</string>
+    <string name="tip_create_consume_type_fail">消费类型添加失败</string>
+    <string name="tip_common_unknown_error">未知错误</string>
+
+    <!-- 纯文本 -->
+    <string name="label_current_month_sum">当月累计消费金额(元)</string>
+    <string name="label_input_indicator">*</string>
+    <string name="label_name">名 称：</string>
+    <string name="label_price">金 额：</string>
+    <string name="label_type">类 别：</string>
+    <string name="label_consumer">消 费：</string>
+    <string name="label_payer">付 款：</string>
+    <string name="label_date">日 期：</string>
+    <string name="label_time">时 间：</string>
+    <string name="label_remark">备 注：</string>
+    <string name="label_create_time">创 建：</string>
+    <string name="label_all_type">汇总</string>
+    <string name="label_add_type">添加类型</string>
+    <string name="label_add">添加</string>
+    <string name="label_cancel">取消</string>
+    <string name="label_start_date">开 始：</string>
+    <string name="label_end_date">结 束：</string>
+    <string name="label_sum">总 计：</string>
+    <string name="label_year">年 份：</string>
+    <string name="label_version">版 本：</string>
+    <string name="label_author">作 者：</string>
+    <string name="label_declare">声 明：</string>
+    <string name="label_author_content">黄金夫</string>
+    <string name="label_declare_content">"      本应用所涉及的图片资源均来自互联网，本应用不做任何商业用途，不会侵犯图片资源所有者的利益。"</string>
+    <string name="label_no_data">没有数据!</string>
+    <string name="label_loading">加载中...</string>
+
+    <!-- TextView的hint -->
+    <string name="hint_name">消费记录名称</string>
+    <string name="hint_price">消费金额(元)</string>
+    <string name="hint_type">选择类别</string>
+    <string name="hint_consumer">消费人</string>
+    <string name="hint_payer">付款人</string>
+    <string name="hint_date">选择日期</string>
+    <string name="hint_time">选择时间</string>
+    <string name="hint_remark">备注信息(50个字以内)</string>
+    <string name="hint_add_type">最多4个字</string>
+    <string name="hint_type_name_null">请填写类型名称</string>
+    <string name="hint_type_name_length_long">类型名称长度太长</string>
+    <string name="hint_start_date">选择开始日期</string>
+    <string name="hint_end_date">选择结束日期</string>
+
+    <!-- 内置的所有消费类型 -->
+    <string-array name="consume_types">
+        <item>衣服</item>
+        <item>食物</item>
+        <item>住宿</item>
+        <item>交通</item>
+        <item>社交</item>
+        <item>娱乐</item>
+        <item>办公</item>
+        <item>学习</item>
+        <item>医疗</item>
+        <item>其他</item>
+    </string-array>
+
+    <!-- 内置的所有消费类型对应的图标 -->
+    <string-array name="consume_types_icon">
+        <item>@drawable/ic_clothes</item>
+        <item>@drawable/ic_food</item>
+        <item>@drawable/ic_house</item>
+        <item>@drawable/ic_traffic</item>
+        <item>@drawable/ic_social</item>
+        <item>@drawable/ic_entertainment</item>
+        <item>@drawable/ic_work</item>
+        <item>@drawable/ic_study</item>
+        <item>@drawable/ic_medical</item>
+        <item>@drawable/ic_other_type</item>
+    </string-array>
+
+    <!-- 消费统计选择界面菜单项 -->
+    <string-array name="statistic_select_menu">
+        <item>按类型统计</item>
+        <item>按月份统计</item>
+    </string-array>
+
+    <!-- 设置界面菜单项 -->
+    <string-array name="setting_select_menu">
+        <item>关于信息</item>
+        <!-- <item>主题设置</item> -->
+    </string-array>
+
 </resources>
