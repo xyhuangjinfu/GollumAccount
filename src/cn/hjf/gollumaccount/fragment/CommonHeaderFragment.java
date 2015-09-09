@@ -21,15 +21,15 @@ import android.widget.TextView;
  */
 public class CommonHeaderFragment extends BaseFragment {
 
-    private LinearLayout mLeftLayout; //返回操作
+//    private LinearLayout mLeftLayout; //返回操作
     private TextView mTitle; //标题
-    private TextView mLeftText; //返回指示
+//    private TextView mLeftText; //返回指示
     private ImageView mLeftIcon; //返回按钮资源
     private ICallback mCallback; //返回事件监听对象
     private RelativeLayout mParent;
     
-    private TextView mRightText; //可选操作1
-    private ImageView mRightIcon; //搜索按钮
+//    private TextView mRightText; //可选操作1
+//    private ImageView mRightIcon; //搜索按钮
     
     private View mView;
     
@@ -65,7 +65,7 @@ public class CommonHeaderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater,
             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-    	mView = inflater.inflate(R.layout.fragment_common_header, null);
+    	mView = inflater.inflate(R.layout.fragment_common_header, container, false);
         initView(mView);
         initEvent();
   
@@ -77,12 +77,12 @@ public class CommonHeaderFragment extends BaseFragment {
      * @param view
      */
     private void initView(View view) {
-        mLeftLayout = (LinearLayout) view.findViewById(R.id.left_linearlayout);
-        mTitle = (TextView) view.findViewById(R.id.txt_title);
-        mLeftText = (TextView) view.findViewById(R.id.left_txt);
-        mLeftIcon = (ImageView) view.findViewById(R.id.left_image);
-        mRightText = (TextView) view.findViewById(R.id.tv_operate1);
-        mRightIcon = (ImageView) view.findViewById(R.id.right_image);
+//        mLeftLayout = (LinearLayout) view.findViewById(R.id.left_linearlayout);
+        mTitle = (TextView) view.findViewById(R.id.tv_title);
+//        mLeftText = (TextView) view.findViewById(R.id.left_txt);
+        mLeftIcon = (ImageView) view.findViewById(R.id.iv_icon);
+//        mRightText = (TextView) view.findViewById(R.id.tv_operate1);
+//        mRightIcon = (ImageView) view.findViewById(R.id.right_image);
         mParent = (RelativeLayout) view.findViewById(R.id.fragment_common_header_parent);
     }
 
@@ -90,7 +90,7 @@ public class CommonHeaderFragment extends BaseFragment {
      * 初始化事件监听
      */
     private void initEvent() {
-        mLeftLayout.setOnClickListener(new OnClickListener() {
+        mLeftIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCallback != null) {
@@ -98,22 +98,22 @@ public class CommonHeaderFragment extends BaseFragment {
                 }
             }
         });
-        mRightText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCallback != null) {
-                    mCallback.onRightClick();
-                }
-            }
-        });
-        mRightIcon.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCallback != null) {
-                    mCallback.onRightClick();
-                }
-            }
-        });
+//        mRightText.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mCallback != null) {
+//                    mCallback.onRightClick();
+//                }
+//            }
+//        });
+//        mRightIcon.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mCallback != null) {
+//                    mCallback.onRightClick();
+//                }
+//            }
+//        });
     }
 
     /**
@@ -132,31 +132,31 @@ public class CommonHeaderFragment extends BaseFragment {
     }
     
     public void setHeadText(int txtLeftId, int txtTitleId, int txtRightId) {
-    	mLeftText.setText(txtLeftId);
+//    	mLeftText.setText(txtLeftId);
     	mTitle.setText(txtTitleId);
-    	mRightText.setText(txtRightId);
+//    	mRightText.setText(txtRightId);
     }
     
     public void setHeadText(int txtLeftId, String txtTitle, int txtRightId) {
-    	mLeftText.setText(txtLeftId);
+//    	mLeftText.setText(txtLeftId);
     	mTitle.setText(txtTitle);
-    	mRightText.setText(txtRightId);
+//    	mRightText.setText(txtRightId);
     }
 
     public void setHeadText(String txtLeft, String txtTitle, int txtRightId) {
-    	mLeftText.setText(txtLeft);
+//    	mLeftText.setText(txtLeft);
     	mTitle.setText(txtTitle);
-    	mRightText.setText(txtRightId);
+//    	mRightText.setText(txtRightId);
     }
     public void setHeadText(String txtLeft, int txtTitleId, String txtRight) {
-    	mLeftText.setText(txtLeft);
+//    	mLeftText.setText(txtLeft);
     	mTitle.setText(txtTitleId);
-    	mRightText.setText(txtRight);
+//    	mRightText.setText(txtRight);
     }
     public void setHeadText(int txtLeftId, int txtTitleId, String txtRight) {
-    	mLeftText.setText(txtLeftId);
+//    	mLeftText.setText(txtLeftId);
     	mTitle.setText(txtTitleId);
-    	mRightText.setText(txtRight);
+//    	mRightText.setText(txtRight);
     }
     
     private void setVisibility(HEAD_TYPE type) {
@@ -168,36 +168,36 @@ public class CommonHeaderFragment extends BaseFragment {
 			break;
 			
 		case LEFT_MENU:
-			mLeftText.setVisibility(View.GONE);
+//			mLeftText.setVisibility(View.GONE);
 			mLeftIcon.setVisibility(View.VISIBLE);
 			mLeftIcon.setImageResource(R.drawable.ic_account_white);
 			break;
 			
 		case LEFT_NULL:
-			mLeftText.setVisibility(View.GONE);
+//			mLeftText.setVisibility(View.GONE);
 			mLeftIcon.setVisibility(View.GONE);
 			break;
 			
 		case RIGHT_NULL:
-			mRightText.setVisibility(View.GONE);
+//			mRightText.setVisibility(View.GONE);
 			break;
 			
 		case RIGHT_TEXT:
-			mRightText.setVisibility(View.VISIBLE);
+//			mRightText.setVisibility(View.VISIBLE);
 			break;
 			
 		case RIGHT_ICON:
-			mRightText.setVisibility(View.GONE);
-			mRightIcon.setVisibility(View.VISIBLE);
+//			mRightText.setVisibility(View.GONE);
+//			mRightIcon.setVisibility(View.VISIBLE);
 			break;
 			
 	     case LOGIN:
-	        mRightText.setVisibility(View.GONE);
+//	        mRightText.setVisibility(View.GONE);
 	        mTitle.setVisibility(View.GONE);
 	        int backColor = 0x00000000;
 	        int textColor = 0xff171c61;
 	        mParent.setBackgroundColor(backColor);
-	        mLeftText.setTextColor(textColor);
+//	        mLeftText.setTextColor(textColor);
 //	        mLeftIcon.setImageResource(R.drawable.head_btn_back_blue);
 	        break;
 			
@@ -219,6 +219,6 @@ public class CommonHeaderFragment extends BaseFragment {
      * @param color
      */
     public void setTextColor(int color) {
-        mLeftText.setTextColor(color);
+//        mLeftText.setTextColor(color);
     }
 }
