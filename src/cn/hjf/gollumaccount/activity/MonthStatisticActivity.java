@@ -36,7 +36,7 @@ public class MonthStatisticActivity extends BaseActivity implements
         StatisticMonthByTypeTask.OnStatisticMonthByTypeListener,
         CommonHeaderFragment.ICallback {
     
-    private static final int REQ_CODE_SELECT_TYPE = 0;
+    private static final int REQ_CODE_SELECT_TYPE = 0; //请求选择消费类型的请求码
     
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     private LoadingDialog mLoadingDialog; //加载对话框
@@ -59,9 +59,6 @@ public class MonthStatisticActivity extends BaseActivity implements
     public MonthStatisticActivity() {
         mStatisticYear = Calendar.getInstance();
         mConsumeType = new ConsumeType();
-        mConsumeType.setId(0);
-        mConsumeType.setName("汇总");
-        mConsumeType.setType(ConsumeType.Type.CUSTOME);
         mStatisticDatas = new ArrayList<MonthStatisticData>();
     }
 
@@ -118,6 +115,11 @@ public class MonthStatisticActivity extends BaseActivity implements
     protected void initValue() {
         initYearData();
         
+        
+        mConsumeType.setId(0);
+        mConsumeType.setName(getString(R.string.label_all_type));
+        mConsumeType.setType(ConsumeType.Type.CUSTOME);
+        
         mYearSelectDialog.setData(mYearData);
         
         mYearTextView.setText(mYearData.get(0));
@@ -166,7 +168,7 @@ public class MonthStatisticActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_TYPE) {
-                mConsumeType = data.getParcelableExtra("consume_type");
+                mConsumeType = data.getParcelableExtra(TypeSelectActivity.CONSUME_TYPE);
                 if (mConsumeType != null) {
                     mTypeTextView.setText(mConsumeType.getName());
                     mLoadingDialog.show();

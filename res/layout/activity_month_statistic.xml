@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:text="年 份："
+            android:text="@string/label_year"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_content" />
 
@@ -76,7 +76,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:text="分 类："
+            android:text="@string/label_type"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_content" />
 
@@ -124,7 +124,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="总 计："
+                android:text="@string/label_sum"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_content" />
 
@@ -135,7 +135,6 @@
                 android:paddingLeft="10dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/theme"
-                android:text="285.54"
                 android:textSize="@dimen/textsize_price_big" />
         </LinearLayout>
     

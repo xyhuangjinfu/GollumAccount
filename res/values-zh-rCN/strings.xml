@@ -59,6 +59,7 @@
     <string name="label_start_date">开 始：</string>
     <string name="label_end_date">结 束：</string>
     <string name="label_sum">总 计：</string>
+    <string name="label_year">年 份：</string>
     
     
     <!-- TextView的hint -->

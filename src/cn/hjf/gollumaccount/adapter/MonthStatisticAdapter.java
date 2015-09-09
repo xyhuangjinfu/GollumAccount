@@ -4,14 +4,12 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.MonthStatisticData;
-import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -47,7 +45,6 @@ public class MonthStatisticAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_month_statistic, parent, false);
             holder.month = (TextView) convertView.findViewById(R.id.tv_month);
-            holder.typeName = (TextView) convertView.findViewById(R.id.tv_type);
             holder.ratio = (TextView) convertView.findViewById(R.id.tv_ratio);
             holder.sum = (TextView) convertView.findViewById(R.id.tv_sum);
             holder.ratioBar = (ProgressBar) convertView.findViewById(R.id.pb_ratio);
@@ -66,7 +63,7 @@ public class MonthStatisticAdapter extends BaseAdapter {
     }
     
     private class ViewHolder {
-        TextView month, typeName, ratio, sum;
+        TextView month, ratio, sum;
         ProgressBar ratioBar;
     }
 
