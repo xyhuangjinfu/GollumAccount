@@ -6,6 +6,7 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,7 @@ public class TypeStatisticAdapter extends BaseAdapter {
             holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
             break;
         }
-        holder.ratio.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum()) + "%" );
+        holder.ratio.setText(String.format(mContext.getString(R.string.label_ratio), NumberUtil.formatValue(mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum())));
         holder.ratioBar.setMax((int) mDatas.get(position).getAllSum());
         holder.ratioBar.setProgress((int) mDatas.get(position).getTypeSum());
         

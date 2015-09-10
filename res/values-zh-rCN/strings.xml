@@ -67,6 +67,7 @@
     <string name="label_declare_content">"      本应用所涉及的图片资源均来自互联网，本应用不做任何商业用途，不会侵犯图片资源所有者的利益。"</string>
     <string name="label_no_data">没有数据!</string>
     <string name="label_loading">加载中...</string>
+    <string name="label_ratio">"%1$s%%"</string>
 
     <!-- TextView的hint -->
     <string name="hint_name">消费记录名称</string>
