@@ -1,5 +1,7 @@
 package cn.hjf.gollumaccount;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import cn.hjf.gollumaccount.util.SharedPreferencesUtil;
 
 import android.app.Application;
@@ -23,7 +25,7 @@ public class MyApplication extends Application {
 //		SharedPreferencesUtil.getSharedPreferences(this).edit().putString("theme", "blue");
 		
 		//崩溃信息上传到Bugly
-//		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
+		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
 		
 	}
 }
