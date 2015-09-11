@@ -75,6 +75,20 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         }
         return result;
     }
+    
+    @Override
+    public boolean delete(int recordId) {
+        boolean result = true;
+        try {
+            mDB.open().execSQL(mSqlBuilder.delete(recordId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            mDB.close();
+        }
+        return result;
+    }
 
     @Override
     public boolean update(ConsumeRecordModel record) {
@@ -600,6 +614,25 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
                 Log.d(TAG, TimeUtil.getTimeString(startDate) + " -- " + TimeUtil.getTimeString(endDate));
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 删除消费记录
+         */
+        public String delete(int id) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" DELETE FROM ");
+            sql.append(TABLE_NAME);
+            sql.append(" WHERE ");
+            sql.append(Table.CLM_ID);
+            sql.append(" = ");
+            sql.append("'");
+            sql.append(id);
+            sql.append("'");
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
             }
             return sql.toString();
         }

@@ -30,6 +30,11 @@ public interface IConsumeRecordDao {
      */
     public abstract boolean insert(ConsumeRecordModel record);
     /**
+     * 删除单个消费记录
+     * @return
+     */
+    public abstract boolean delete(int recordId);
+    /**
      * 修改单个消费记录
      * @return
      */
