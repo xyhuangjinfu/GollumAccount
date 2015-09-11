@@ -23,12 +23,13 @@ public class PullListView extends RelativeLayout {
     
     private static final String TAG = "PullListView";
     
-    private ListView mListView; //内部包含的真实ListView
+    private SwipeListView mListView; //内部包含的真实ListView
     private View mFooterView; //底部加载视图
     private View mHeaderView; //顶部加载视图
     private Scroller mScroller; //滚动控制器
     private GestureDetector mGestureDetector; //手势监听器
     
+    private float mLastMotionX = 0; //上一个触摸事件的X位置
     private float mLastMotionY = 0; //上一个触摸事件的Y位置
     
     private OnRefreshListener mOnRefreshListener; //刷新事件监听器
@@ -94,7 +95,7 @@ public class PullListView extends RelativeLayout {
 
     public PullListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mListView = new ListView(context);
+        mListView = new SwipeListView(context);
         mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mListView.setSelector(R.color.transparent);
         mListView.setVerticalScrollBarEnabled(false);
@@ -173,13 +174,22 @@ public class PullListView extends RelativeLayout {
         boolean result = false;
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            
+            mLastMotionX = event.getX();
             mLastMotionY = event.getY();
             //把事件交给手势监听器处理，防止出现事件跳跃问题(onScroll时，第一次的distance会很大)。
             result = mGestureDetector.onTouchEvent(event);
             
             break;
         case MotionEvent.ACTION_MOVE:
+            
+          //判断当前是左右滑动还是上下滑动，左右滑动，对上层屏蔽touch事件
+            float deltax = Math.abs(event.getX() - mLastMotionX);
+            float delaty = Math.abs(event.getY() - mLastMotionY);
+            
+            if (deltax - 1 > delaty ) { //左右
+                return false;
+            }
+            
             
             //计算内部ListView状态
             computeStatus();

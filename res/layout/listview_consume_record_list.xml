@@ -61,5 +61,21 @@
         android:singleLine="true"
         android:textColor="@color/theme"
         android:textSize="@dimen/textsize_price_small" />
+    
+        <!-- 删除 -->
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="-80dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:singleLine="true"
+        android:background="@drawable/bg_button"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_content" />
 
 </RelativeLayout>

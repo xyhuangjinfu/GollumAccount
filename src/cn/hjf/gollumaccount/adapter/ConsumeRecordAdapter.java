@@ -6,10 +6,12 @@ import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +51,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 			viewHolder.mRecordName = (TextView) convertView.findViewById(R.id.tv_consume_name);
 			viewHolder.mRecordPrice = (TextView) convertView.findViewById(R.id.tv_consume_price);
 			viewHolder.mRecordDate = (TextView) convertView.findViewById(R.id.tv_consume_date);
+			viewHolder.mDelete = (Button) convertView.findViewById(R.id.btn_delete);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -64,6 +67,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		public TextView mRecordPrice;
 		public TextView mRecordName;
 		public TextView mRecordDate;
+		public Button mDelete;
 	}
 	
 	/**
@@ -71,6 +75,8 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	 * @param viewHolder
 	 */
 	private void initViewValue(ConsumeRecord record, ViewHolder viewHolder) {
+	    viewHolder.mDelete.setTag(record.getRecordName());
+//	    Log.e("O_O", (String)viewHolder.mDelete.getTag());
 		viewHolder.mRecordPrice.setText(NumberUtil.formatValue(record.getRecordPrice()));
 		viewHolder.mRecordName.setText(record.getRecordName());
 		viewHolder.mRecordDate.setText(TimeUtil.getDateString(record.getConsumeTime()));
