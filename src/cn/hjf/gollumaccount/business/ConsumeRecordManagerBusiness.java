@@ -66,8 +66,8 @@ public class ConsumeRecordManagerBusiness {
      * 删除消费记录
      * @param record
      */
-    public boolean deleteRecord(int id) {
-        return mConsumeRecordDao.delete(id);
+    public boolean deleteRecord(ConsumeRecord consumeRecord) {
+        return mConsumeRecordDao.delete(consumeRecord.getId());
     }
     
     /**

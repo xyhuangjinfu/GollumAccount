@@ -39,6 +39,8 @@
     <string name="tip_record_type_null">消费类型没有选择</string>
     <string name="tip_create_consume_type_fail">消费类型添加失败</string>
     <string name="tip_common_unknown_error">未知错误</string>
+    <string name="tip_delete_record_success">%1$s 删除成功</string>
+    <string name="tip_delete_record_fail">%1$s 删除失败</string>
 
     <!-- 纯文本 -->
     <string name="label_current_month_sum">当月累计消费金额(元)</string>

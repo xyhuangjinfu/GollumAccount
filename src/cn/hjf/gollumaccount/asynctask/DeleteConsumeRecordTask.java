@@ -1,6 +1,7 @@
 package cn.hjf.gollumaccount.asynctask;
 
 import cn.hjf.gollumaccount.business.ConsumeRecordManagerBusiness;
+import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -10,7 +11,7 @@ import android.os.AsyncTask;
  *
  */
 public class DeleteConsumeRecordTask extends
-        AsyncTask<Integer, Void, Boolean> {
+        AsyncTask<ConsumeRecord, Void, Boolean> {
     
     private Context mContext;
     private ConsumeRecordManagerBusiness mConsumeRecordManagerBusiness;
@@ -27,7 +28,7 @@ public class DeleteConsumeRecordTask extends
     }
 
     @Override
-    protected Boolean doInBackground(Integer... params) {
+    protected Boolean doInBackground(ConsumeRecord... params) {
         return mConsumeRecordManagerBusiness.deleteRecord(params[0]);
     }
     

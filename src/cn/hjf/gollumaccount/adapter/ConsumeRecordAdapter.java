@@ -57,7 +57,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		initViewValue(record, viewHolder);
+		initViewValue(record, viewHolder, position);
 
 		return convertView;
 	}
@@ -74,9 +74,8 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 	 * @param record
 	 * @param viewHolder
 	 */
-	private void initViewValue(ConsumeRecord record, ViewHolder viewHolder) {
-	    viewHolder.mDelete.setTag(record.getRecordName());
-//	    Log.e("O_O", (String)viewHolder.mDelete.getTag());
+	private void initViewValue(ConsumeRecord record, ViewHolder viewHolder, int position) {
+	    viewHolder.mDelete.setTag(position);
 		viewHolder.mRecordPrice.setText(NumberUtil.formatValue(record.getRecordPrice()));
 		viewHolder.mRecordName.setText(record.getRecordName());
 		viewHolder.mRecordDate.setText(TimeUtil.getDateString(record.getConsumeTime()));

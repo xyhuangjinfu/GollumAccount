@@ -315,6 +315,10 @@ public class PullListView extends RelativeLayout {
         invalidate();
     }
     
+    public ListView getListView() {
+        return mListView;
+    }
+    
     /**
      * 计算内部ListView当前的状态
      * 参考：{@link #ALIGN_TO_TOP} {@link #ALIGN_TO_BOTTOM} {@link #ALIGN_TO_CENTER}

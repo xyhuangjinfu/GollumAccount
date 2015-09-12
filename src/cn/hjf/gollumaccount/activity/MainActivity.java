@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.adapter.ConsumeRecordAdapter;
+import cn.hjf.gollumaccount.asynctask.DeleteConsumeRecordTask;
 import cn.hjf.gollumaccount.asynctask.LoadConsumeRecordTask;
 import cn.hjf.gollumaccount.asynctask.StatisticSumAsyncTask;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
@@ -14,8 +15,11 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.fragment.SideMenuFragment;
 import cn.hjf.gollumaccount.util.NumberUtil;
+import cn.hjf.gollumaccount.view.LoadingDialog;
 import cn.hjf.gollumaccount.view.PullListView;
 import cn.hjf.gollumaccount.view.PullListView.OnRefreshListener;
+import cn.hjf.gollumaccount.view.SwipeListView;
+import cn.hjf.gollumaccount.view.SwipeListView.OnViewClickListener;
 import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +36,8 @@ public class MainActivity extends BaseActivity implements
 		SideMenuFragment.NavigationDrawerCallbacks,
 		CommonHeaderFragment.ICallback,
 		LoadConsumeRecordTask.LoadConsumeRecordListener,
-		StatisticSumAsyncTask.OnStatisticSumListener {
+		StatisticSumAsyncTask.OnStatisticSumListener,
+		DeleteConsumeRecordTask.OnDeleteConsumeRecordListener {
     
     private static final int REQ_CODE_QUERY_INFO  = 0; //请求修改查询信息请求码
     private static final int REQ_CODE_ADD_RECORD  = 1; //请求新建消费记录请求码
@@ -42,6 +47,7 @@ public class MainActivity extends BaseActivity implements
 
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
+    private LoadingDialog mLoadingDialog; //加载对话框
 
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAddButton; //记一笔按钮
@@ -55,6 +61,8 @@ public class MainActivity extends BaseActivity implements
 	private boolean mNeedClearData = false; //是否需要清空已有的数据集合，true-需要
 	private QueryInfo mQueryInfo; //查询信息
     private long mLastBackTime; //上一次按下返回键的时间，不考虑关闭侧边栏的动作
+    
+    private int mDeletePosition; //被删除消费记录的位置
 	
 	
 	public MainActivity() {
@@ -111,6 +119,8 @@ public class MainActivity extends BaseActivity implements
         mEmptyView = findViewById(R.id.ly_no_data);
         mRecordListView.setEmptyView(mEmptyView);
         
+        mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
+        mLoadingDialog.setCancelable(false);
     }
 
     @Override
@@ -163,6 +173,16 @@ public class MainActivity extends BaseActivity implements
             }
         });
         
+        ((SwipeListView)mRecordListView.getListView()).setOnViewClickListener(new OnViewClickListener() {
+            @Override
+            public void onViewClick(int viewId, int position) {
+                if (viewId == R.id.btn_delete) {
+                    mLoadingDialog.show();
+                    mDeletePosition = position;
+                    new DeleteConsumeRecordTask(MainActivity.this, MainActivity.this).execute(mRecords.get(mDeletePosition));
+                }
+            }
+        });
     }
 	
 	
@@ -281,6 +301,19 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onStatisticSumCompleted(Double sum) {
         mCurrentMonthSum.setText(NumberUtil.formatValue(sum));
+    }
+
+    @Override
+    public void OnDeleteConsumeRecordCompleted(boolean isCreateSuccess) {
+        mLoadingDialog.cancel();
+        if (isCreateSuccess) {
+            ToastUtil.showToast(this, String.format(getString(R.string.tip_delete_record_success), mRecords.get(mDeletePosition).getRecordName()), Toast.LENGTH_SHORT);
+            mRecords.remove(mDeletePosition);
+            mConsumeRecordAdapter.notifyDataSetChanged();
+        } else {
+            ToastUtil.showToast(this, String.format(getString(R.string.tip_delete_record_fail), mRecords.get(mDeletePosition).getRecordName()), Toast.LENGTH_SHORT);
+        }
+        
     }
 
 }
