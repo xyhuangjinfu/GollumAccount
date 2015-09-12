@@ -52,24 +52,27 @@ public class SwipeListView extends ListView {
 
     public SwipeListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mScroller = new Scroller(context);
-        mGestureDetector = new GestureDetector(context, new MyGestureListener());
+        init(context);
     }
 
     public SwipeListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mScroller = new Scroller(context);
-        mGestureDetector = new GestureDetector(context, new MyGestureListener());
+        init(context);
     }
 
     public SwipeListView(Context context) {
         super(context);
-        mScroller = new Scroller(context);
-        mGestureDetector = new GestureDetector(context, new MyGestureListener());
+        init(context);
     }
     
     public void setOnViewClickListener(OnViewClickListener listener) {
         this.mListener = listener;
+    }
+    
+    private void init(Context context) {
+        mStatus = SwipeStatus.NONE;
+        mScroller = new Scroller(context);
+        mGestureDetector = new GestureDetector(context, new MyGestureListener());
     }
 
     @Override
@@ -89,7 +92,7 @@ public class SwipeListView extends ListView {
                 smoothScrollTo(0, 0);
                 result = true;
             } else {
-//                result = super.onTouchEvent(event);
+                result = super.onTouchEvent(event);
             }
             
             break;
@@ -146,6 +149,7 @@ public class SwipeListView extends ListView {
             if (mStatus == SwipeStatus.NONE) {
                 result = super.onTouchEvent(event);
             } else {
+                mMotionView.setPressed(false);
                 result = true;
             }
             break;
@@ -210,7 +214,7 @@ public class SwipeListView extends ListView {
      */
     private void smoothScrollTo(int destX, int destY) {
         mStatus = SwipeStatus.SWIPING_AUTO;
-        int time = Math.abs(destX - mScroller.getFinalX()) * 500 / mOffset;
+        int time = Math.abs(destX - mScroller.getFinalX()) * 250 / mOffset;
         mScroller.abortAnimation();
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), destX - mScroller.getFinalX(), mScroller.getFinalY() - destY, time);
         post(new SmoothScrollRunnable());
