@@ -24,6 +24,7 @@ public class SwipeListView extends ListView {
     private Button mDeleteButton;
     
     private SwipeStatus mStatus;
+    private SwipeStatus mDownStatus;
     
     private ConsumeRecord mConsumeRecord;
     
@@ -71,6 +72,7 @@ public class SwipeListView extends ListView {
     
     private void init(Context context) {
         mStatus = SwipeStatus.NONE;
+        mDownStatus = mStatus;
         mScroller = new Scroller(context);
         mGestureDetector = new GestureDetector(context, new MyGestureListener());
     }
@@ -80,11 +82,11 @@ public class SwipeListView extends ListView {
         boolean result = false;
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            Log.e("O_O", "down");
+            Log.e("O_O", "down -----------------------------");
             mLastX = event.getX();
             mLastY = event.getY();
             
-            
+            mDownStatus = mStatus;
             /**
              * 如果当前有某个item处于SWIPE状态，那么，还原状态。
              */
@@ -92,7 +94,8 @@ public class SwipeListView extends ListView {
                 smoothScrollTo(0, 0);
                 result = true;
             } else {
-                result = super.onTouchEvent(event);
+//                result = super.onTouchEvent(event);
+                result = true;
             }
             
             break;
@@ -144,14 +147,22 @@ public class SwipeListView extends ListView {
             break;
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
-            Log.e("O_O", "up cancel");
-            fixPosition();
-            if (mStatus == SwipeStatus.NONE) {
+            Log.e("O_O", "up cancel mStatus : " + mStatus);
+            if (mStatus == SwipeStatus.NONE && mDownStatus == SwipeStatus.NONE) {
                 result = super.onTouchEvent(event);
             } else {
-                mMotionView.setPressed(false);
+                fixPosition();
                 result = true;
             }
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("O_O", "up setPressed false");
+                    if (mMotionView != null) {
+                        mMotionView.setPressed(false);
+                    }
+                }
+            }, 125);
             break;
         default:
             break;
