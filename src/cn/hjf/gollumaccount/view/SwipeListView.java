@@ -85,102 +85,91 @@ public class SwipeListView extends ListView {
             Log.e("O_O", "down -----------------------------");
             mLastX = event.getX();
             mLastY = event.getY();
-            
             mDownStatus = mStatus;
-            /**
-             * 如果当前有某个item处于SWIPE状态，那么，还原状态。
-             */
+            Log.e("O_O", "down mStatus : " + mStatus);
+            //如果当前有某个item处于SWIPE状态，那么，还原状态，不处理后续事件。
             if (mStatus == SwipeStatus.SWIPED) {
                 smoothScrollTo(0, 0);
-                result = true;
-            } else {
-//                result = super.onTouchEvent(event);
-                result = true;
+                result = false;
+            }
+            //如果当前有某个item处于SWIPING状态，空处理掉事件，不处理后续事件。
+            if (mStatus == SwipeStatus.SWIPING_MANUAL || mStatus == SwipeStatus.SWIPING_AUTO) {
+                return false;
             }
             
             break;
         case MotionEvent.ACTION_MOVE:
+//            Log.i("O_O", "move");
             
-            if (mStatus == SwipeStatus.SWIPING_AUTO) {
-                return true;
-            }
-            
-            Log.i("O_O", "move");
             //判断当前是左右滑动还是上下滑动，左右滑动，对上层屏蔽touch事件
             float deltax = Math.abs(event.getX() - mLastX);
             float deltay = Math.abs(event.getY() - mLastY);
+            
+            // 计算左右侧滑偏移量
+            int delta = (int) (mLastX - event.getX());
+            mLastX = event.getX();
+            mLastY = event.getY();
+            findMotionView(event);
+            if (mMotionView == null) {
+                return true;
+            }
+            mMotionView.setPressed(false);
             if (deltax > deltay + 3 ) { //左右
-                
-                result = true;
-                // 计算左右侧滑偏移量
-                int delta = (int) (mLastX - event.getX());
-                mLastX = event.getX();
-                mLastY = event.getY();
-                findMotionView();
                 //左滑
                 if (delta >= 3) {
                     delta = delta > (mOffset - mScroller.getFinalX()) ? (mOffset - mScroller.getFinalX()) : delta;
+                    mScroller.setFinalX(mScroller.getFinalX() + delta);
+                    mStatus = SwipeStatus.SWIPING_MANUAL;
+                    mMotionView.scrollBy(delta, 0);
+                    mMotionView.setPressed(false);
+                    if (mMotionView.getScrollX() == mOffset) {
+                        mStatus = SwipeStatus.SWIPED;
+                    } else if (mMotionView.getScrollX() == 0) {
+                        mStatus = SwipeStatus.NONE;
+                    }
                 }
                 //右滑
                 else if (delta <= -3) {
                     delta = -delta > mScroller.getFinalX() ? -mScroller.getFinalX() : delta;
+                    mScroller.setFinalX(mScroller.getFinalX() + delta);
+                    mStatus = SwipeStatus.SWIPING_MANUAL;
+                    mMotionView.scrollBy(delta, 0);
+                    mMotionView.setPressed(false);
+                    if (mMotionView.getScrollX() == mOffset) {
+                        mStatus = SwipeStatus.SWIPED;
+                    } else if (mMotionView.getScrollX() == 0) {
+                        mStatus = SwipeStatus.NONE;
+                    }
                 }
-                mScroller.setFinalX(mScroller.getFinalX() + delta);
-                mStatus = SwipeStatus.SWIPING_MANUAL;
-                mMotionView.scrollBy(delta, 0);
-                mMotionView.setPressed(false);
-                if (mMotionView.getScrollX() == mOffset) {
-                    mStatus = SwipeStatus.SWIPED;
-                } else if (mMotionView.getScrollX() == 0) {
-                    mStatus = SwipeStatus.NONE;
-                }
-                
-                
-                
-                
-            } else { //上下，交给父类处理，滚动ListView
-                if (mStatus == SwipeStatus.NONE) {
-                    Log.w("O_O", "上下滑动");
-                    result = super.onTouchEvent(event);
-                }
+                return true;
             }
             break;
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
             Log.e("O_O", "up cancel mStatus : " + mStatus);
-            if (mStatus == SwipeStatus.NONE && mDownStatus == SwipeStatus.NONE) {
-                result = super.onTouchEvent(event);
-            } else {
+            //如果不是初始状态，修正位置，处理掉该事件。
+            if (!mStatus.equals(SwipeStatus.NONE)) {
                 fixPosition();
-                result = true;
+                return true;
             }
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e("O_O", "up setPressed false");
-                    if (mMotionView != null) {
-                        mMotionView.setPressed(false);
-                    }
-                }
-            }, 125);
             break;
         default:
             break;
         }
       
-      
-      
-        return true;
+        return super.onTouchEvent(event);
     }
     
     /**
      * 根据触摸位置找到当前的MotionView
      */
-    private void findMotionView() {
+    private void findMotionView(MotionEvent event) {
         //得到当前操作的对象
-        if (mMotionView == null) {
-            final int motionPosition = pointToPosition((int)mLastX, (int)mLastY);
+            final int motionPosition = pointToPosition((int)event.getX(), (int)event.getY());
             mMotionView = this.getChildAt(motionPosition - getFirstVisiblePosition());
+            if (mMotionView == null) {
+                return;
+            }
             mDeleteButton = (Button) mMotionView.findViewById(R.id.btn_delete);
             if (mOffset == 0) {
                 mOffset = mDeleteButton.getWidth();
@@ -196,7 +185,6 @@ public class SwipeListView extends ListView {
                     }
                 }
             });
-        }
     }
     
     /**
@@ -208,6 +196,14 @@ public class SwipeListView extends ListView {
         if (mMotionView == null) {
             return;
         }
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mMotionView != null) {
+                    mMotionView.setPressed(false);
+                }
+            }
+        }, 200);
         //显示过半，并且状态不是swipe
         if (mMotionView.getScrollX() >= mOffset / 2 && mStatus == SwipeStatus.SWIPING_MANUAL) {
             smoothScrollTo(mOffset, 0);
