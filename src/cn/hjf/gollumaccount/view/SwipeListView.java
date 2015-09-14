@@ -36,6 +36,8 @@ public class SwipeListView extends ListView {
     
     private OnViewClickListener mListener;
     
+    private PressRunnable mPressRunnable;
+    
     public interface OnViewClickListener {
         public abstract void onViewClick(int viewId, int position);
     }
@@ -76,10 +78,19 @@ public class SwipeListView extends ListView {
         mScroller = new Scroller(context);
         mGestureDetector = new GestureDetector(context, new MyGestureListener());
     }
+    
+    private class PressRunnable implements Runnable {
+        @Override
+        public void run() {
+            if (mMotionView != null) {
+                mMotionView.setPressed(true);
+            }
+        }
+        
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean result = false;
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
             Log.e("O_O", "down -----------------------------");
@@ -90,14 +101,22 @@ public class SwipeListView extends ListView {
             //如果当前有某个item处于SWIPE状态，那么，还原状态，不处理后续事件。
             if (mStatus == SwipeStatus.SWIPED) {
                 smoothScrollTo(0, 0);
-                result = false;
+                return false;
             }
             //如果当前有某个item处于SWIPING状态，空处理掉事件，不处理后续事件。
             if (mStatus == SwipeStatus.SWIPING_MANUAL || mStatus == SwipeStatus.SWIPING_AUTO) {
                 return false;
             }
             
-            break;
+            findMotionView(event);
+            
+            if (mPressRunnable == null) {
+                mPressRunnable = new PressRunnable();
+            }
+            
+            postDelayed(mPressRunnable, 100);
+            return true;
+//            break;
         case MotionEvent.ACTION_MOVE:
 //            Log.i("O_O", "move");
             
@@ -106,7 +125,8 @@ public class SwipeListView extends ListView {
             float deltay = Math.abs(event.getY() - mLastY);
             
             // 计算左右侧滑偏移量
-            int delta = (int) (mLastX - event.getX());
+            int dx = (int) (mLastX - event.getX());
+            int dy = (int) (mLastY - event.getY());
             mLastX = event.getX();
             mLastY = event.getY();
             findMotionView(event);
@@ -116,11 +136,11 @@ public class SwipeListView extends ListView {
             mMotionView.setPressed(false);
             if (deltax > deltay + 3 ) { //左右
                 //左滑
-                if (delta >= 3) {
-                    delta = delta > (mOffset - mScroller.getFinalX()) ? (mOffset - mScroller.getFinalX()) : delta;
-                    mScroller.setFinalX(mScroller.getFinalX() + delta);
+                if (dx >= 3) {
+                    dx = dx > (mOffset - mScroller.getFinalX()) ? (mOffset - mScroller.getFinalX()) : dx;
+                    mScroller.setFinalX(mScroller.getFinalX() + dx);
                     mStatus = SwipeStatus.SWIPING_MANUAL;
-                    mMotionView.scrollBy(delta, 0);
+                    mMotionView.scrollBy(dx, 0);
                     mMotionView.setPressed(false);
                     if (mMotionView.getScrollX() == mOffset) {
                         mStatus = SwipeStatus.SWIPED;
@@ -129,11 +149,11 @@ public class SwipeListView extends ListView {
                     }
                 }
                 //右滑
-                else if (delta <= -3) {
-                    delta = -delta > mScroller.getFinalX() ? -mScroller.getFinalX() : delta;
-                    mScroller.setFinalX(mScroller.getFinalX() + delta);
+                else if (dx <= -3) {
+                    dx = -dx > mScroller.getFinalX() ? -mScroller.getFinalX() : dx;
+                    mScroller.setFinalX(mScroller.getFinalX() + dx);
                     mStatus = SwipeStatus.SWIPING_MANUAL;
-                    mMotionView.scrollBy(delta, 0);
+                    mMotionView.scrollBy(dx, 0);
                     mMotionView.setPressed(false);
                     if (mMotionView.getScrollX() == mOffset) {
                         mStatus = SwipeStatus.SWIPED;
@@ -142,15 +162,22 @@ public class SwipeListView extends ListView {
                     }
                 }
                 return true;
+            } else {
+                if (mStatus != SwipeStatus.NONE) {
+                    return true;
+                }
             }
             break;
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
             Log.e("O_O", "up cancel mStatus : " + mStatus);
+            removeCallbacks(mPressRunnable);
             //如果不是初始状态，修正位置，处理掉该事件。
             if (!mStatus.equals(SwipeStatus.NONE)) {
                 fixPosition();
                 return true;
+            } else {
+                mMotionView = null;
             }
             break;
         default:
@@ -165,6 +192,8 @@ public class SwipeListView extends ListView {
      */
     private void findMotionView(MotionEvent event) {
         //得到当前操作的对象
+        if (mMotionView == null) {
+            
             final int motionPosition = pointToPosition((int)event.getX(), (int)event.getY());
             mMotionView = this.getChildAt(motionPosition - getFirstVisiblePosition());
             if (mMotionView == null) {
@@ -185,6 +214,7 @@ public class SwipeListView extends ListView {
                     }
                 }
             });
+        }
     }
     
     /**
