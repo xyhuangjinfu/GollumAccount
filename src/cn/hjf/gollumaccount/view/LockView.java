@@ -1,42 +1,45 @@
 package cn.hjf.gollumaccount.view;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
+/**
+ * 九宫格视图
+ * @author huangjinfu
+ *
+ */
 public class LockView extends View {
     
-    private Paint mPaint;
+    private static final int RADIUS_OUTER   = 100; //大圆半径
+    private static final int RADIUS_INNER   = 90; //小圆半径
+    private static final int RADIUS_CENTER  = 10; //圆心半径
     
-    private Point[][] mPoints;
+    private static final int COLOR_NORMAL = 0xFF0099CC; //格子正常颜色
+    private static final int COLOR_NORMAL_HIGHLIGHT = 0x880099CC; //格子正常颜色高亮
+    private static final int COLOR_FAIL = 0xFFFF0000; //格子验证失败的颜色
+    private static final int COLOR_BACKGROUD = 0xFFFFFFFF; //背景颜色
     
-    private Point mCurrentPoint;
+    private Paint mBackGroudPaint; //画格子的背景
+    private Paint mNormalPaint; //画格子的大圆和小圆
+    private Paint mHighlightPaint; //画高亮的格子
     
-    private int mGap;
-    
-    private List<Point> mSelectedPoint;
-    
-    private Vibrator mVibrator;
-    
-    private Context mContext;
-    
-    private OnInputListener mListener;
+    private Circle[][] mCircles; //3x3的数组，放置9各格子
+    private Point mCurrentPoint; //当前触摸位置
+    private int mGap; //格子的间距
+    private List<Circle> mSelectedCircles; //已经选择的格子
+    private Vibrator mVibrator; //振动器
+    private OnInputListener mListener; //输入结果监听器
     
     public interface OnInputListener {
-        public abstract void OnInputCompleted(String inputResult);
+        public abstract void OnInputCompleted(Position[] inputResult);
     }
 
     public LockView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -54,191 +57,222 @@ public class LockView extends View {
         init(context);
     }
 
+    /**
+     * 初始化
+     */
     private void init(Context context) {
-        mContext = context;
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPoints = new Point[3][3];
+        
+        mBackGroudPaint = new Paint();
+        mBackGroudPaint.setAntiAlias(true);
+        mBackGroudPaint.setColor(COLOR_BACKGROUD);
+        
+        mNormalPaint = new Paint();
+        mNormalPaint.setAntiAlias(true);
+        mNormalPaint.setColor(COLOR_NORMAL);
+        
+        mHighlightPaint = new Paint();
+        mHighlightPaint.setAntiAlias(true);
+        mHighlightPaint.setStrokeWidth(10f);
+        mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
+        
+        mCircles = new Circle[3][3];
         mCurrentPoint = new Point();
-        mSelectedPoint = new ArrayList<Point>();
+        mSelectedCircles = new ArrayList<Circle>();
     }
-    
-    public void setOnInputListener(OnInputListener onInputListener) {
-        this.mListener = onInputListener;
-    }
-    
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            
+            //重置状态
+            reset();
+            //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
-            
-            Point downPoint = isInCircle(event);
+            //如果没有触摸到九宫格，返回，不处理后续事件
+            Circle downPoint = getCircle(event);
             if (downPoint == null) {
                 return false;
             }
-            
-            mSelectedPoint.clear();
-            invalidate();
-            
+            //选择触摸到的格子
             select(downPoint);
-            
-            
             break;
-            
         case MotionEvent.ACTION_MOVE:
-            Log.i("O_O", "ACTION_MOVE");
+            //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
-            
-            Point downPoint1 = isInCircle(event);
+            //如果触碰到格子，选择触摸到的格子
+            Circle downPoint1 = getCircle(event);
             if (downPoint1 != null) {
                 select(downPoint1);
             }
-            
-            drawLine(event);
-            
-
-            
-            
-            
-            
-            
+            invalidate();
             break;
-            
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
-            Log.d("O_O", "ACTION_UP ACTION_CANCEL");
+            //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
-            
-            
-            
-            
-            mListener.OnInputCompleted("xxx");
-            reset();
+            //把输入返回给调用者
+            if (mListener != null) {
+                Position[] positions = new Position[mSelectedCircles.size()];
+                for (int i = 0; i < mSelectedCircles.size(); i++) {
+                    positions[i] = mSelectedCircles.get(i).position;
+                }
+                mListener.OnInputCompleted(positions);
+            }
+            //把最后结果呈现给出来
+            drawCircles(COLOR_NORMAL_HIGHLIGHT);
             break;
-
         default:
             break;
         }
         return true;
     }
     
-    
-    
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e("O_O", "onDraw");
         canvas.drawARGB(255, 255, 255, 255);
         computeGap();
         computePoint();
-        drawPoint(canvas);
+        drawDynamic(canvas);
     }
     
-    
-    private void select(Point point) {
-        if (!mSelectedPoint.contains(point)) {
+    /**
+     * 选择某一个格子
+     * @param circle
+     */
+    private void select(Circle circle) {
+        if (!mSelectedCircles.contains(circle)) {
             mVibrator.vibrate(50);
-            mSelectedPoint.add(point);
-            Log.i("O_O", "add : " + point.toString());
+            mSelectedCircles.add(circle);
             invalidate();
         }
         
     }
     
+    /**
+     * 重置状态
+     */
     private void reset() {
-//        mSelectedPoint.clear();
-//        postInvalidateDelayed(2000);
-        if (mSelectedPoint.size() != 0) {
-            mCurrentPoint.x = mSelectedPoint.get(mSelectedPoint.size() - 1).x;
-            mCurrentPoint.y = mSelectedPoint.get(mSelectedPoint.size() - 1).y;
+        mBackGroudPaint.setColor(COLOR_BACKGROUD);
+        mNormalPaint.setColor(COLOR_NORMAL);
+        mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
+        mSelectedCircles.clear();
+        invalidate();
+    }
+    
+    /**
+     * 用指定的颜色绘制已经选择的圆
+     * @param color
+     */
+    private void drawCircles(int color) {
+        mHighlightPaint.setColor(color);
+        if (mSelectedCircles.size() != 0) {
+            mCurrentPoint.x = mSelectedCircles.get(mSelectedCircles.size() - 1).center.x;
+            mCurrentPoint.y = mSelectedCircles.get(mSelectedCircles.size() - 1).center.y;
         }
         invalidate();
     }
     
+    /**
+     * 设置结果监听器
+     * @param onInputListener
+     */
+    public void setOnInputListener(OnInputListener onInputListener) {
+        this.mListener = onInputListener;
+    }
     
+    /**
+     * 用指定的颜色绘制指定的圆
+     * @param positions
+     * @param color
+     */
+    public void drawCircles(Position[] positions, int color) {
+        mHighlightPaint.setColor(color);
+        mSelectedCircles.clear();
+        for (int k = 0; k < positions.length; k++) {
+            for (int i = 0; i < mCircles.length; i++) {
+                for (int j = 0; j < mCircles[i].length; j++) {
+                    if (positions[k].equals(mCircles[i][j].position) ) {
+                        mSelectedCircles.add(mCircles[i][j]);
+                    }
+                }
+            }
+        }
+        drawCircles(color);
+    }
+    
+    /**
+     * 计算格子之间的距离
+     */
     private void computeGap() {
         mGap = getWidth() / 4;
     }
     
+    /**
+     * 计算每个格子的原点坐标
+     */
     private void computePoint() {
         int marginTop = (getHeight() - mGap * 2) / 2;
-        
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                mPoints[i][j] = new Point(mGap * (j + 1), marginTop);
+                mCircles[i][j] = new Circle(new Position(i, j), new Point(mGap * (j + 1), marginTop));
             }
             marginTop += mGap;
         }
     }
     
-    private void drawPoint(Canvas canvas) {
-        //0xFF9933CC - selected
-        //0xff0099cc - normal
-        mPaint.setColor(0xFF9933CC);
-        for (int i = 0; i < mPoints.length; i++) {
-            for (int j = 0; j < mPoints[i].length; j++) {
-                if (mSelectedPoint.contains(mPoints[i][j])) {
-                    mPaint.setColor(0xFF9933CC);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 100, mPaint);
-                    mPaint.setColor(0xffffffff);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 90, mPaint);
-                    mPaint.setColor(0xFF9933CC);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 10, mPaint);
+    /**
+     * 主要的绘制方法,负责绘制格子和线条
+     * @param canvas
+     */
+    private void drawDynamic(Canvas canvas) {
+        for (int i = 0; i < mCircles.length; i++) {
+            for (int j = 0; j < mCircles[i].length; j++) {
+                if (mSelectedCircles.contains(mCircles[i][j])) {
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_OUTER, mHighlightPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_INNER, mBackGroudPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_CENTER, mHighlightPaint);
                 } else {
-                    mPaint.setColor(0xff0099cc);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 100, mPaint);
-                    mPaint.setColor(0xffffffff);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 90, mPaint);
-                    mPaint.setColor(0xff0099cc);
-                    canvas.drawCircle(mPoints[i][j].x, mPoints[i][j].y, 10, mPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_OUTER, mNormalPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_INNER, mBackGroudPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_CENTER, mNormalPaint);
                 }
             }
         }
         
-        
-        if (mSelectedPoint.size() == 0) {
+        if (mSelectedCircles.size() == 0) {
             return;
         }
         
-        
-        mPaint.setColor(0xFF9933CC);
-        mPaint.setStrokeWidth(10f);
-        if (mSelectedPoint.size() == 1) {
-//          Log.i("O_O", "== 1 mSelectedPoint : " + mSelectedPoint.get(mSelectedPoint.size() - 1).toString());
-//          Log.i("O_O", "== 1 mCurrentPoint : " + mCurrentPoint.toString());
-            canvas.drawLine(mSelectedPoint.get(mSelectedPoint.size() - 1).x, mSelectedPoint.get(mSelectedPoint.size() - 1).y, 
-                    mCurrentPoint.x, mCurrentPoint.y, mPaint);
+        if (mSelectedCircles.size() == 1) {
+            canvas.drawLine(mSelectedCircles.get(mSelectedCircles.size() - 1).center.x, mSelectedCircles.get(mSelectedCircles.size() - 1).center.y, 
+                    mCurrentPoint.x, mCurrentPoint.y, mHighlightPaint);
         } else {
-//          Log.i("O_O", ">= 2 mSelectedPoint : " + mSelectedPoint.get(mSelectedPoint.size() - 1).toString());
-//          Log.i("O_O", ">= 2 mCurrentPoint : " + mCurrentPoint.toString());
-            for (int i = 0; i < mSelectedPoint.size() - 1; i++) {
-                canvas.drawLine(mSelectedPoint.get(i).x, mSelectedPoint.get(i).y, 
-                        mSelectedPoint.get(i + 1).x, mSelectedPoint.get(i + 1).y, mPaint);
+            for (int i = 0; i < mSelectedCircles.size() - 1; i++) {
+                canvas.drawLine(mSelectedCircles.get(i).center.x, mSelectedCircles.get(i).center.y, 
+                        mSelectedCircles.get(i + 1).center.x, mSelectedCircles.get(i + 1).center.y, mHighlightPaint);
             }
-            canvas.drawLine(mSelectedPoint.get(mSelectedPoint.size() - 1).x, mSelectedPoint.get(mSelectedPoint.size() - 1).y, 
-                    mCurrentPoint.x, mCurrentPoint.y, mPaint);
+            canvas.drawLine(mSelectedCircles.get(mSelectedCircles.size() - 1).center.x, mSelectedCircles.get(mSelectedCircles.size() - 1).center.y, 
+                    mCurrentPoint.x, mCurrentPoint.y, mHighlightPaint);
         }
+        
+        mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
     }
     
-    private void drawLine(MotionEvent event) {
-        mCurrentPoint.x = (int) event.getX();
-        mCurrentPoint.y = (int) event.getY();
-        invalidate();
-    }
-    
-    
-    private Point isInCircle(MotionEvent event) {
+    /**
+     * 如果当前触摸位置在某个格子中，就返回这个格子
+     * @param event
+     * @return
+     */
+    private Circle getCircle(MotionEvent event) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if( (event.getX() <= mPoints[i][j].x + 100) && (event.getX() >= mPoints[i][j].x - 100) ) {
-                    if ((event.getY() <= mPoints[i][j].y + 100) && (event.getY() >= mPoints[i][j].y - 100)) {
-                        return mPoints[i][j];
+                if( (event.getX() <= mCircles[i][j].center.x + RADIUS_OUTER) && (event.getX() >= mCircles[i][j].center.x - RADIUS_OUTER) ) {
+                    if ((event.getY() <= mCircles[i][j].center.y + RADIUS_OUTER) && (event.getY() >= mCircles[i][j].center.y - RADIUS_OUTER)) {
+                        return mCircles[i][j];
                     }
                 }
             }
@@ -246,4 +280,66 @@ public class LockView extends View {
         return null;
     }
     
+    
+    /**
+     * 格子
+     * @author huangjinfu
+     */
+    private class Circle {
+        Position position;
+        Point center;
+        public Circle (Position position, Point center) {
+            this.position = position;
+            this.center = center;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Circle)) {
+                return false;
+            }
+            Circle d = (Circle) o;
+            if (this.position.equals(d.position) && this.center.equals(d.center)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+    }
+    
+    /**
+     * 位置
+     * @author huangjinfu
+     */
+    public class Position {
+        public int row;
+        public int column;
+        public Position (int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+        @Override
+        public String toString() {
+            return "row : " + row + ", column : " + column;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Position)) {
+                return false;
+            }
+            Position d = (Position) o;
+            if (this.row == d.row && this.column == d.column) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+    }
 }
