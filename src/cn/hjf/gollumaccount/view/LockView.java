@@ -19,8 +19,8 @@ import android.view.View;
 public class LockView extends View {
     
     private static final int RADIUS_OUTER   = 100; //大圆半径
-    private static final int RADIUS_INNER   = 90; //小圆半径
-    private static final int RADIUS_CENTER  = 10; //圆心半径
+    private static final int RADIUS_INNER   = 95; //小圆半径
+    private static final int RADIUS_CENTER  = 5; //圆心半径
     
     private static final int COLOR_NORMAL = 0xFF0099CC; //格子正常颜色
     private static final int COLOR_NORMAL_HIGHLIGHT = 0x880099CC; //格子正常颜色高亮
@@ -73,7 +73,7 @@ public class LockView extends View {
         
         mHighlightPaint = new Paint();
         mHighlightPaint.setAntiAlias(true);
-        mHighlightPaint.setStrokeWidth(10f);
+        mHighlightPaint.setStrokeWidth(5f);
         mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
         
         mCircles = new Circle[3][3];
@@ -208,7 +208,7 @@ public class LockView extends View {
      * 计算格子之间的距离
      */
     private void computeGap() {
-        mGap = getWidth() / 4;
+        mGap = getWidth() * 3 / 10;
     }
     
     /**
@@ -218,7 +218,7 @@ public class LockView extends View {
         int marginTop = (getHeight() - mGap * 2) / 2;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                mCircles[i][j] = new Circle(new Position(i, j), new Point(mGap * (j + 1), marginTop));
+                mCircles[i][j] = new Circle(new Position(i, j), new Point( (getWidth() - 2 * mGap)/2 + j * mGap , marginTop));
             }
             marginTop += mGap;
         }
