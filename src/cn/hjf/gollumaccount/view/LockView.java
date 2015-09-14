@@ -155,7 +155,7 @@ public class LockView extends View {
     /**
      * 重置状态
      */
-    private void reset() {
+    public void reset() {
         mBackGroudPaint.setColor(COLOR_BACKGROUD);
         mNormalPaint.setColor(COLOR_NORMAL);
         mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);

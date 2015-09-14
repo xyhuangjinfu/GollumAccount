@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+    
+        <!-- 顶部标题栏 -->
+
+    <fragment
+        android:id="@+id/title_lock_screen"
+        android:name="cn.hjf.gollumaccount.fragment.CommonHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <cn.hjf.gollumaccount.view.LockView
         android:id="@+id/v_lock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_lock_screen"
          />
     
 </RelativeLayout>
