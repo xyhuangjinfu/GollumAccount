@@ -20,4 +20,18 @@
         android:layout_below="@id/title_lock_screen"
          />
     
+    <TextView 
+        android:id="@+id/tv_forget_pwd"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="15dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="@dimen/textsize_indicator"
+        android:textColor="@color/color_click_text"
+        android:text="@string/label_forget_pwd"
+        android:visibility="gone"
+        />
+    
 </RelativeLayout>

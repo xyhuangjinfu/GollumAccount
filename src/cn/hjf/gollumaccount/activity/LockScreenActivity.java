@@ -16,6 +16,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LockScreenActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
@@ -30,6 +33,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
     private LockView mLockView; //九宫格
     private PageType mPageType; //页面工作类型
     private LaunchType mLaunchType; //页面启动类型
+    private TextView mForgetText; //忘记密码
     
     private boolean mNeedFinishAnimate = false; //是否需要页面离开动画
     
@@ -94,6 +98,8 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
         if (mLaunchType == null) {
             mLaunchType = LaunchType.APP_START;
         }
+        Log.i("O_O", "mPageType : " + mPageType);
+        Log.i("O_O", "mLaunchType : " + mLaunchType);
     }
     
     /**
@@ -122,6 +128,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
     @Override
     protected void initView() {
         mLockView = (LockView) findViewById(R.id.v_lock);
+        mForgetText = (TextView) findViewById(R.id.tv_forget_pwd);
     }
 
     @Override
@@ -139,10 +146,25 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
         default:
             break;
         }
+        
+        if (mPageType.equals(PageType.INPUT_PWD)) {
+            mForgetText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void initEvent() {
+        mForgetText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LockScreenActivity.this, LockScreenActivity.class);
+                intent.putExtra(PAGE_TYPE, PageType.SET_PWD);
+                intent.putExtra(LAUNCH_TYPE, LaunchType.FORGET_PWD);
+                startActivity(intent);
+                finish();
+            }
+        });
+        
         mLockView.setOnInputListener(new OnInputListener() {
             @Override
             public void OnInputCompleted(Position[] inputResult) {
@@ -161,7 +183,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                 if (mPageType.equals(PageType.SET_PWD_REPEAT)) {
                     if (mPassword.equals(getPassword(inputResult))) {
                         SharedPreferencesUtil.getSharedPreferences(LockScreenActivity.this).edit().putString(Constants.PASSWORD, mPassword).commit();
-                        ToastUtil.showToast(getApplicationContext(), getString(R.string.tip_password_conflict), Toast.LENGTH_SHORT);
+                        ToastUtil.showToast(getApplicationContext(), getString(R.string.tip_set_password_success), Toast.LENGTH_LONG);
                         switch (mLaunchType) {
                         case APP_START:
                             Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
@@ -169,7 +191,10 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                             finish();
                             break;
                         case FORGET_PWD:
-                            
+                            Intent intent1 = new Intent(LockScreenActivity.this, LockScreenActivity.class);
+                            intent1.putExtra(PAGE_TYPE, PageType.INPUT_PWD);
+                            startActivity(intent1);
+                            finish();
                             break;
                         case RESET_PWD:
                             mNeedFinishAnimate = true;
@@ -205,7 +230,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                             public void run() {
                                 mLockView.drawCircles(mPositions, Color.RED);
                             }
-                        }, 500);
+                        }, 50);
                         mLockView.postDelayed(new Runnable() {
                             @Override
                             public void run() {

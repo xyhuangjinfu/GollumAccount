@@ -76,6 +76,7 @@
     <string name="label_no_data">没有数据!</string>
     <string name="label_loading">加载中...</string>
     <string name="label_ratio">"%1$s%%"</string>
+    <string name="label_forget_pwd">忘记密码？点击重置</string>
 
     <!-- TextView的hint -->
     <string name="hint_name">消费记录名称</string>
