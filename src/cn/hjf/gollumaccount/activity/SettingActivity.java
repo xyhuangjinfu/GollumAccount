@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.hjf.gollumaccount.R;
+import cn.hjf.gollumaccount.activity.LockScreenActivity.PageType;
 import cn.hjf.gollumaccount.adapter.SettingSelectMenuAdapter;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
@@ -82,8 +83,10 @@ public class SettingActivity extends BaseActivity implements CommonHeaderFragmen
                     SettingActivity.this.startActivity(intent0);
                     break;
                 case 1:
-//                    Intent intent1 = new Intent(SettingActivity.this, ThemeSettingActivity.class);
-//                    SettingActivity.this.startActivity(intent1);
+                    Intent intent1 = new Intent(SettingActivity.this, LockScreenActivity.class);
+                    intent1.putExtra(LockScreenActivity.PAGE_TYPE, LockScreenActivity.PageType.SET_PWD);
+                    intent1.putExtra(LockScreenActivity.LAUNCH_TYPE, LockScreenActivity.LaunchType.RESET_PWD);
+                    SettingActivity.this.startActivity(intent1);
                     break;
                 default:
                     break;

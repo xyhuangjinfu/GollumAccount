@@ -1,5 +1,6 @@
 package cn.hjf.gollumaccount.activity;
 
+import cn.hjf.gollumaccount.Constants;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment;
 import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
@@ -19,24 +20,33 @@ import android.widget.Toast;
 
 public class LockScreenActivity extends BaseActivity implements CommonHeaderFragment.ICallback {
     
-    private static final String PW = "6B1DCB1217F37815251CA42F38886F2A";
     public static final String PAGE_TYPE = "page_type";
+    public static final String LAUNCH_TYPE = "launch_type";
     public static final String PASSWORD = "password";
     
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     
     private boolean mIsFirstLogin; //第一次打开，还没设置过密码
     private LockView mLockView; //九宫格
-    private PageType mPageType; //页面类型
+    private PageType mPageType; //页面工作类型
+    private LaunchType mLaunchType; //页面启动类型
+    
+    private boolean mNeedFinishAnimate = false; //是否需要页面离开动画
     
     private String mPassword;
     
     private Position[] mPositions;
     
-    private enum PageType {
+    public enum PageType {
         SET_PWD, //首次使用，或者重置密码，第一次设置密码界面
         SET_PWD_REPEAT, //第二次设置密码界面
         INPUT_PWD //登录，输入密码界面
+    }
+    
+    public enum LaunchType {
+        APP_START, //应用启动
+        FORGET_PWD, //应用启动，忘记密码
+        RESET_PWD //进入设置界面，重置密码
     }
     
     
@@ -60,12 +70,12 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
     }
     
     /**
-     * 页面工作模式识别
+     * 页面工作模式和启动模式识别
      */
     private void typeIdentify() {
         //应用刚启动
         if (getIntent().getSerializableExtra(PAGE_TYPE) == null) {
-            mPassword = SharedPreferencesUtil.getSharedPreferences(this).getString("password", null);
+            mPassword = SharedPreferencesUtil.getSharedPreferences(this).getString(Constants.PASSWORD, null);
             mIsFirstLogin = mPassword == null ? true : false;
             //还没有密码,页面状态为 SET_PWD
             if (mIsFirstLogin) {
@@ -77,6 +87,12 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
             }
         } else {
             mPageType = (PageType) getIntent().getSerializableExtra(PAGE_TYPE);
+        }
+        
+        //页面启动模式，如果为空，就是App启动
+        mLaunchType = (LaunchType) getIntent().getSerializableExtra(LAUNCH_TYPE);
+        if (mLaunchType == null) {
+            mLaunchType = LaunchType.APP_START;
         }
     }
     
@@ -137,16 +153,36 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                     Intent intent = new Intent(LockScreenActivity.this, LockScreenActivity.class);
                     intent.putExtra(PAGE_TYPE, PageType.SET_PWD_REPEAT);
                     intent.putExtra(PASSWORD, mPassword);
+                    intent.putExtra(LAUNCH_TYPE, mLaunchType);
                     startActivity(intent);
                     finish();
                     return;
                 }
                 if (mPageType.equals(PageType.SET_PWD_REPEAT)) {
                     if (mPassword.equals(getPassword(inputResult))) {
-                        SharedPreferencesUtil.getSharedPreferences(LockScreenActivity.this).edit().putString("password", mPassword).commit();
-                        Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        SharedPreferencesUtil.getSharedPreferences(LockScreenActivity.this).edit().putString(Constants.PASSWORD, mPassword).commit();
+                        ToastUtil.showToast(getApplicationContext(), getString(R.string.tip_password_conflict), Toast.LENGTH_SHORT);
+                        switch (mLaunchType) {
+                        case APP_START:
+                            Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case FORGET_PWD:
+                            
+                            break;
+                        case RESET_PWD:
+                            mNeedFinishAnimate = true;
+                            finish();
+                            break;
+                        default:
+                            break;
+                        }
+                        
+
+                        
+                        
+                        
                     } else {
                         ToastUtil.showToast(getApplicationContext(), getString(R.string.tip_password_conflict), Toast.LENGTH_SHORT);
                         mLockView.postDelayed(new Runnable() {
@@ -201,7 +237,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
     
     @Override
     protected boolean needFinishAnimate() {
-        return false;
+        return mNeedFinishAnimate;
     }
 
     @Override
