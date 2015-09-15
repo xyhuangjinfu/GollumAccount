@@ -1,5 +1,6 @@
 package cn.hjf.gollumaccount.daomodel;
 
+import cn.hjf.gollumaccount.businessmodel.ConsumeType.Type;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,6 +13,7 @@ import android.os.Parcelable;
 public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel> {
     
     public enum Type {
+        ALL, //所有类型
         INSIDE, //内置类型
         CUSTOME, //自定义类型
         CONTROL //控制类型
@@ -20,14 +22,16 @@ public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel
 	private int id; //唯一标识
 	private String name; //类型名称
 	private Type type; //类型，区分自定义类型和内置类型
+	private String icon; //图标
 	
 	public ConsumeTypeModel () {
 	}
 	
-	public ConsumeTypeModel (String name, Type type) {
-	    this.name = name;
-	    this.type = type;
-	}
+    public ConsumeTypeModel (String name, Type type, String icon) {
+        this.name = name;
+        this.type = type;
+        this.icon = icon;
+    }
 
 	public int getId() {
 		return id;
@@ -51,6 +55,14 @@ public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel
 
     public void setType(Type type) {
         this.type = type;
+    }
+    
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 	
 	@Override
@@ -84,12 +96,14 @@ public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeSerializable(type);
+        dest.writeString(icon);
     }
     
     private ConsumeTypeModel(Parcel source) {
         id = source.readInt();
         name = source.readString();
         type = (Type) source.readSerializable();
+        icon = source.readString();
     }
     
     public static final Parcelable.Creator<ConsumeTypeModel> CREATOR = new Parcelable.Creator<ConsumeTypeModel>() {
@@ -106,14 +120,93 @@ public class ConsumeTypeModel implements Parcelable, Comparable<ConsumeTypeModel
 
     @Override
     public int compareTo(ConsumeTypeModel another) {
-        int compare = 0;
-        if (another.type == ConsumeTypeModel.Type.INSIDE) {
-            compare = 1;
-        } else if (another.type == ConsumeTypeModel.Type.CUSTOME) {
-            compare = 0;
-        } else if (another.type == ConsumeTypeModel.Type.CONTROL) {
-            compare = -1;
+int compare = 0;
+        
+        switch (this.type) {
+        case ALL:
+            
+            switch (another.type) {
+            case ALL:
+                compare = 0;
+                break;
+            case INSIDE:
+                compare = 1;
+                break;
+            case CUSTOME:
+                compare = 1;
+                break;
+            case CONTROL:
+                compare = -1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case INSIDE:
+
+            switch (another.type) {
+            case ALL:
+                compare = -1;
+                break;
+            case INSIDE:
+                compare = 0;
+                break;
+            case CUSTOME:
+                compare = -1;
+                break;
+            case CONTROL:
+                compare = -1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case CUSTOME:
+
+            switch (another.type) {
+            case ALL:
+                compare = 1;
+                break;
+            case INSIDE:
+                compare = -1;
+                break;
+            case CUSTOME:
+                compare = 0;
+                break;
+            case CONTROL:
+                compare = 1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case CONTROL:
+
+            switch (another.type) {
+            case ALL:
+                compare = 1;
+                break;
+            case INSIDE:
+                compare = 0;
+                break;
+            case CUSTOME:
+                compare = 1;
+                break;
+            case CONTROL:
+                compare = 1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        default:
+            break;
         }
+        
         return compare;
     }
 

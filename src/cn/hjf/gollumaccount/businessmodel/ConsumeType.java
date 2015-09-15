@@ -12,6 +12,7 @@ import android.os.Parcelable;
 public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
     
     public enum Type {
+        ALL, //所有类型
         INSIDE, //内置类型
         CUSTOME, //自定义类型
         CONTROL //控制类型
@@ -20,13 +21,15 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
 	private int id; //唯一标识
 	private String name; //类型名称
 	private Type type; //类型，区分自定义类型和内置类型
+	private String icon; //图标
 	
 	public ConsumeType () {
 	}
 	
-	public ConsumeType (String name, Type type) {
+	public ConsumeType (String name, Type type, String icon) {
 	    this.name = name;
 	    this.type = type;
+	    this.icon = icon;
 	}
 
 	public int getId() {
@@ -52,8 +55,16 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
     public void setType(Type type) {
         this.type = type;
     }
-	
-	@Override
+    
+	public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    @Override
 	public int hashCode() {
 	    return name == null ? 0 : name.hashCode();
 	}
@@ -84,12 +95,14 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeSerializable(type);
+        dest.writeString(icon);
     }
     
     private ConsumeType(Parcel source) {
         id = source.readInt();
         name = source.readString();
         type = (Type) source.readSerializable();
+        icon = source.readString();
     }
     
     public static final Parcelable.Creator<ConsumeType> CREATOR = new Parcelable.Creator<ConsumeType>() {
@@ -107,13 +120,92 @@ public class ConsumeType implements Parcelable, Comparable<ConsumeType> {
     @Override
     public int compareTo(ConsumeType another) {
         int compare = 0;
-        if (another.type == ConsumeType.Type.INSIDE) {
-            compare = 1;
-        } else if (another.type == ConsumeType.Type.CUSTOME) {
-            compare = 0;
-        } else if (another.type == ConsumeType.Type.CONTROL) {
-            compare = -1;
+        
+        switch (this.type) {
+        case ALL:
+            
+            switch (another.type) {
+            case ALL:
+                compare = 0;
+                break;
+            case INSIDE:
+                compare = 1;
+                break;
+            case CUSTOME:
+                compare = 1;
+                break;
+            case CONTROL:
+                compare = -1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case INSIDE:
+
+            switch (another.type) {
+            case ALL:
+                compare = -1;
+                break;
+            case INSIDE:
+                compare = 0;
+                break;
+            case CUSTOME:
+                compare = -1;
+                break;
+            case CONTROL:
+                compare = -1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case CUSTOME:
+
+            switch (another.type) {
+            case ALL:
+                compare = 1;
+                break;
+            case INSIDE:
+                compare = -1;
+                break;
+            case CUSTOME:
+                compare = 0;
+                break;
+            case CONTROL:
+                compare = 1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        case CONTROL:
+
+            switch (another.type) {
+            case ALL:
+                compare = 1;
+                break;
+            case INSIDE:
+                compare = 0;
+                break;
+            case CUSTOME:
+                compare = 1;
+                break;
+            case CONTROL:
+                compare = 1;
+                break;
+            default:
+                break;
+            }
+            
+            break;
+        default:
+            break;
         }
+        
         return compare;
     }
 
