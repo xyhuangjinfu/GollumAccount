@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -62,7 +66,7 @@ public class LockView extends View {
      */
     private void init(Context context) {
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        
+        this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mBackGroudPaint = new Paint();
         mBackGroudPaint.setAntiAlias(true);
         mBackGroudPaint.setColor(COLOR_BACKGROUD);
@@ -83,6 +87,7 @@ public class LockView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//        Log.d("O_O", "event.getAction() : " + event.getAction());
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
             //重置状态
@@ -110,7 +115,23 @@ public class LockView extends View {
             invalidate();
             break;
         case MotionEvent.ACTION_UP:
+            Log.i("O_O",  "ACTION_UP");
+            //记录当前触摸位置
+            mCurrentPoint.x = (int) event.getX();
+            mCurrentPoint.y = (int) event.getY();
+            //把输入返回给调用者
+            if (mListener != null) {
+                Position[] positions = new Position[mSelectedCircles.size()];
+                for (int i = 0; i < mSelectedCircles.size(); i++) {
+                    positions[i] = mSelectedCircles.get(i).position;
+                }
+                mListener.OnInputCompleted(positions);
+            }
+            //把最后结果呈现给出来
+            drawCircles(COLOR_NORMAL_HIGHLIGHT);
+            break;
         case MotionEvent.ACTION_CANCEL:
+            Log.e("O_O", "ACTION_CANCEL");
             //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
@@ -254,12 +275,139 @@ public class LockView extends View {
             for (int i = 0; i < mSelectedCircles.size() - 1; i++) {
                 canvas.drawLine(mSelectedCircles.get(i).center.x, mSelectedCircles.get(i).center.y, 
                         mSelectedCircles.get(i + 1).center.x, mSelectedCircles.get(i + 1).center.y, mHighlightPaint);
+                drawDirection(canvas, mSelectedCircles.get(i), mSelectedCircles.get(i+1));
             }
             canvas.drawLine(mSelectedCircles.get(mSelectedCircles.size() - 1).center.x, mSelectedCircles.get(mSelectedCircles.size() - 1).center.y, 
                     mCurrentPoint.x, mCurrentPoint.y, mHighlightPaint);
         }
         
         mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
+    }
+    
+    /**
+     * 画两个格子之间的方向指示器
+     * @param canvas
+     * @param start
+     * @param end
+     */
+    private void drawDirection(Canvas canvas, Circle start, Circle end) {
+        Point rightAnglePoint;
+        Point midpointOfBottom;
+        
+        //水平
+        if (start.center.y == end.center.y) {
+            
+            if (start.center.x > end.center.x) {
+                midpointOfBottom = new Point(start.center.x - 20, start.center.y);
+                rightAnglePoint = new Point(start.center.x - 40, start.center.y);
+            } else {
+                midpointOfBottom = new Point(start.center.x + 20, start.center.y);
+                rightAnglePoint = new Point(start.center.x + 40, start.center.y);
+            }
+            
+            drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
+            return;
+        }
+        //竖直
+        if (start.center.x == end.center.x) {
+            if (start.center.y > end.center.y) {
+                midpointOfBottom = new Point(start.center.x, start.center.y - 20);
+                rightAnglePoint = new Point(start.center.x, start.center.y - 40);
+            } else {
+                midpointOfBottom = new Point(start.center.x, start.center.y + 20);
+                rightAnglePoint = new Point(start.center.x, start.center.y + 40);
+            }
+            
+            drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
+            return;
+        }
+        //斜
+        double dis = Math.sqrt(Math.pow(start.center.x - end.center.x, 2) + Math.pow(start.center.y - end.center.y, 2));
+        double xg = end.center.x - start.center.x;
+        double yg = end.center.y - start.center.y;
+        midpointOfBottom = new Point((int)(start.center.x + xg / dis * 20), (int)(start.center.y + yg / dis * 20));
+        rightAnglePoint = new Point((int)(start.center.x + xg / dis * 40), (int)(start.center.y + yg / dis * 40));
+      
+      drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
+        
+    }
+    
+    /**
+     * 根据直角顶点和底边中点，画直角三角形
+     * @param canvas
+     * @param rightAnglePoint
+     * @param midpointOfBottom
+     */
+    private void drawTriangle(Canvas canvas, Point rightAnglePoint, Point midpointOfBottom) {
+        //底边中点和直角点在水平线
+        if (rightAnglePoint.y == midpointOfBottom.y) {
+            int distance = Math.abs(rightAnglePoint.x - midpointOfBottom.x);
+            Point p1 = new Point(midpointOfBottom.x, midpointOfBottom.y + distance);
+            Point p2 = new Point(midpointOfBottom.x, midpointOfBottom.y - distance);
+            
+            Path p = new Path();
+            p.moveTo(rightAnglePoint.x, rightAnglePoint.y);
+            p.lineTo(p1.x, p1.y);
+            p.lineTo(p2.x, p2.y);
+            p.close();
+            
+            canvas.drawPath(p, mHighlightPaint);
+            return;
+        }
+        //底边中点和直角点在垂直线
+        if (rightAnglePoint.x == midpointOfBottom.x) {
+            int distance = Math.abs(rightAnglePoint.y - midpointOfBottom.y);
+            Point p1 = new Point(midpointOfBottom.x + distance, midpointOfBottom.y);
+            Point p2 = new Point(midpointOfBottom.x - distance, midpointOfBottom.y);
+            
+            Path p = new Path();
+            p.moveTo(rightAnglePoint.x, rightAnglePoint.y);
+            p.lineTo(p1.x, p1.y);
+            p.lineTo(p2.x, p2.y);
+            p.close();
+            
+            canvas.drawPath(p, mHighlightPaint);
+            return;
+        }
+        //底边中点和直角点不在水平和垂直线
+        
+        double gradient = (rightAnglePoint.y - midpointOfBottom.y) * 1.0 / (rightAnglePoint.x - midpointOfBottom.x);
+        Log.i("O_O", "gradient : " + gradient);
+        double diatance = Math.sqrt(Math.pow(rightAnglePoint.y - midpointOfBottom.y, 2) + Math.pow(rightAnglePoint.x - midpointOfBottom.x, 2));
+        Log.i("O_O", "diatance : " + diatance);
+        double angle = Math.toDegrees (Math.atan (gradient));
+        Log.i("O_O", "angle : " + angle);
+        
+        if (angle > 0) {
+            if (rightAnglePoint.y - midpointOfBottom.y > 0 && rightAnglePoint.x - midpointOfBottom.x > 0) {
+                angle = angle - 90;
+            } else if (rightAnglePoint.y - midpointOfBottom.y < 0 && rightAnglePoint.x - midpointOfBottom.x < 0) {
+                angle = 90 + angle;
+            }
+        } else if (angle < 0) {
+            if (rightAnglePoint.y - midpointOfBottom.y > 0 && rightAnglePoint.x - midpointOfBottom.x < 0) {
+                angle = 90 + angle;
+            } else if (rightAnglePoint.y - midpointOfBottom.y < 0 && rightAnglePoint.x - midpointOfBottom.x > 0) {
+                angle = angle - 90;
+            }
+        }
+        
+        canvas.save();
+        canvas.translate(midpointOfBottom.x, midpointOfBottom.y);
+        canvas.rotate((float) angle);
+        
+        Point p1 = new Point((int)diatance, 0);
+        Point p2 = new Point(-(int)diatance, 0);
+        
+        Path p = new Path();
+        p.moveTo(0, (int)diatance);
+        p.lineTo(p1.x, p1.y);
+        p.lineTo(p2.x, p2.y);
+        p.close();
+        
+        canvas.drawPath(p, mHighlightPaint);
+        
+        canvas.restore();
     }
     
     /**
