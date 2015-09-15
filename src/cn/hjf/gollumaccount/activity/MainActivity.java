@@ -20,6 +20,8 @@ import cn.hjf.gollumaccount.view.PullListView;
 import cn.hjf.gollumaccount.view.PullListView.OnRefreshListener;
 import cn.hjf.gollumaccount.view.SwipeListView;
 import cn.hjf.gollumaccount.view.SwipeListView.OnViewClickListener;
+import cn.hjf.gollumaccount.view.TipDialog;
+import cn.hjf.gollumaccount.view.TipDialog.OnTipDialogClickListener;
 import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
 import android.content.Intent;
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity implements
 	private SideMenuFragment mSideMenuFragment; //侧滑菜单
     private CommonHeaderFragment mTitleFragment; //顶部标题栏
     private LoadingDialog mLoadingDialog; //加载对话框
+    private TipDialog mTipDialog; //删除提示对话框
 
     private TextView mCurrentMonthSum; //当月累计消费金额
     private Button mAddButton; //记一笔按钮
@@ -121,6 +124,9 @@ public class MainActivity extends BaseActivity implements
         
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
+        
+        mTipDialog = new TipDialog(this, R.style.transparent_dialog1);
+        mTipDialog.setCancelable(false);
     }
 
     @Override
@@ -129,6 +135,8 @@ public class MainActivity extends BaseActivity implements
         mQueryInfo.setPageSize(NUM_PER_PAGE);
         mConsumeRecordAdapter = new ConsumeRecordAdapter(this, mRecords);
         mRecordListView.setAdapter(mConsumeRecordAdapter);
+        
+        mTipDialog.setTitle(getString(R.string.tip_delete_record));
     }
     
     @Override
@@ -177,10 +185,20 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onViewClick(int viewId, int position) {
                 if (viewId == R.id.btn_delete) {
-                    mLoadingDialog.show();
                     mDeletePosition = position;
-                    new DeleteConsumeRecordTask(MainActivity.this, MainActivity.this).execute(mRecords.get(mDeletePosition));
+                    mTipDialog.show();
                 }
+            }
+        });
+        
+        mTipDialog.setOnTipDialogClickListener(new OnTipDialogClickListener() {
+            @Override
+            public void onPositiveClick() {
+                mLoadingDialog.show();
+                new DeleteConsumeRecordTask(MainActivity.this, MainActivity.this).execute(mRecords.get(mDeletePosition));
+            }
+            @Override
+            public void onNegativeClick() {
             }
         });
     }

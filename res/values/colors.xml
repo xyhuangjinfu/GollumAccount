@@ -12,6 +12,9 @@
 
     <!-- 白 FFFFFFFF -->
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- 半透明白 88FFFFFF -->
+    <color name="white_translucent">#88FFFFFF</color>
 
     <!-- 黑色 FF000000 -->
     <color name="black">#FF000000</color>
