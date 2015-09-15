@@ -22,9 +22,10 @@ import android.view.View;
  */
 public class LockView extends View {
     
-    private static final int RADIUS_OUTER   = 100; //大圆半径
-    private static final int RADIUS_INNER   = 95; //小圆半径
-    private static final int RADIUS_CENTER  = 5; //圆心半径
+    private int mRadiusOuter; //大圆半径
+    private int mRadiusInner; //小圆半径
+    private static final int RADIUS_CENTER = 5; //圆心半径
+    private int mTriangleSize; //三角形尺寸，直角顶点到斜边中点的距离
     
     private static final int COLOR_NORMAL = 0xFF0099CC; //格子正常颜色
     private static final int COLOR_NORMAL_HIGHLIGHT = 0x880099CC; //格子正常颜色高亮
@@ -158,6 +159,7 @@ public class LockView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawARGB(255, 255, 255, 255);
         computeGap();
+        computeSize();
         computePoint();
         drawDynamic(canvas);
     }
@@ -248,6 +250,15 @@ public class LockView extends View {
     }
     
     /**
+     * 计算各种尺寸
+     */
+    private void computeSize() {
+        mRadiusOuter   = getWidth() / 12; //大圆半径
+        mRadiusInner   = mRadiusOuter - RADIUS_CENTER; //小圆半径
+        mTriangleSize = mRadiusOuter/ 3 ;
+    }
+    
+    /**
      * 计算每个格子的原点坐标
      */
     private void computePoint() {
@@ -268,12 +279,12 @@ public class LockView extends View {
         for (int i = 0; i < mCircles.length; i++) {
             for (int j = 0; j < mCircles[i].length; j++) {
                 if (mSelectedCircles.contains(mCircles[i][j])) {
-                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_OUTER, mHighlightPaint);
-                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_INNER, mBackGroudPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, mRadiusOuter, mHighlightPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, mRadiusInner, mBackGroudPaint);
                     canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_CENTER, mHighlightPaint);
                 } else {
-                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_OUTER, mNormalPaint);
-                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_INNER, mBackGroudPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, mRadiusOuter, mNormalPaint);
+                    canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, mRadiusInner, mBackGroudPaint);
                     canvas.drawCircle(mCircles[i][j].center.x, mCircles[i][j].center.y, RADIUS_CENTER, mNormalPaint);
                 }
             }
@@ -313,11 +324,11 @@ public class LockView extends View {
         if (start.center.y == end.center.y) {
             
             if (start.center.x > end.center.x) {
-                midpointOfBottom = new Point(start.center.x - 20, start.center.y);
-                rightAnglePoint = new Point(start.center.x - 40, start.center.y);
+                midpointOfBottom = new Point(start.center.x - mTriangleSize, start.center.y);
+                rightAnglePoint = new Point(start.center.x - mTriangleSize * 2, start.center.y);
             } else {
-                midpointOfBottom = new Point(start.center.x + 20, start.center.y);
-                rightAnglePoint = new Point(start.center.x + 40, start.center.y);
+                midpointOfBottom = new Point(start.center.x + mTriangleSize, start.center.y);
+                rightAnglePoint = new Point(start.center.x + mTriangleSize * 2, start.center.y);
             }
             
             drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
@@ -326,11 +337,11 @@ public class LockView extends View {
         //竖直
         if (start.center.x == end.center.x) {
             if (start.center.y > end.center.y) {
-                midpointOfBottom = new Point(start.center.x, start.center.y - 20);
-                rightAnglePoint = new Point(start.center.x, start.center.y - 40);
+                midpointOfBottom = new Point(start.center.x, start.center.y - mTriangleSize);
+                rightAnglePoint = new Point(start.center.x, start.center.y - mTriangleSize * 2);
             } else {
-                midpointOfBottom = new Point(start.center.x, start.center.y + 20);
-                rightAnglePoint = new Point(start.center.x, start.center.y + 40);
+                midpointOfBottom = new Point(start.center.x, start.center.y + mTriangleSize);
+                rightAnglePoint = new Point(start.center.x, start.center.y + mTriangleSize * 2);
             }
             
             drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
@@ -340,8 +351,8 @@ public class LockView extends View {
         double dis = Math.sqrt(Math.pow(start.center.x - end.center.x, 2) + Math.pow(start.center.y - end.center.y, 2));
         double xg = end.center.x - start.center.x;
         double yg = end.center.y - start.center.y;
-        midpointOfBottom = new Point((int)(start.center.x + xg / dis * 20), (int)(start.center.y + yg / dis * 20));
-        rightAnglePoint = new Point((int)(start.center.x + xg / dis * 40), (int)(start.center.y + yg / dis * 40));
+        midpointOfBottom = new Point((int)(start.center.x + xg / dis * mTriangleSize), (int)(start.center.y + yg / dis * mTriangleSize));
+        rightAnglePoint = new Point((int)(start.center.x + xg / dis * mTriangleSize * 2), (int)(start.center.y + yg / dis * mTriangleSize * 2));
       
       drawTriangle(canvas, rightAnglePoint, midpointOfBottom);
         
@@ -433,8 +444,8 @@ public class LockView extends View {
     private Circle getCircle(MotionEvent event) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if( (event.getX() <= mCircles[i][j].center.x + RADIUS_OUTER) && (event.getX() >= mCircles[i][j].center.x - RADIUS_OUTER) ) {
-                    if ((event.getY() <= mCircles[i][j].center.y + RADIUS_OUTER) && (event.getY() >= mCircles[i][j].center.y - RADIUS_OUTER)) {
+                if( (event.getX() <= mCircles[i][j].center.x + mRadiusOuter) && (event.getX() >= mCircles[i][j].center.x - mRadiusOuter) ) {
+                    if ((event.getY() <= mCircles[i][j].center.y + mRadiusOuter) && (event.getY() >= mCircles[i][j].center.y - mRadiusOuter)) {
                         return mCircles[i][j];
                     }
                 }
