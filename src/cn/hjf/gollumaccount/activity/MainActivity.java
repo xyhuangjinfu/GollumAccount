@@ -126,7 +126,6 @@ public class MainActivity extends BaseActivity implements
         mLoadingDialog.setCancelable(false);
         
         mTipDialog = new TipDialog(this, R.style.transparent_dialog1);
-        mTipDialog.setCancelable(false);
     }
 
     @Override
