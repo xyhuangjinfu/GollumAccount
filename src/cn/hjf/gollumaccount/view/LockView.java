@@ -41,6 +41,7 @@ public class LockView extends View {
     private List<Circle> mSelectedCircles; //已经选择的格子
     private Vibrator mVibrator; //振动器
     private OnInputListener mListener; //输入结果监听器
+    private Runnable mResetRunnable; //状态重置的runnable对象，用来取消状态重置
     
     public interface OnInputListener {
         public abstract void OnInputCompleted(Position[] inputResult);
@@ -92,6 +93,7 @@ public class LockView extends View {
         case MotionEvent.ACTION_DOWN:
             //重置状态
             reset();
+            removeCallbacks(mResetRunnable);
             //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
@@ -176,12 +178,25 @@ public class LockView extends View {
     /**
      * 重置状态
      */
-    public void reset() {
+    private void reset() {
         mBackGroudPaint.setColor(COLOR_BACKGROUD);
         mNormalPaint.setColor(COLOR_NORMAL);
         mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
         mSelectedCircles.clear();
         invalidate();
+    }
+    
+    /**
+     * 重置状态
+     */
+    public void resetDelayed(long delayMillis) {
+        mResetRunnable = new Runnable() {
+            @Override
+            public void run() {
+                reset();
+            }
+        };
+        postDelayed(mResetRunnable, delayMillis);
     }
     
     /**

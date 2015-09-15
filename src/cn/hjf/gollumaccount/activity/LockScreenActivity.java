@@ -210,12 +210,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                         
                     } else {
                         ToastUtil.showToast(getApplicationContext(), getString(R.string.tip_password_conflict), Toast.LENGTH_SHORT);
-                        mLockView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mLockView.reset();
-                            }
-                        }, 1000);
+                        mLockView.resetDelayed(1000);
                     }
                     return;
                 }
@@ -231,12 +226,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
                                 mLockView.drawCircles(mPositions, Color.RED);
                             }
                         }, 50);
-                        mLockView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mLockView.reset();
-                            }
-                        }, 2500);
+                        mLockView.resetDelayed(2500);
                     }
                     return;
                 }
