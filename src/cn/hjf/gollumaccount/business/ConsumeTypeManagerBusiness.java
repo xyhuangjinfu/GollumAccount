@@ -8,6 +8,7 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
+import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl.Table;
 import cn.hjf.gollumaccount.db.IConsumeTypeDao;
 
 /**
@@ -15,7 +16,7 @@ import cn.hjf.gollumaccount.db.IConsumeTypeDao;
  * @author huangjinfu
  *
  */
-public class ConsumeTypeManagerBusiness {
+public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeTypeUpgradeListener {
 
     private IConsumeTypeDao mConsumeTypeDao;
     private Context mContext;
@@ -23,6 +24,7 @@ public class ConsumeTypeManagerBusiness {
     public ConsumeTypeManagerBusiness(Context context) {
         this.mContext = context;
         mConsumeTypeDao = new ConsumeTypeDaoSqliteImpl(mContext);
+        mConsumeTypeDao.setOnConsumeTypeUpgradeListener(this);
         initInsideType();
     }
     
@@ -33,11 +35,12 @@ public class ConsumeTypeManagerBusiness {
         if (!mConsumeTypeDao.isTableExist()) {
             mConsumeTypeDao.createTable();
             String[] types = mContext.getResources().getStringArray(R.array.consume_types);
+            String[] typeIcons = mContext.getResources().getStringArray(R.array.consume_types_icon_name);
+            String[] typeTypes = mContext.getResources().getStringArray(R.array.consume_types_type);
             List<ConsumeType> consumeTypes = new ArrayList<>();
             for (int i = 0; i < types.length; i++) {
-                consumeTypes.add(new ConsumeType(types[i], ConsumeType.Type.INSIDE));
+                consumeTypes.add(new ConsumeType(types[i], ConsumeType.Type.valueOf(typeTypes[i]), typeIcons[i]));
             }
-//            consumeTypes.add(new ConsumeType("添加类型", ConsumeType.Type.CONTROL));
             mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
         }
     }
@@ -116,5 +119,15 @@ public class ConsumeTypeManagerBusiness {
             consumeTypeModels.add(getDaoModel(consumeType));
         }
         return consumeTypeModels;
+    }
+
+    @Override
+    public void onConsumeTypeUpgrade(int oldVersion, int newVersion) {
+        if (oldVersion == 0 && newVersion == 1) {
+            if (mConsumeTypeDao.changeTable(Table.CLM_ICON)) {
+//                mConsumeTypeDao.update(type);
+            }
+        }
+        
     }
 }

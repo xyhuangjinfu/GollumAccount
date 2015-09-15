@@ -26,6 +26,11 @@ public interface IConsumeTypeDao {
      */
     public abstract boolean insert(ConsumeTypeModel type);
     /**
+     * 更新单个消费类型
+     * @return
+     */
+    public abstract boolean update(ConsumeTypeModel type);
+    /**
      * 添加多个消费类型
      * @return
      */
@@ -50,4 +55,12 @@ public interface IConsumeTypeDao {
      * @return
      */
     public abstract List<ConsumeTypeModel> queryAll();
+    
+    public interface OnConsumeTypeUpgradeListener{
+        public abstract void onConsumeTypeUpgrade(int oldVersion, int newVersion);
+    }
+    
+    public abstract void setOnConsumeTypeUpgradeListener(OnConsumeTypeUpgradeListener onConsumeTypeUpgradeListener);
+    
+    public abstract boolean changeTable(String fields);
 }

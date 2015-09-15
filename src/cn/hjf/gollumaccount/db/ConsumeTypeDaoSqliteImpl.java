@@ -15,7 +15,7 @@ import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
  * @author huangjinfu
  *
  */
-public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
+public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao, GASQLiteDatabase.OnDbUpgradeListener {
 
     private static final boolean DEBUG = true;
     private static final String TAG = "ConsumeTypeDaoSqliteImpl";
@@ -25,9 +25,17 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
     private GASQLiteDatabase mDB;
     private SqlBuilder mSqlBuilder;
     
+    private OnConsumeTypeUpgradeListener mListener;
+    
     public ConsumeTypeDaoSqliteImpl(Context context) {
         mDB = new GASQLiteDatabase(context);
+        mDB.setOnDbUpgradeListener(this);
         mSqlBuilder = new SqlBuilder();
+    }
+    
+    @Override
+    public void setOnConsumeTypeUpgradeListener(OnConsumeTypeUpgradeListener onConsumeTypeUpgradeListener) {
+        this.mListener = onConsumeTypeUpgradeListener;
     }
     
     @Override
@@ -123,6 +131,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            type.setIcon(cursor.getString(cursor.getColumnIndex(Table.CLM_ICON)));
         }
         cursor.close();
         mDB.close();
@@ -139,6 +148,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            type.setIcon(cursor.getString(cursor.getColumnIndex(Table.CLM_ICON)));
         }
         cursor.close();
         mDB.close();
@@ -157,6 +167,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             type.setId(cursor.getInt(cursor.getColumnIndex(Table.CLM_ID)));
             type.setName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             type.setType(ConsumeTypeModel.Type.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE))));
+            type.setIcon(cursor.getString(cursor.getColumnIndex(Table.CLM_ICON)));
             types.add(type);
         }
         cursor.close();
@@ -196,9 +207,11 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             sql.append(TABLE_NAME);
             sql.append(" (id integer primary key AutoIncrement, ");
             sql.append(Table.CLM_NAME);
-            sql.append(" varchar(20) UNIQUE , ");
+            sql.append(" varchar(30) UNIQUE , ");
             sql.append(Table.CLM_TYPE);
-            sql.append(" varchar(20))  ");
+            sql.append(" varchar(30)) NOT NULL,");
+            sql.append(Table.CLM_ICON);
+            sql.append(" varchar(30)) NOT NULL");
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }
@@ -213,7 +226,7 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             StringBuilder sql = new StringBuilder();
             sql.append(" INSERT INTO ");
             sql.append(TABLE_NAME);
-            sql.append(" (name, type) ");
+            sql.append(" (name, type, icon) ");
             sql.append(" values ( ");
             sql.append("'");
             sql.append(type.getName());
@@ -222,7 +235,58 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             sql.append("'");
             sql.append(type.getType());
             sql.append("'");
+            sql.append(" , ");
+            sql.append("'");
+            sql.append(type.getIcon());
+            sql.append("'");
             sql.append(" ) ");
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
+        
+        /**
+         * 更新消费类型
+         * @return
+         */
+        public String updateType(ConsumeTypeModel type) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" UPDATE ");
+            sql.append(TABLE_NAME);
+            
+            sql.append(" SET ");
+            
+            sql.append(Table.CLM_NAME);
+                sql.append("=");
+                sql.append("'");
+                sql.append(type.getName());
+                sql.append("'");
+            
+                sql.append(",");
+                
+            sql.append(Table.CLM_TYPE);
+                sql.append("=");
+                sql.append("'");
+                sql.append(type.getType());
+                sql.append("'");
+                
+                sql.append(",");
+                
+            sql.append(Table.CLM_ICON);
+                sql.append("=");
+                sql.append("'");
+                sql.append(type.getIcon());
+                sql.append("'");
+                
+            sql.append(" WHERE ");
+                sql.append(Table.CLM_ID);
+                sql.append(" = ");
+                sql.append("'");
+                sql.append(type.getId());
+                sql.append("'");
+            
+            
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }
@@ -302,6 +366,23 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
             }
             return sql.toString();
         }
+        
+        /**
+         * 表添加字段
+         * @return
+         */
+        public String changeTable(String fields) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" ALTER TABLE ");
+            sql.append(TABLE_NAME);
+            sql.append(" ADD ");
+            sql.append(fields);
+            sql.append(" VARCHAR( 50 ) NOT NULL ");
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
     }
 
     /**
@@ -309,10 +390,46 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao {
      * @author huangjinfu
      *
      */
-    private class Table {
-        static final String CLM_ID = "id";
-        static final String CLM_NAME = "name";
-        static final String CLM_TYPE = "type";
+    public static class Table {
+        public static final String CLM_ID = "id";
+        public static final String CLM_NAME = "name";
+        public static final String CLM_TYPE = "type";
+        public static final String CLM_ICON = "icon";
+    }
+
+    @Override
+    public void onDbUpgrade(int oldVersion, int newVersion) {
+        if (oldVersion == 0 && newVersion == 1) {
+            mListener.onConsumeTypeUpgrade(oldVersion, newVersion);
+        }
+    }
+
+    @Override
+    public boolean changeTable(String fields) {
+        boolean result = true;
+        try {
+            mDB.open().execSQL(mSqlBuilder.changeTable(fields));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            mDB.close();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean update(ConsumeTypeModel type) {
+        boolean result = true;
+        try {
+            mDB.open().execSQL(mSqlBuilder.updateType(type));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            mDB.close();
+        }
+        return result;
     }
     
 }

@@ -24,7 +24,11 @@ public class GASQLiteDatabase {
     private SQLiteDatabase mDB;
     private Context mContext;
     private String mDbPath;
+    private OnDbUpgradeListener mListener;
     
+    public interface OnDbUpgradeListener {
+        public abstract void onDbUpgrade(int oldVersion, int newVersion);
+    }
 
     public GASQLiteDatabase(Context context) {
         this.mContext = context;
@@ -54,7 +58,19 @@ public class GASQLiteDatabase {
             }
         }
         mDB = SQLiteDatabase.openOrCreateDatabase(f, null);
+        
+        //要升级了
+        if (mDB.getVersion() < DB_VERSION) {
+            if (mListener != null) {
+                mListener.onDbUpgrade(mDB.getVersion(), DB_VERSION);
+            }
+            mDB.setVersion(DB_VERSION);
+        }
         return mDB;
+    }
+    
+    public void setOnDbUpgradeListener(OnDbUpgradeListener onDbUpgradeListener) {
+        this.mListener = onDbUpgradeListener;
     }
     
     public boolean close() {

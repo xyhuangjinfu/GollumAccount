@@ -95,34 +95,6 @@
     <string name="hint_start_date">选择开始日期</string>
     <string name="hint_end_date">选择结束日期</string>
 
-    <!-- 内置的所有消费类型 -->
-    <string-array name="consume_types">
-        <item>衣服</item>
-        <item>食物</item>
-        <item>住宿</item>
-        <item>交通</item>
-        <item>社交</item>
-        <item>娱乐</item>
-        <item>办公</item>
-        <item>学习</item>
-        <item>医疗</item>
-        <item>其他</item>
-    </string-array>
-
-    <!-- 内置的所有消费类型对应的图标 -->
-    <string-array name="consume_types_icon">
-        <item>@drawable/ic_clothes</item>
-        <item>@drawable/ic_food</item>
-        <item>@drawable/ic_house</item>
-        <item>@drawable/ic_traffic</item>
-        <item>@drawable/ic_social</item>
-        <item>@drawable/ic_entertainment</item>
-        <item>@drawable/ic_work</item>
-        <item>@drawable/ic_study</item>
-        <item>@drawable/ic_medical</item>
-        <item>@drawable/ic_other_type</item>
-    </string-array>
-
     <!-- 消费统计选择界面菜单项 -->
     <string-array name="statistic_select_menu">
         <item>按类型统计</item>

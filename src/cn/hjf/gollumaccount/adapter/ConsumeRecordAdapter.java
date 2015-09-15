@@ -3,6 +3,7 @@ package cn.hjf.gollumaccount.adapter;
 import java.util.List;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeRecord;
+import cn.hjf.gollumaccount.util.BitmapUtil;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
@@ -81,7 +82,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		viewHolder.mRecordDate.setText(TimeUtil.getDateString(record.getConsumeTime()));
 		switch (record.getRecordType().getId()) {
 		case 1:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_clothes);
+			viewHolder.mRecordIcon.setImageResource(BitmapUtil.getDrawableIdByName(R.drawable.class, "ic_clothes"));
 			break;
 		case 2:
 			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_food);
