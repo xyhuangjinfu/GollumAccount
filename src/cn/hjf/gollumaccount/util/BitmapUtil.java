@@ -1,5 +1,7 @@
 package cn.hjf.gollumaccount.util;
 
+import java.lang.reflect.Field;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +10,7 @@ import android.graphics.Bitmap.Config;
 /**
  * 主题相关的工具类
  * 
- * @author xfujohn
+ * @author huangjinfu
  * 
  */
 public final class BitmapUtil {
@@ -38,5 +40,23 @@ public final class BitmapUtil {
         //释放源Bitmap
         srcBitmap.recycle();
         return destBitmap;
+    }
+    
+    /**
+     * 根据drawable目录中文件的名称，得到该文件的资源id
+     * @param rCls
+     * @param drawableName
+     * @return
+     */
+    public static int getDrawableIdByName(Class<?> rCls, String drawableName) {
+        int drawableId = 0;
+        Field field = null;
+        try {
+            field = rCls.getField(drawableName);
+            drawableId = field.getInt(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return drawableId;
     }
 }
