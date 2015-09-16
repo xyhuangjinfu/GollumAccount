@@ -75,7 +75,6 @@ public class TypeSelectActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAdapter.release();
         mAdapter = null;
         mTypeData.clear();
         mTypeData = null;

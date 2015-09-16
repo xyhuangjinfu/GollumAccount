@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.TypeStatisticData;
+import cn.hjf.gollumaccount.util.BitmapUtil;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import android.content.Context;
 import android.util.Log;
@@ -56,48 +57,18 @@ public class TypeStatisticAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         
+        holder.typeIcon.setImageResource(BitmapUtil.getDrawableIdByName(R.drawable.class, getWhiteDrawable(mDatas.get(position).getConsumeType().getIcon())));
         holder.typeName.setText(mDatas.get(position).getConsumeType().getName());
         holder.sum.setText(NumberUtil.formatValue(mDatas.get(position).getTypeSum()));
-        switch (mDatas.get(position).getConsumeType().getId()) {
-        case 1:
-            holder.typeIcon.setImageResource(R.drawable.ic_clothes_white);
-            break;
-        case 2:
-            holder.typeIcon.setImageResource(R.drawable.ic_food_white);
-            break;
-        case 3:
-            holder.typeIcon.setImageResource(R.drawable.ic_house_white);
-            break;
-        case 4:
-            holder.typeIcon.setImageResource(R.drawable.ic_traffic_white);
-            break;
-        case 5:
-            holder.typeIcon.setImageResource(R.drawable.ic_social_white);
-            break;
-        case 6:
-            holder.typeIcon.setImageResource(R.drawable.ic_entertainment_white);
-            break;
-        case 7:
-            holder.typeIcon.setImageResource(R.drawable.ic_work_white);
-            break;
-        case 8:
-            holder.typeIcon.setImageResource(R.drawable.ic_study_white);
-            break;
-        case 9:
-            holder.typeIcon.setImageResource(R.drawable.ic_medical_white);
-            break;
-        case 10:
-            holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
-            break;
-        default:
-            holder.typeIcon.setImageResource(R.drawable.ic_other_type_white);
-            break;
-        }
         holder.ratio.setText(String.format(mContext.getString(R.string.label_ratio), NumberUtil.formatValue(mDatas.get(position).getTypeSum() * 100 / mDatas.get(position).getAllSum())));
         holder.ratioBar.setMax((int) mDatas.get(position).getAllSum());
         holder.ratioBar.setProgress((int) mDatas.get(position).getTypeSum());
         
         return convertView;
+    }
+    
+    private String getWhiteDrawable(String drawableName) {
+        return drawableName + "_white";
     }
     
     private class ViewHolder {

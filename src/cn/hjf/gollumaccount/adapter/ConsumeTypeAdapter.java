@@ -6,7 +6,6 @@ import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
 import cn.hjf.gollumaccount.util.BitmapUtil;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +21,11 @@ import android.widget.TextView;
 public class ConsumeTypeAdapter extends BaseAdapter {
     
     private List<ConsumeType> mTypes;
-    private TypedArray mIcons;
     private Context mContext;
     
     public ConsumeTypeAdapter(Context context, List<ConsumeType> types) {
         this.mContext = context;
         this.mTypes = types;
-        mIcons = mContext.getResources().obtainTypedArray(R.array.consume_types_icon);
     }
 
     @Override
@@ -69,10 +66,6 @@ public class ConsumeTypeAdapter extends BaseAdapter {
     private class ViewHolder {
         ImageView icon;
         TextView name;
-    }
-    
-    public void release() {
-        mIcons.recycle();
     }
 
 }

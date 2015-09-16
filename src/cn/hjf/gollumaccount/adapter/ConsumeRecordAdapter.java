@@ -7,7 +7,6 @@ import cn.hjf.gollumaccount.util.BitmapUtil;
 import cn.hjf.gollumaccount.util.NumberUtil;
 import cn.hjf.gollumaccount.util.TimeUtil;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 首页消费记录列表适配器
+ * @author huangjinfu
+ *
+ */
 public class ConsumeRecordAdapter extends BaseAdapter {
 	
 	private List<ConsumeRecord> mItemList;
@@ -80,41 +84,7 @@ public class ConsumeRecordAdapter extends BaseAdapter {
 		viewHolder.mRecordPrice.setText(NumberUtil.formatValue(record.getRecordPrice()));
 		viewHolder.mRecordName.setText(record.getRecordName());
 		viewHolder.mRecordDate.setText(TimeUtil.getDateString(record.getConsumeTime()));
-		switch (record.getRecordType().getId()) {
-		case 1:
-			viewHolder.mRecordIcon.setImageResource(BitmapUtil.getDrawableIdByName(R.drawable.class, "ic_clothes"));
-			break;
-		case 2:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_food);
-			break;
-		case 3:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_house);
-			break;
-		case 4:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_traffic);
-			break;
-	    case 5:
-	        viewHolder.mRecordIcon.setImageResource(R.drawable.ic_social);
-	        break;
-		case 6:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_entertainment);
-			break;
-		case 7:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_work);
-			break;
-		case 8:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_study);
-			break;
-		case 9:
-            viewHolder.mRecordIcon.setImageResource(R.drawable.ic_medical);
-            break;
-	    case 10:
-	        viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
-	        break;
-		default:
-			viewHolder.mRecordIcon.setImageResource(R.drawable.ic_other_type);
-			break;
-		}
+		viewHolder.mRecordIcon.setImageResource(BitmapUtil.getDrawableIdByName(R.drawable.class, record.getRecordType().getIcon()));
 	}
 
 }

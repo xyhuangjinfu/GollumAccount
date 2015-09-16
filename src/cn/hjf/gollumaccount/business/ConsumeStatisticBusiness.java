@@ -48,11 +48,11 @@ public final class ConsumeStatisticBusiness {
      */
     public Map<ConsumeType, Double> statisticByType(Calendar startDate, Calendar endDate) {
         Map<ConsumeType, Double> statisticData = new HashMap<ConsumeType, Double>();
-        Map<Integer, Double> rawData = mConsumeRecordDao.statisticByType(
+        Map<String, Double> rawData = mConsumeRecordDao.statisticByType(
                 TimeUtil.getFirstDayOfDate(startDate), TimeUtil.getLastDayOfDate(endDate));
-        Set<Entry<Integer, Double>> entries = rawData.entrySet();
-        for (Entry<Integer, Double> entry : entries) {
-            ConsumeTypeModel consumeTypeModel = mConsumeTypeDao.queryById(entry.getKey());
+        Set<Entry<String, Double>> entries = rawData.entrySet();
+        for (Entry<String, Double> entry : entries) {
+            ConsumeTypeModel consumeTypeModel = mConsumeTypeDao.queryByName(entry.getKey());
             statisticData.put(mBusinessModelTransfer.getConsumeType(consumeTypeModel), entry.getValue());
         }
         return statisticData;

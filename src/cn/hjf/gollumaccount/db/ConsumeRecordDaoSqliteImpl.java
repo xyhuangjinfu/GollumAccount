@@ -137,11 +137,11 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
     
 
     @Override
-    public Map<Integer, Double> statisticByType(long startDate, long endDate) {
-        Map<Integer, Double> datas = new HashMap<Integer, Double>();
+    public Map<String, Double> statisticByType(long startDate, long endDate) {
+        Map<String, Double> datas = new HashMap<String, Double>();
         Cursor cursor = mDB.open().rawQuery(mSqlBuilder.statisticByType(startDate, endDate), null);
         while (cursor.moveToNext()) {
-            datas.put(cursor.getInt(cursor.getColumnIndex(Table.CLM_TYPE)),
+            datas.put(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE)),
                     cursor.getDouble(cursor.getColumnIndex("sum ( " + Table.CLM_PRICE + " )") 
                             ));
         }
@@ -647,7 +647,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
         static final String CLM_ID = "id";
         static final String CLM_NAME = "recordName"; //消费记录名称
         static final String CLM_PRICE = "recordPrice"; //消费金额
-        static final String CLM_TYPE = "recordTypeId"; //消费类型id
+        static final String CLM_TYPE = "recordType"; //消费类型id
         static final String CLM_REMARK = "recordRemark"; //备注信息
         static final String CLM_CONSUMER = "consumer"; //消费者
         static final String CLM_PAYER = "payer"; //付款者

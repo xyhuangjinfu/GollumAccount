@@ -17,22 +17,6 @@
         <item>其他</item>
     </string-array>
 
-    <!-- 内置的所有消费类型对应的图标 -->
-    <string-array name="consume_types_icon">
-        <item>@drawable/ic_all_type</item>
-        <item>@drawable/ic_clothes</item>
-        <item>@drawable/ic_food</item>
-        <item>@drawable/ic_house</item>
-        <item>@drawable/ic_traffic</item>
-        <item>@drawable/ic_social</item>
-        <item>@drawable/ic_entertainment</item>
-        <item>@drawable/ic_work</item>
-        <item>@drawable/ic_study</item>
-        <item>@drawable/ic_medical</item>
-        <item>@drawable/ic_daily</item>
-        <item>@drawable/ic_other_type</item>
-    </string-array>
-
     <!-- 内置的所有消费类型对应的图标名称 -->
     <string-array name="consume_types_icon_name">
         <item>ic_all_type</item>
