@@ -253,7 +253,7 @@ public class LockView extends View {
      * 计算各种尺寸
      */
     private void computeSize() {
-        mRadiusOuter   = getWidth() / 13; //大圆半径
+        mRadiusOuter   = getWidth() / 15; //大圆半径
         mRadiusInner   = mRadiusOuter - RADIUS_CENTER; //小圆半径
         mTriangleSize = mRadiusOuter/ 3 ;
     }
