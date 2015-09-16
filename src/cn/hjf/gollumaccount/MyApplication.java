@@ -25,7 +25,7 @@ public class MyApplication extends Application {
 //		SharedPreferencesUtil.getSharedPreferences(this).edit().putString("theme", "blue");
 		
 		//崩溃信息上传到Bugly
-//		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
+		CrashReport.initCrashReport(this.getApplicationContext(), mBuglyAppID, false);
 		
 	}
 }
