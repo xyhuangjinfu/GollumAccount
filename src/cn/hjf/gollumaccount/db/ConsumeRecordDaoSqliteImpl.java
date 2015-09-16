@@ -601,12 +601,12 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append(endDate);
             sql.append("'");
             
-            if (type.getId() != 0) {
+            if (!type.getType().equals(ConsumeTypeModel.Type.ALL)) {
                 sql.append(" AND ");
                 sql.append(Table.CLM_TYPE);
                 sql.append(" = ");
                 sql.append("'");
-                sql.append(type.getId());
+                sql.append(type.getName());
                 sql.append("'");
             }
             

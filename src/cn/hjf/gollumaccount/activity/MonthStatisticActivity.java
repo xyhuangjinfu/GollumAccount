@@ -115,10 +115,8 @@ public class MonthStatisticActivity extends BaseActivity implements
     protected void initValue() {
         initYearData();
         
-        
-        mConsumeType.setId(0);
         mConsumeType.setName(getString(R.string.label_all_type));
-        mConsumeType.setType(ConsumeType.Type.CUSTOME);
+        mConsumeType.setType(ConsumeType.Type.ALL);
         
         mYearSelectDialog.setData(mYearData);
         
