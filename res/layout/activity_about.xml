@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
                 android:background="@color/white"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
