@@ -102,7 +102,7 @@ public class PullListView extends RelativeLayout {
         mListView.setSelector(R.color.transparent);
         mListView.setVerticalScrollBarEnabled(false);
         mListView.setDivider(new ColorDrawable(context.getResources().getColor(R.color.gray_shallow)));
-        mListView.setDividerHeight(2);
+        mListView.setDividerHeight(1);
         
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         
