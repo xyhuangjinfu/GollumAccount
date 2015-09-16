@@ -14,6 +14,8 @@
         <item>学习</item>
         <item>医疗</item>
         <item>日常</item>
+        <item>投资</item>
+        <item>购物</item>
         <item>其他</item>
     </string-array>
 
@@ -30,12 +32,16 @@
         <item>ic_study</item>
         <item>ic_medical</item>
         <item>ic_daily</item>
+        <item>ic_investment</item>
+        <item>ic_shopping</item>
         <item>ic_other_type</item>
     </string-array>
 
     <!-- 内置的所有消费类型对应的图标名称 -->
     <string-array name="consume_types_type">
         <item>ALL</item>
+        <item>INSIDE</item>
+        <item>INSIDE</item>
         <item>INSIDE</item>
         <item>INSIDE</item>
         <item>INSIDE</item>
