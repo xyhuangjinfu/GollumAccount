@@ -150,6 +150,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/ll_sum"
         android:layout_marginTop="5dp"
+        android:dividerHeight="0.5dp"
+        android:divider="@color/gray_shallow"
         android:listSelector="@color/transparent"
         android:overScrollMode="never"
         android:scrollbars="none" />

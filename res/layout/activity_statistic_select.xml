@@ -21,7 +21,8 @@
         android:layout_below="@id/title_statistic_select"
         android:scrollbars="none"
         android:overScrollMode="never"
-        android:dividerHeight="1dp"
+        android:dividerHeight="0.5dp"
+        android:divider="@color/gray_shallow"
         android:listSelector="@color/transparent"
         />
 </RelativeLayout>

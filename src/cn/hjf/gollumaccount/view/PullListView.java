@@ -2,6 +2,7 @@ package cn.hjf.gollumaccount.view;
 
 import cn.hjf.gollumaccount.R;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -96,9 +97,11 @@ public class PullListView extends RelativeLayout {
     public PullListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mListView = new SwipeListView(context);
+        
         mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mListView.setSelector(R.color.transparent);
         mListView.setVerticalScrollBarEnabled(false);
+        mListView.setDivider(new ColorDrawable(context.getResources().getColor(R.color.gray_shallow)));
         mListView.setDividerHeight(2);
         
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
