@@ -129,6 +129,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                         }, mStartDate.get(Calendar.YEAR),
                         mStartDate.get(Calendar.MONTH),
                         mStartDate.get(Calendar.DAY_OF_MONTH));
+                mStartDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
                 mStartDatePickerDialog.show();
             }
         });
@@ -151,6 +152,7 @@ public class TypeStatisticActivity extends BaseActivity implements
                         }, mEndDate.get(Calendar.YEAR),
                         mEndDate.get(Calendar.MONTH),
                         mEndDate.get(Calendar.DAY_OF_MONTH));
+                mEndDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
                 mEndDatePickerDialog.show();
             }
         });

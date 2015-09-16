@@ -100,6 +100,7 @@ public class MonthStatisticActivity extends BaseActivity implements
         mYearTextView = (TextView) findViewById(R.id.tv_line_year);
         mTypeTextView = (TextView) findViewById(R.id.tv_line_type);
         mYearSelectDialog = new SpinnerDialog(this, R.style.transparent_dialog1);
+        mYearSelectDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
         

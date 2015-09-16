@@ -143,6 +143,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                         }, mQueryInfo.getStartTime().get(Calendar.YEAR),
                         mQueryInfo.getStartTime().get(Calendar.MONTH),
                         mQueryInfo.getStartTime().get(Calendar.DAY_OF_MONTH));
+                mDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
                 mDatePickerDialog.show();
             }
         });
@@ -170,6 +171,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
                         }, mQueryInfo.getEndTime().get(Calendar.YEAR),
                         mQueryInfo.getEndTime().get(Calendar.MONTH),
                         mQueryInfo.getEndTime().get(Calendar.DAY_OF_MONTH));
+                mDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
                 mDatePickerDialog.show();
             }
         });

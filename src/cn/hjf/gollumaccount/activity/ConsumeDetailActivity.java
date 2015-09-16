@@ -174,6 +174,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
                     }, calendar.get(Calendar.YEAR), calendar
                             .get(Calendar.MONTH), calendar
                             .get(Calendar.DAY_OF_MONTH));
+            mDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
             mDatePickerDialog.show();
         }
     };
@@ -195,6 +196,7 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
                         }
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar
                             .get(Calendar.MINUTE), false);
+            mTimePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
             mTimePickerDialog.show();
         }
     };
