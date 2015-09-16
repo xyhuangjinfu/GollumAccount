@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:gravity="center_vertical" >
+    android:gravity="center_vertical"
+    android:background="@color/background" >
 
     <ListView
         android:id="@+id/dialog_select_list"
@@ -12,8 +13,8 @@
         android:layout_centerVertical="true"
         android:listSelector="@color/transparent"
         android:background="@color/transparent"
-        android:dividerHeight="1dp"
-        android:divider="@color/background"
+        android:dividerHeight="0.5dp"
+        android:divider="@color/gray_shallow"
         android:overScrollMode="never"
         android:scrollbars="none" >
     </ListView>
