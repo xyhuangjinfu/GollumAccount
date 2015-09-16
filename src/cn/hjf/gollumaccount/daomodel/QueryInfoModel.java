@@ -14,7 +14,7 @@ public class QueryInfoModel implements Parcelable {
     private long startTime; //开始时间
     private long endTime; //结束时间
     private String name; //消费记录名称
-    private int type; //消费类型
+    private ConsumeTypeModel type; //消费类型
     private int pageNumber; //查询页码
     private int pageSize; //每页查询的数量
     
@@ -38,10 +38,10 @@ public class QueryInfoModel implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-    public int getType() {
+    public ConsumeTypeModel getType() {
         return type;
     }
-    public void setType(int type) {
+    public void setType(ConsumeTypeModel type) {
         this.type = type;
     }
     
@@ -70,7 +70,7 @@ public class QueryInfoModel implements Parcelable {
         dest.writeLong(startTime);
         dest.writeLong(endTime);
         dest.writeString(name);
-        dest.writeInt(type);
+        dest.writeParcelable(type, flags);
         dest.writeInt(pageNumber);
         dest.writeInt(pageSize);
     }
@@ -79,7 +79,7 @@ public class QueryInfoModel implements Parcelable {
         startTime = source.readLong();
         endTime = source.readLong();
         name = source.readString();
-        type = source.readInt();
+        type = source.readParcelable(this.getClass().getClassLoader());
         pageNumber = source.readInt();
         pageSize = source.readInt();
     }

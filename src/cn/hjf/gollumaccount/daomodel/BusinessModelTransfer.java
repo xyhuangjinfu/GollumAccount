@@ -56,7 +56,7 @@ public final class BusinessModelTransfer {
     
     public QueryInfo getQueryInfo(QueryInfoModel queryInfoModel) {
         QueryInfo queryInfo = new QueryInfo();
-        ConsumeType consumeType = getConsumeType(mConsumeTypeDao.queryById(queryInfoModel.getType()));
+        ConsumeType consumeType = getConsumeType(mConsumeTypeDao.queryByName(queryInfoModel.getType().getName()));
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.setTime(new Date(queryInfoModel.getStartTime()));
         queryInfo.setStartTime(startCalendar);

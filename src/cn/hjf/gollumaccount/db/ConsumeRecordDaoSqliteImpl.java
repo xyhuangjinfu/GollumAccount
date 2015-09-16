@@ -480,11 +480,11 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                 sql.append(" AND ");
             }
 
-            if (queryInfo.getType() != 0) {
+            if (queryInfo.getType() != null && !queryInfo.getType().getType().equals(ConsumeTypeModel.Type.ALL) ) {
                 sql.append(Table.CLM_TYPE);
                 sql.append(" = ");
                     sql.append("'");
-                    sql.append(queryInfo.getType());
+                    sql.append(queryInfo.getType().getName());
                     sql.append("'");
                 sql.append(" AND ");
             }

@@ -17,7 +17,7 @@ public final class DaoModelTransfer {
         queryInfoModel.setStartTime(queryInfo.getStartTime() == null ? 0 : queryInfo.getStartTime().getTimeInMillis());
         queryInfoModel.setEndTime(queryInfo.getEndTime() == null ? 0 : queryInfo.getEndTime().getTimeInMillis());
         queryInfoModel.setName(queryInfo.getName());
-        queryInfoModel.setType(queryInfo.getType() == null ? 0 : queryInfo.getType().getId());
+        queryInfoModel.setType(queryInfo.getType() == null ? null : getConsumeTypeModel(queryInfo.getType()));
         queryInfoModel.setPageNumber(queryInfo.getPageNumber());
         queryInfoModel.setPageSize(queryInfo.getPageSize());
         return queryInfoModel;
