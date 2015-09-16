@@ -14,7 +14,7 @@ public class ConsumeRecordModel implements Parcelable {
 	private int id; //唯一标识
 	private String recordName; //消费记录名称
 	private String recordPrice; //消费金额
-	private int recordTypeId; //消费类型Id
+	private String recordType; //消费类型
 	private String recordRemark; //备注信息
 	private long consumeTime; //消费时间
 	private long createTime; //消费记录创建时间
@@ -41,11 +41,11 @@ public class ConsumeRecordModel implements Parcelable {
     public void setRecordPrice(String recordPrice) {
         this.recordPrice = recordPrice;
     }
-    public int getRecordTypeId() {
-        return recordTypeId;
+    public String getRecordType() {
+        return recordType;
     }
-    public void setRecordTypeId(int recordTypeId) {
-        this.recordTypeId = recordTypeId;
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
     public String getRecordRemark() {
         return recordRemark;
@@ -86,7 +86,7 @@ public class ConsumeRecordModel implements Parcelable {
         dest.writeInt(id);
         dest.writeString(recordName);
         dest.writeString(recordPrice);
-        dest.writeInt(recordTypeId);
+        dest.writeString(recordType);
         dest.writeString(recordRemark);
         dest.writeLong(consumeTime);
         dest.writeLong(createTime);
@@ -98,7 +98,7 @@ public class ConsumeRecordModel implements Parcelable {
         id = source.readInt();
         recordName = source.readString();
         recordPrice = source.readString();
-        recordTypeId = source.readInt();
+        recordType = source.readString();
         recordRemark = source.readString();
         consumeTime = source.readLong();
         createTime = source.readLong();

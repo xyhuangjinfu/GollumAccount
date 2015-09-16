@@ -14,14 +14,10 @@ import cn.hjf.gollumaccount.fragment.CommonHeaderFragment.HEAD_TYPE;
 import cn.hjf.gollumaccount.view.LoadingDialog;
 import cn.hjf.gollumaccount.view.ToastUtil;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -29,7 +25,7 @@ import android.widget.GridView;
 /**
  * 消费类型选择界面
  * 
- * @author xfujohn
+ * @author huangjinfu
  * 
  */
 public class TypeSelectActivity extends BaseActivity implements
@@ -41,8 +37,6 @@ public class TypeSelectActivity extends BaseActivity implements
     private CommonHeaderFragment mTitleFragment; // 顶部标题栏
     private LoadingDialog mLoadingDialog; // 加载对话框
     
-    private AlertDialog mCreateTypeDialog; //添加消费类型对话框
-
     private GridView mTypeView; // 消费类型列表
     private ConsumeTypeAdapter mAdapter; // 消费类型显示适配器
     private List<ConsumeType> mTypeData; // 消费类型数据
@@ -107,32 +101,6 @@ public class TypeSelectActivity extends BaseActivity implements
 
         mLoadingDialog = new LoadingDialog(this, R.style.translucent_dialog);
         mLoadingDialog.setCancelable(false);
-        
-        final EditText et = new EditText(this);
-        et.setHint(R.string.hint_add_type);
-        mCreateTypeDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
-        .setTitle(R.string.label_add_type)
-        .setIcon(android.R.drawable.ic_dialog_info) 
-        .setView(et)
-        .setPositiveButton(getString(R.string.label_add), new OnClickListener() {  
-            public void onClick(DialogInterface dialog, int which) {  
-                String input = et.getText().toString();  
-                if (input.equals("")) {  
-                    ToastUtil.showToast(getApplicationContext(), getResources().getString(R.string.hint_type_name_null), Toast.LENGTH_LONG);
-                    return;
-                }
-                if (input.length() > 4) {
-                    ToastUtil.showToast(getApplicationContext(), getString(R.string.hint_type_name_length_long), Toast.LENGTH_LONG);
-                    return;
-                }
-                else {
-                    ConsumeType type = new ConsumeType(input, ConsumeType.Type.CUSTOME);
-                    mLoadingDialog.show();
-                    new CreateConsumeTypeTask(TypeSelectActivity.this, TypeSelectActivity.this).execute(type); 
-                }  
-            }  
-        })  
-        .setNegativeButton(getString(R.string.label_cancel), null).create();
     }
 
     @Override
@@ -147,14 +115,10 @@ public class TypeSelectActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                if (mTypeData.get(position).getType() == ConsumeType.Type.CONTROL) {
-                    mCreateTypeDialog.show();
-                } else {
-                    Intent intent = new Intent();
-                    intent.putExtra(CONSUME_TYPE, mTypeData.get(position));
-                    TypeSelectActivity.this.setResult(Activity.RESULT_OK, intent);
-                    TypeSelectActivity.this.finish();
-                }
+                Intent intent = new Intent();
+                intent.putExtra(CONSUME_TYPE, mTypeData.get(position));
+                TypeSelectActivity.this.setResult(Activity.RESULT_OK, intent);
+                TypeSelectActivity.this.finish();
             }
         });
     }
@@ -172,12 +136,16 @@ public class TypeSelectActivity extends BaseActivity implements
     public void OnLoadConsumeTypeCompleted(List<ConsumeType> consumeTypes) {
         mTypeData.clear();
         mTypeData.addAll(consumeTypes);
-        if (mPageType == PageType.STATISTIC) {
-            ConsumeType allType = new ConsumeType();
-            allType.setId(0);
-            allType.setName(getResources().getString(R.string.label_all_type));
-            allType.setType(ConsumeType.Type.CUSTOME);
-            mTypeData.add(allType);
+        //不是统计用途，去掉汇总类型
+        if (mPageType.equals(PageType.MANAGER)) {
+            ConsumeType allType = null;
+            for (int i = 0; i < mTypeData.size(); i++) {
+                if (mTypeData.get(i).getType().equals(ConsumeType.Type.ALL)) {
+                    allType = mTypeData.get(i);
+                    break;
+                }
+            }
+            mTypeData.remove(allType);
         }
         Collections.sort(mTypeData);
         mAdapter.notifyDataSetChanged();

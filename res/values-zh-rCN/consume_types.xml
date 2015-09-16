@@ -13,6 +13,7 @@
         <item>办公</item>
         <item>学习</item>
         <item>医疗</item>
+        <item>日常</item>
         <item>其他</item>
     </string-array>
 
@@ -28,6 +29,7 @@
         <item>@drawable/ic_work</item>
         <item>@drawable/ic_study</item>
         <item>@drawable/ic_medical</item>
+        <item>@drawable/ic_daily</item>
         <item>@drawable/ic_other_type</item>
     </string-array>
 
@@ -43,12 +45,14 @@
         <item>ic_work</item>
         <item>ic_study</item>
         <item>ic_medical</item>
+        <item>ic_daily</item>
         <item>ic_other_type</item>
     </string-array>
 
     <!-- 内置的所有消费类型对应的图标名称 -->
     <string-array name="consume_types_type">
         <item>ALL</item>
+        <item>INSIDE</item>
         <item>INSIDE</item>
         <item>INSIDE</item>
         <item>INSIDE</item>

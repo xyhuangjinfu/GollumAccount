@@ -209,5 +209,16 @@ int compare = 0;
         
         return compare;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append(" : ");
+        sb.append(type);
+        sb.append(" : ");
+        sb.append(icon);
+        return sb.toString();
+    }
 
 }

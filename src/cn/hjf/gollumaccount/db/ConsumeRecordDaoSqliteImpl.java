@@ -190,7 +190,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             record.setRecordName(cursor.getString(cursor.getColumnIndex(Table.CLM_NAME)));
             record.setRecordPrice(cursor.getString(cursor.getColumnIndex(Table.CLM_PRICE)));
             record.setRecordRemark(cursor.getString(cursor.getColumnIndex(Table.CLM_REMARK)));
-            record.setRecordTypeId(cursor.getInt(cursor.getColumnIndex(Table.CLM_TYPE)));
+            record.setRecordType(cursor.getString(cursor.getColumnIndex(Table.CLM_TYPE)));
             record.setConsumer(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUMER)));
             record.setPayer(cursor.getString(cursor.getColumnIndex(Table.CLM_PAYER)));
             record.setConsumeTime(Long.valueOf(cursor.getString(cursor.getColumnIndex(Table.CLM_CONSUME_TIME))));
@@ -232,11 +232,11 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append(TABLE_NAME);
             sql.append(" (id integer primary key AutoIncrement, ");
             sql.append(Table.CLM_NAME);
-            sql.append(" varchar(50) , ");
+            sql.append(" varchar(50) NOT NULL , ");
             sql.append(Table.CLM_PRICE);
-            sql.append(" varchar(50) , ");
+            sql.append(" varchar(50) NOT NULL  , ");
             sql.append(Table.CLM_TYPE);
-            sql.append(" integer , ");
+            sql.append(" varchar(50) NOT NULL  , ");
             sql.append(Table.CLM_REMARK);
             sql.append(" varchar(100) , ");
             sql.append(Table.CLM_CONSUMER);
@@ -244,9 +244,9 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
             sql.append(Table.CLM_PAYER);
             sql.append(" varchar(50) , ");
             sql.append(Table.CLM_CONSUME_TIME);
-            sql.append(" varchar(50) , ");
+            sql.append(" varchar(50) NOT NULL  , ");
             sql.append(Table.CLM_CREATE_TIME);
-            sql.append(" varchar(50))  ");
+            sql.append(" varchar(50) NOT NULL ) ");
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }
@@ -291,7 +291,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                         sql.append("'");
                     sql.append(" , ");
                         sql.append("'");
-                        sql.append(record.getRecordTypeId());
+                        sql.append(record.getRecordType());
                         sql.append("'");
                     sql.append(" , ");
                         sql.append("'");
@@ -350,7 +350,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
                     sql.append(Table.CLM_TYPE);
                         sql.append("=");
                         sql.append("'");
-                        sql.append(record.getRecordTypeId());
+                        sql.append(record.getRecordType());
                         sql.append("'");
                         
                         sql.append(",");

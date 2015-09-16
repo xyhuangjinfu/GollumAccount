@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.util.BitmapUtil;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.LayoutInflater;
@@ -58,11 +59,8 @@ public class ConsumeTypeAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         
-        if (mContext.getString(R.string.label_all_type).equals(mTypes.get(position).getName())) {
-            holder.icon.setImageResource(R.drawable.ic_all_type);
-        } else {
-            holder.icon.setImageResource(mIcons.getResourceId(position, 0));
-        }
+        
+        holder.icon.setImageResource(BitmapUtil.getDrawableIdByName(R.drawable.class, mTypes.get(position).getIcon()));
         holder.name.setText(mTypes.get(position).getName());
         
         return convertView;

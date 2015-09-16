@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 /**
  * 主题相关的工具类
@@ -14,6 +15,9 @@ import android.graphics.Bitmap.Config;
  * 
  */
 public final class BitmapUtil {
+    
+    private static final boolean DEBUG = true;
+    private static final String TAG = "BitmapUtil";
 
     /**
      * 获得从某一个drawable文件得到的跟主题颜色相同的图标Bitmap
@@ -54,6 +58,9 @@ public final class BitmapUtil {
         try {
             field = rCls.getField(drawableName);
             drawableId = field.getInt(null);
+            if (DEBUG) {
+                Log.d(TAG, "name : " + drawableName + " , id : " + drawableId);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.businessmodel.ConsumeType;
+import cn.hjf.gollumaccount.businessmodel.DaoModelTransfer;
+import cn.hjf.gollumaccount.daomodel.BusinessModelTransfer;
 import cn.hjf.gollumaccount.daomodel.ConsumeTypeModel;
 import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl;
 import cn.hjf.gollumaccount.db.ConsumeTypeDaoSqliteImpl.Table;
@@ -20,11 +23,15 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
 
     private IConsumeTypeDao mConsumeTypeDao;
     private Context mContext;
+    private DaoModelTransfer mDaoModelTransfer;
+    private BusinessModelTransfer mBusinessModelTransfer;
     
     public ConsumeTypeManagerBusiness(Context context) {
         this.mContext = context;
         mConsumeTypeDao = new ConsumeTypeDaoSqliteImpl(mContext);
         mConsumeTypeDao.setOnConsumeTypeUpgradeListener(this);
+        mDaoModelTransfer=  new DaoModelTransfer();
+        mBusinessModelTransfer = new BusinessModelTransfer(mContext);
         initInsideType();
     }
     
@@ -37,11 +44,14 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
             String[] types = mContext.getResources().getStringArray(R.array.consume_types);
             String[] typeIcons = mContext.getResources().getStringArray(R.array.consume_types_icon_name);
             String[] typeTypes = mContext.getResources().getStringArray(R.array.consume_types_type);
-            List<ConsumeType> consumeTypes = new ArrayList<>();
-            for (int i = 0; i < types.length; i++) {
-                consumeTypes.add(new ConsumeType(types[i], ConsumeType.Type.valueOf(typeTypes[i]), typeIcons[i]));
+            if (types.length == typeIcons.length && typeIcons.length == typeTypes.length) {
+                List<ConsumeType> consumeTypes = new ArrayList<>();
+                for (int i = 0; i < types.length; i++) {
+                    ConsumeType consumeType = new ConsumeType(types[i], ConsumeType.Type.valueOf(typeTypes[i]), typeIcons[i]);
+                    consumeTypes.add(consumeType);
+                }
+                mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
             }
-            mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
         }
     }
     
@@ -50,7 +60,7 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
      * @param type
      */
     public boolean addType(ConsumeType type) {
-        return mConsumeTypeDao.insert(getDaoModel(type));
+        return mConsumeTypeDao.insert(mDaoModelTransfer.getConsumeTypeModel(type));
     }
     
     /**
@@ -58,7 +68,7 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
      * @param type
      */
     public void deleteType(ConsumeType type) {
-        mConsumeTypeDao.delete(getDaoModel(type));
+        mConsumeTypeDao.delete(mDaoModelTransfer.getConsumeTypeModel(type));
     }
 
     /**
@@ -69,31 +79,6 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
         return getBusinessModels(mConsumeTypeDao.queryAll());
     }
     
-    /**
-     * 把单个数据层模型转换为业务逻辑模型
-     * @param consumeTypeModel
-     * @return
-     */
-    private ConsumeType getBusinessModel(ConsumeTypeModel consumeTypeModel) {
-        ConsumeType consumeType = new ConsumeType();
-        consumeType.setId(consumeTypeModel.getId());
-        consumeType.setName(consumeTypeModel.getName());
-        consumeType.setType(ConsumeType.Type.valueOf(String.valueOf(consumeTypeModel.getType())));
-        return consumeType;
-    }
-    
-    /**
-     * 把单个业务逻辑模型转换为数据层模型
-     * @param consumeType
-     * @return
-     */
-    private ConsumeTypeModel getDaoModel(ConsumeType consumeType) {
-        ConsumeTypeModel consumeTypeModel = new ConsumeTypeModel();
-        consumeTypeModel.setId(consumeType.getId());
-        consumeTypeModel.setName(consumeType.getName());
-        consumeTypeModel.setType(ConsumeTypeModel.Type.valueOf(String.valueOf(consumeType.getType())));
-        return consumeTypeModel;
-    }
     
     /**
      * 把多个数据层模型转换为业务逻辑模型
@@ -103,7 +88,7 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
     private List<ConsumeType> getBusinessModels(List<ConsumeTypeModel> consumeTypeModels) {
         List<ConsumeType> consumeTypes = new ArrayList<ConsumeType>();
         for (ConsumeTypeModel consumeTypeModel : consumeTypeModels) {
-            consumeTypes.add(getBusinessModel(consumeTypeModel));
+            consumeTypes.add(mBusinessModelTransfer.getConsumeType(consumeTypeModel));
         }
         return consumeTypes;
     }
@@ -116,7 +101,7 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
     private List<ConsumeTypeModel> getDaoModels(List<ConsumeType> consumeTypes) {
         List<ConsumeTypeModel> consumeTypeModels = new ArrayList<ConsumeTypeModel>();
         for (ConsumeType consumeType : consumeTypes) {
-            consumeTypeModels.add(getDaoModel(consumeType));
+            consumeTypeModels.add(mDaoModelTransfer.getConsumeTypeModel(consumeType));
         }
         return consumeTypeModels;
     }
@@ -125,7 +110,6 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
     public void onConsumeTypeUpgrade(int oldVersion, int newVersion) {
         if (oldVersion == 0 && newVersion == 1) {
             if (mConsumeTypeDao.changeTable(Table.CLM_ICON)) {
-//                mConsumeTypeDao.update(type);
             }
         }
         

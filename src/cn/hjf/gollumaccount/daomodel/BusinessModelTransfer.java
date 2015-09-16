@@ -37,7 +37,7 @@ public final class BusinessModelTransfer {
 
     public ConsumeRecord getConsumeRecord(ConsumeRecordModel consumeRecordModel) {
         ConsumeRecord consumeRecord = new ConsumeRecord();
-        ConsumeType consumeType = getConsumeType(mConsumeTypeDao.queryById(consumeRecordModel.getRecordTypeId()));
+        ConsumeType consumeType = getConsumeType(mConsumeTypeDao.queryByName(consumeRecordModel.getRecordType()));
         consumeRecord.setId(consumeRecordModel.getId());
         consumeRecord.setRecordName(consumeRecordModel.getRecordName());
         consumeRecord.setRecordPrice(consumeRecordModel.getRecordPrice());

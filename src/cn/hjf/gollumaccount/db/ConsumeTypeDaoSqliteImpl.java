@@ -209,9 +209,9 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao, GASQLiteDataba
             sql.append(Table.CLM_NAME);
             sql.append(" varchar(30) UNIQUE , ");
             sql.append(Table.CLM_TYPE);
-            sql.append(" varchar(30)) NOT NULL,");
+            sql.append(" varchar(30) NOT NULL ,");
             sql.append(Table.CLM_ICON);
-            sql.append(" varchar(30)) NOT NULL");
+            sql.append(" varchar(30) NOT NULL ) ");
             if (DEBUG) {
                 Log.d(TAG, sql.toString());
             }

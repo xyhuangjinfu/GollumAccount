@@ -27,7 +27,7 @@ import cn.hjf.gollumaccount.util.TimeUtil;
  * 消费记录管理的业务逻辑，负责添加和修改消费记录
  * @author huangjinfu
  *
- */
+ */ 
 public class ConsumeRecordManagerBusiness {
 
     private IConsumeRecordDao mConsumeRecordDao;
@@ -42,13 +42,13 @@ public class ConsumeRecordManagerBusiness {
         mConsumeTypeDao = new ConsumeTypeDaoSqliteImpl(mContext);
         mBusinessModelTransfer = new BusinessModelTransfer(mContext);
         mDaoModelTransfer=  new DaoModelTransfer();
-        initInsideType();
+        init();
     }
     
     /**
      * 如果表不存在，创建表
      */
-    public void initInsideType() {
+    public void init() {
         if (!mConsumeRecordDao.isTableExist()) {
             mConsumeRecordDao.createTable();
         }
