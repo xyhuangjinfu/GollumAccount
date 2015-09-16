@@ -185,6 +185,7 @@ public class MainActivity extends BaseActivity implements
             public void onViewClick(int viewId, int position) {
                 if (viewId == R.id.btn_delete) {
                     mDeletePosition = position;
+                    mTipDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
                     mTipDialog.show();
                 }
             }

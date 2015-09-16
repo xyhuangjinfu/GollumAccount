@@ -38,6 +38,14 @@
          <item name="android:backgroundDimEnabled">true</item> 
          <item name="android:windowIsTranslucent">true</item> 
          <item name="android:windowBackground">@color/translucent</item> 
+         
+
+         
     </style>
+    
+    <style name="tip_dialog_window_anim" parent="android:Animation" mce_bogus="1">  
+         <item name="android:windowEnterAnimation">@anim/scale_large</item>  
+         <item name="android:windowExitAnimation">@anim/scale_small</item>  
+    </style> 
 
 </resources>

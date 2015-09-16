@@ -170,7 +170,7 @@ public class LockView extends View {
      */
     private void select(Circle circle) {
         if (!mSelectedCircles.contains(circle)) {
-            mVibrator.vibrate(50);
+            mVibrator.vibrate(40);
             mSelectedCircles.add(circle);
             invalidate();
         }
