@@ -55,6 +55,11 @@ public interface IConsumeTypeDao {
      * @return
      */
     public abstract List<ConsumeTypeModel> queryAll();
+    /**
+     * 查找所有消费类型个数
+     * @return
+     */
+    public abstract int typeCount();
     
     public interface OnConsumeTypeUpgradeListener{
         public abstract void onConsumeTypeUpgrade(int oldVersion, int newVersion);

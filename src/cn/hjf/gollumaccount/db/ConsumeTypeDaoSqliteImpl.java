@@ -383,6 +383,20 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao, GASQLiteDataba
             }
             return sql.toString();
         }
+        
+        /**
+         * 查询所有消费记录个数
+         * @return
+         */
+        public String typeCount() {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT COUNT(*) FROM ");
+            sql.append(TABLE_NAME);
+            if (DEBUG) {
+                Log.d(TAG, sql.toString());
+            }
+            return sql.toString();
+        }
     }
 
     /**
@@ -430,6 +444,23 @@ public class ConsumeTypeDaoSqliteImpl implements IConsumeTypeDao, GASQLiteDataba
             mDB.close();
         }
         return result;
+    }
+
+    /**
+     * 查询所有消费记录个数
+     * @return
+     */
+    @Override
+    public int typeCount() {
+        int count = 0;
+        Cursor cursor = mDB.open().rawQuery(mSqlBuilder.typeCount(), null);
+        ConsumeTypeModel type = null;
+        while (cursor.moveToNext()) {
+            count = cursor.getInt(cursor.getColumnIndex("COUNT(*)"));
+        }
+        cursor.close();
+        mDB.close();
+        return count;
     }
     
 }

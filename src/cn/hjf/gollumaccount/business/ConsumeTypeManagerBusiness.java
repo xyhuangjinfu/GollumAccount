@@ -39,19 +39,37 @@ public class ConsumeTypeManagerBusiness implements IConsumeTypeDao.OnConsumeType
      * 初始化内置消费类型
      */
     public void initInsideType() {
+        String[] types = mContext.getResources().getStringArray(R.array.consume_types);
+        String[] typeIcons = mContext.getResources().getStringArray(R.array.consume_types_icon_name);
+        String[] typeTypes = mContext.getResources().getStringArray(R.array.consume_types_type);
+        
+        //如果配置文件有误，直接返回
+        if (types.length != typeIcons.length 
+                || types.length != typeTypes.length
+                || types.length != typeTypes.length) {
+            return;
+        }
+        
+        //表不存在，创建表，按照配置文件写入数据
         if (!mConsumeTypeDao.isTableExist()) {
             mConsumeTypeDao.createTable();
-            String[] types = mContext.getResources().getStringArray(R.array.consume_types);
-            String[] typeIcons = mContext.getResources().getStringArray(R.array.consume_types_icon_name);
-            String[] typeTypes = mContext.getResources().getStringArray(R.array.consume_types_type);
-            if (types.length == typeIcons.length && typeIcons.length == typeTypes.length) {
-                List<ConsumeType> consumeTypes = new ArrayList<>();
-                for (int i = 0; i < types.length; i++) {
+            List<ConsumeType> consumeTypes = new ArrayList<>();
+            for (int i = 0; i < types.length; i++) {
+                ConsumeType consumeType = new ConsumeType(types[i], ConsumeType.Type.valueOf(typeTypes[i]), typeIcons[i]);
+                consumeTypes.add(consumeType);
+            }
+            mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
+        }
+        //表中数据太旧，配置文件中有新类型加入，把新类型插入表中
+        else if(mConsumeTypeDao.typeCount() < types.length) {
+            List<ConsumeType> consumeTypes = new ArrayList<>();
+            for (int i = 0; i < types.length; i++) {
+                if (mConsumeTypeDao.queryByName(types[i]) == null) {
                     ConsumeType consumeType = new ConsumeType(types[i], ConsumeType.Type.valueOf(typeTypes[i]), typeIcons[i]);
                     consumeTypes.add(consumeType);
                 }
-                mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
             }
+            mConsumeTypeDao.insertAll(getDaoModels(consumeTypes));
         }
     }
     
