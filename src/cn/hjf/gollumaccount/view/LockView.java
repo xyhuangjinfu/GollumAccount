@@ -276,6 +276,11 @@ public class LockView extends View {
      * @param canvas
      */
     private void drawDynamic(Canvas canvas) {
+        canvas.clipRect(
+                (getWidth() - 2 * mGap)/2 - mRadiusOuter,
+                (getHeight() - mGap * 2) / 2 - mRadiusOuter,
+                getWidth() / 2 + mGap + mRadiusOuter,
+                getHeight() / 2 + mGap + mRadiusOuter);
         for (int i = 0; i < mCircles.length; i++) {
             for (int j = 0; j < mCircles[i].length; j++) {
                 if (mSelectedCircles.contains(mCircles[i][j])) {
