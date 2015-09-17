@@ -58,6 +58,7 @@ public class LockScreenActivity extends BaseActivity implements CommonHeaderFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
+        getWindow().setBackgroundDrawable(null);
         
         typeIdentify();
         initTitle();

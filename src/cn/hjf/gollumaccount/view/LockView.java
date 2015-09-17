@@ -157,7 +157,7 @@ public class LockView extends View {
     
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawARGB(255, 255, 255, 255);
+//        canvas.drawARGB(255, 255, 255, 255);
         computeGap();
         computeSize();
         computePoint();
