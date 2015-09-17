@@ -27,6 +27,7 @@ public class AboutActivity extends BaseActivity implements CommonHeaderFragment.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
+		getWindow().setBackgroundDrawable(null);
 		
 		initTitle();
 		initView();

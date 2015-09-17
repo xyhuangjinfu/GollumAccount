@@ -53,6 +53,7 @@ public class QueryActivity extends BaseActivity implements CommonHeaderFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
+        getWindow().setBackgroundDrawable(null);
         
         Intent intent = getIntent();
         if (intent != null) {

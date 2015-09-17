@@ -71,6 +71,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_consume_record);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();

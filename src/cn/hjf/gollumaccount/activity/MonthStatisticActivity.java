@@ -66,6 +66,7 @@ public class MonthStatisticActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month_statistic);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();

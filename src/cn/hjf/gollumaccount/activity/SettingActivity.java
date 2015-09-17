@@ -32,6 +32,7 @@ public class SettingActivity extends BaseActivity implements CommonHeaderFragmen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_select);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();

@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		getWindow().setBackgroundDrawable(null);
 		
 		initSideMenu();
 		

@@ -31,6 +31,7 @@ public class StatisticSelectActivity extends BaseActivity implements CommonHeade
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic_select);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();

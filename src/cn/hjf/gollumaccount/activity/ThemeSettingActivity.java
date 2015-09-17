@@ -40,6 +40,7 @@ public class ThemeSettingActivity extends BaseActivity implements CommonHeaderFr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme_setting);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();

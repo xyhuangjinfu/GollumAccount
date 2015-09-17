@@ -63,6 +63,7 @@ public class TypeStatisticActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_statistic);
+        getWindow().setBackgroundDrawable(null);
         
         initTitle();
         initView();
