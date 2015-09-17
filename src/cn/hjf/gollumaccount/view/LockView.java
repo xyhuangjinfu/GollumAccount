@@ -24,7 +24,7 @@ public class LockView extends View {
     
     private int mRadiusOuter; //大圆半径
     private int mRadiusInner; //小圆半径
-    private static final int RADIUS_CENTER = 5; //圆心半径
+    private static final int RADIUS_CENTER = 3; //圆心半径
     private int mTriangleSize; //三角形尺寸，直角顶点到斜边中点的距离
     
     private static final int COLOR_NORMAL = 0xFF0099CC; //格子正常颜色
@@ -79,7 +79,7 @@ public class LockView extends View {
         
         mHighlightPaint = new Paint();
         mHighlightPaint.setAntiAlias(true);
-        mHighlightPaint.setStrokeWidth(5f);
+        mHighlightPaint.setStrokeWidth(RADIUS_CENTER);
         mHighlightPaint.setColor(COLOR_NORMAL_HIGHLIGHT);
         
         mCircles = new Circle[3][3];
