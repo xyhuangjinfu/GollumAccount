@@ -79,7 +79,7 @@ public final class TimeUtil {
     
     public static String getDateTimeString(Calendar time) {
         Date date = time.getTime();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy  -MM - dd  HH : mm : ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy - MM - dd  HH : mm : ss");
         return format.format(date);
     }
 

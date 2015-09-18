@@ -1,6 +1,7 @@
 package cn.hjf.gollumaccount.activity;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import cn.hjf.gollumaccount.R;
 import cn.hjf.gollumaccount.asynctask.UpdateConsumeRecordTask;
@@ -243,6 +244,9 @@ CommonHeaderFragment.ICallback, UpdateConsumeRecordTask.OnUpdateConsumeRecordLis
         mConsumeRecord.setRecordRemark(mConsumeRemarksEditText.getText().toString());
         mConsumeRecord.setConsumer(mConsumerEditText.getText().toString());
         mConsumeRecord.setPayer(mPayerEditText.getText().toString());
+        Calendar createCalendar = Calendar.getInstance();
+        createCalendar.setTime(new Date(System.currentTimeMillis()));
+        mConsumeRecord.setCreateTime(createCalendar);
     }
 
     /**

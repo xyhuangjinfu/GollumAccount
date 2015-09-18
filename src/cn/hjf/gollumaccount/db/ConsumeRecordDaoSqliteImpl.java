@@ -496,7 +496,7 @@ public class ConsumeRecordDaoSqliteImpl implements IConsumeRecordDao {
 
             
             sql.append(" ORDER BY ");
-            sql.append(Table.CLM_CREATE_TIME);
+            sql.append(Table.CLM_CONSUME_TIME);
             sql.append(" DESC ");
                     
             sql.append(" LIMIT ");
