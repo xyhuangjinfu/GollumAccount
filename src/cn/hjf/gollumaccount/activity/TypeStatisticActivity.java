@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
+import android.util.TimeUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -55,6 +56,7 @@ public class TypeStatisticActivity extends BaseActivity implements
     
     public TypeStatisticActivity() {
         mStartDate = Calendar.getInstance();
+        mStartDate.set(Calendar.DAY_OF_MONTH, TimeUtil.getFirstDay(mStartDate.get(Calendar.YEAR), Calendar.MONTH));
         mEndDate = Calendar.getInstance();
         mStatisticDatas = new ArrayList<TypeStatisticData>();
     }
