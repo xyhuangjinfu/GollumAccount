@@ -172,7 +172,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
                     }, mConsumeCalendar.get(Calendar.YEAR),
                     mConsumeCalendar.get(Calendar.MONTH),
                     mConsumeCalendar.get(Calendar.DAY_OF_MONTH));
-            mDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
+//            mDatePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
             mDatePickerDialog.show();
         }
     };
@@ -192,7 +192,7 @@ CreateConsumeRecordTask.OnCreateConsumeRecordListener {
                         }
                     }, mConsumeCalendar.get(Calendar.HOUR_OF_DAY),
                     mConsumeCalendar.get(Calendar.MINUTE), false);
-            mTimePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
+//            mTimePickerDialog.getWindow().setWindowAnimations(R.style.tip_dialog_window_anim);
             mTimePickerDialog.show();
         }
     };
