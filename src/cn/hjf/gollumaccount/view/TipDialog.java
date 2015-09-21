@@ -49,6 +49,7 @@ public class TipDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_tip);
+        this.getWindow().setBackgroundDrawable(null);
         
         initView();
         computeSize();

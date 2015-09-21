@@ -93,11 +93,9 @@ public class SwipeListView extends ListView {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            Log.e("O_O", "down -----------------------------");
             mLastX = event.getX();
             mLastY = event.getY();
             mDownStatus = mStatus;
-            Log.e("O_O", "down mStatus : " + mStatus);
             //如果当前有某个item处于SWIPE状态，那么，还原状态，不处理后续事件。
             if (mStatus == SwipeStatus.SWIPED) {
                 smoothScrollTo(0, 0);
@@ -118,7 +116,6 @@ public class SwipeListView extends ListView {
             return true;
 //            break;
         case MotionEvent.ACTION_MOVE:
-//            Log.i("O_O", "move");
             
             //判断当前是左右滑动还是上下滑动，左右滑动，对上层屏蔽touch事件
             float deltax = Math.abs(event.getX() - mLastX);
@@ -170,7 +167,6 @@ public class SwipeListView extends ListView {
             break;
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
-            Log.e("O_O", "up cancel mStatus : " + mStatus);
             removeCallbacks(mPressRunnable);
             //如果不是初始状态，修正位置，处理掉该事件。
             if (!mStatus.equals(SwipeStatus.NONE)) {

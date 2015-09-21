@@ -29,6 +29,8 @@ public class LoadingDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.dialog_loading);
+        getWindow().setBackgroundDrawable(null);
+        
         initView();
         initWindow();
     }

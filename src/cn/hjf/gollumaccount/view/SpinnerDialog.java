@@ -90,6 +90,8 @@ public class SpinnerDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.dialog_spinner);
+        getWindow().setBackgroundDrawable(null);
+        
         initView();
         initValue();
         initEvent();
