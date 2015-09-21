@@ -96,7 +96,7 @@ public class TipDialog extends Dialog {
                 .getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         // 宽度为屏幕的80%
-        rllp.width = (display.getWidth()) * 60 / 100;
+        rllp.width = (display.getWidth()) * 80 / 100;
         mRoot.setLayoutParams(rllp);
     }
     

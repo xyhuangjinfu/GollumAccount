@@ -118,7 +118,6 @@ public class LockView extends View {
             invalidate();
             break;
         case MotionEvent.ACTION_UP:
-            Log.i("O_O",  "ACTION_UP");
             //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
@@ -134,7 +133,6 @@ public class LockView extends View {
             drawCircles(COLOR_NORMAL_HIGHLIGHT);
             break;
         case MotionEvent.ACTION_CANCEL:
-            Log.e("O_O", "ACTION_CANCEL");
             //记录当前触摸位置
             mCurrentPoint.x = (int) event.getX();
             mCurrentPoint.y = (int) event.getY();
@@ -400,14 +398,11 @@ public class LockView extends View {
             canvas.drawPath(p, mHighlightPaint);
             return;
         }
-        //底边中点和直角点不在水平和垂直线
         
+        //底边中点和直角点不在水平和垂直线
         double gradient = (rightAnglePoint.y - midpointOfBottom.y) * 1.0 / (rightAnglePoint.x - midpointOfBottom.x);
-        Log.i("O_O", "gradient : " + gradient);
         double diatance = Math.sqrt(Math.pow(rightAnglePoint.y - midpointOfBottom.y, 2) + Math.pow(rightAnglePoint.x - midpointOfBottom.x, 2));
-        Log.i("O_O", "diatance : " + diatance);
         double angle = Math.toDegrees (Math.atan (gradient));
-        Log.i("O_O", "angle : " + angle);
         
         if (angle > 0) {
             if (rightAnglePoint.y - midpointOfBottom.y > 0 && rightAnglePoint.x - midpointOfBottom.x > 0) {
